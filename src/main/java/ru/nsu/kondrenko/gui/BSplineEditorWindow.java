@@ -9,10 +9,11 @@ public class BSplineEditorWindow extends JFrame {
     public BSplineEditorWindow() {
         add(new BSplineEditor(new BSplineEditorContext()), BorderLayout.CENTER);
         add(new BSplineForm(), BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(600, 480));
+        setPreferredSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setResizable(false);
         setVisible(true);
         pack();
+        setLocationRelativeTo(null);
     }
 }

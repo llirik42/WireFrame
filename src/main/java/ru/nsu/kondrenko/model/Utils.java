@@ -1,7 +1,5 @@
 package ru.nsu.kondrenko.model;
 
-import java.awt.*;
-
 public final class Utils {
     private Utils() {}
 

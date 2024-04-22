@@ -1,7 +1,8 @@
 package ru.nsu.kondrenko.gui;
 
-import ru.nsu.kondrenko.controller.BSplineEditorController;
+import ru.nsu.kondrenko.controller.BSplineMouseController;
 import ru.nsu.kondrenko.model.BSplineEditorContext;
+import ru.nsu.kondrenko.model.BSplineEditorContextListener;
 import ru.nsu.kondrenko.model.IntPoint;
 import ru.nsu.kondrenko.model.Utils;
 
@@ -10,16 +11,17 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class BSplineEditor extends JPanel {
+public class BSplineEditor extends JPanel implements BSplineEditorContextListener {
     private static final int CURVE_POINT_RADIUS = 10;
     private static final int CURVE_POINT_DIAMETER = 2 * CURVE_POINT_RADIUS;
     private final BSplineEditorContext context;
 
     public BSplineEditor(BSplineEditorContext context) {
         this.context = context;
+        context.addListener(this);
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(100, 100));
-        addMouseListener(new BSplineEditorController(this, context));
+        addMouseListener(new BSplineMouseController(context));
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -41,5 +43,25 @@ public class BSplineEditor extends JPanel {
                     CURVE_POINT_DIAMETER
             );
         }
+    }
+
+    @Override
+    public void onPointsChange(BSplineEditorContext context) {
+        repaint();
+    }
+
+    @Override
+    public void onRangesChange(BSplineEditorContext context) {
+
+    }
+
+    @Override
+    public void onDimensionsChange(BSplineEditorContext context) {
+
+    }
+
+    @Override
+    public void onPolylinesNumberChange(BSplineEditorContext context) {
+
     }
 }
