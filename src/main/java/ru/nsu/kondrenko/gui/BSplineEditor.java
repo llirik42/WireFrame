@@ -1,5 +1,6 @@
 package ru.nsu.kondrenko.gui;
 
+import ru.nsu.kondrenko.controller.BSplineFormController;
 import ru.nsu.kondrenko.controller.BSplineMouseController;
 import ru.nsu.kondrenko.model.BSplineEditorContext;
 import ru.nsu.kondrenko.model.BSplineEditorContextListener;
@@ -17,11 +18,15 @@ public class BSplineEditor extends JPanel implements BSplineEditorContextListene
     private final BSplineEditorContext context;
 
     public BSplineEditor(BSplineEditorContext context) {
+        final BSplineMouseController controller = new BSplineMouseController(context);
+
         this.context = context;
         context.addListener(this);
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(100, 100));
-        addMouseListener(new BSplineMouseController(context));
+        addMouseListener(controller);
+        addMouseMotionListener(controller);
+
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -35,7 +40,7 @@ public class BSplineEditor extends JPanel implements BSplineEditorContextListene
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (final var p : context.getPoints()) {
-            final IntPoint mousePoint = Utils.realToMouseScale(p, context);
+            final IntPoint mousePoint = p.getMousePoint();
             g.drawOval(
                     mousePoint.getX() - CURVE_POINT_RADIUS,
                     mousePoint.getY() - CURVE_POINT_RADIUS,

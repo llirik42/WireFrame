@@ -14,7 +14,7 @@ public class BSplineEditorContext {
     private double minY;
     private double maxY;
     private int polylinesNumber;
-    private final List<DoublePoint> points = new ArrayList<>();
+    private final List<BSplineEditorPoint> points = new ArrayList<>();
     private final List<BSplineEditorContextListener> listeners = new ArrayList<>();
 
     public BSplineEditorContext() {
@@ -32,12 +32,12 @@ public class BSplineEditorContext {
         listeners.remove(listener);
     }
 
-    public void addPoint(DoublePoint point) {
+    public void addPoint(BSplineEditorPoint point) {
         points.add(point);
         notifyListenersAboutPointsChange();
     }
 
-    public void removePoint(DoublePoint point) {
+    public void removePoint(BSplineEditorPoint point) {
         points.remove(point);
         notifyListenersAboutPointsChange();
     }
