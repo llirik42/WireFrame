@@ -18,6 +18,7 @@ public class BSplineEditorContext {
     private final List<BSplineEditorContextListener> listeners = new ArrayList<>();
 
     public BSplineEditorContext() {
+        polylinesNumber = 1;
         minX = -10;
         maxX = 10;
         minY = -10;

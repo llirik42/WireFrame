@@ -14,4 +14,14 @@ public class DoublePoint {
     public double distance(DoublePoint p) {
         return Math.sqrt(Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2));
     }
+
+    public void minus(DoublePoint p) {
+        x -= p.x;
+        y -= p.y;
+    }
+
+    public void scale(double scale) {
+        x *= scale;
+        y *= scale;
+    }
 }

@@ -2,10 +2,12 @@ package ru.nsu.kondrenko.controller;
 
 import ru.nsu.kondrenko.model.*;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class BSplineMouseController extends MouseAdapter {
+public class BSplineMouseController extends MouseAdapter implements KeyListener {
     private final BSplineEditorContext context;
     private boolean isMouseOnEditor = false;
     private BSplineEditorPoint sourcePoint;
@@ -65,5 +67,27 @@ public class BSplineMouseController extends MouseAdapter {
         context.addPoint(currentPoint);
         context.removePoint(sourcePoint);
         sourcePoint = currentPoint;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT)
+            System.out.println("L");
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT)
+            System.out.println("R");
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_UP)
+            System.out.println("U");
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN)
+            System.out.println("D");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+
     }
 }
