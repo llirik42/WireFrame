@@ -14,7 +14,7 @@ public class BSplineEditorContext {
     private double minY;
     private double maxY;
     private int polylinesNumber;
-    private final List<BSplineEditorPoint> points = new ArrayList<>();
+    private final List<DoublePoint> points = new ArrayList<>();
     private final List<BSplineEditorContextListener> listeners = new ArrayList<>();
 
     public BSplineEditorContext() {
@@ -33,49 +33,49 @@ public class BSplineEditorContext {
         listeners.remove(listener);
     }
 
-    public void addPoint(BSplineEditorPoint point) {
+    public void addPoint(DoublePoint point) {
         points.add(point);
-        notifyListenersAboutPointsChange();
+        notifyListeners();
     }
 
-    public void removePoint(BSplineEditorPoint point) {
+    public void removePoint(DoublePoint point) {
         points.remove(point);
-        notifyListenersAboutPointsChange();
+        notifyListeners();
     }
 
     public void setPolylinesNumber(int polylinesNumber) {
         this.polylinesNumber = polylinesNumber;
-        notifyListenersAboutPolylinesNumberChange();
+        notifyListeners();
     }
 
     public void setWidth(int width) {
         this.width = width;
-        notifyListenersAboutDimensionsChange();
+        notifyListeners();
     }
 
     public void setHeight(int height) {
         this.height = height;
-        notifyListenersAboutDimensionsChange();
+        notifyListeners();
     }
 
     public void setMinX(double minX) {
         this.minX = minX;
-        notifyListenersAboutRangesChange();
+        notifyListeners();
     }
 
     public void setMaxX(double maxX) {
         this.maxX = maxX;
-        notifyListenersAboutRangesChange();
+        notifyListeners();
     }
 
     public void setMinY(double minY) {
         this.minY = minY;
-        notifyListenersAboutRangesChange();
+        notifyListeners();
     }
 
     public void setMaxY(double maxY) {
         this.maxY = maxY;
-        notifyListenersAboutRangesChange();
+        notifyListeners();
     }
 
     public double getXRange() {
@@ -86,27 +86,9 @@ public class BSplineEditorContext {
         return maxY - minY;
     }
 
-    private void notifyListenersAboutPointsChange() {
-        for (final var listener : listeners) {
-            listener.onPointsChange(this);
-        }
-    }
-
-    private void notifyListenersAboutPolylinesNumberChange() {
-        for (final var listener : listeners) {
-            listener.onPolylinesNumberChange(this);
-        }
-    }
-
-    private void notifyListenersAboutDimensionsChange() {
-        for (final var listener : listeners) {
-            listener.onDimensionsChange(this);
-        }
-    }
-
-    private void notifyListenersAboutRangesChange() {
-        for (final var listener : listeners) {
-            listener.onRangesChange(this);
+    private void notifyListeners() {
+        for (final var it : listeners) {
+            it.onContextChange(this);
         }
     }
 }

@@ -16,8 +16,8 @@ public class BSplineForm extends JPanel {
         JSpinner spinner = new JSpinner(monthModel);
         spinner.setPreferredSize(new Dimension(100, 30));
         spinner.addChangeListener(new BSplineFormController());
-        // add(new JLabel("N"));
-        // add(spinner);
+        add(new JLabel("N"));
+        add(spinner);
         setPreferredSize(new Dimension(-1, 100));
     }
 }
