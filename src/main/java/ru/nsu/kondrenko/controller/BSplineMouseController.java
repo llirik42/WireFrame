@@ -66,8 +66,8 @@ public class BSplineMouseController extends MouseAdapter {
 
         final IntPoint mousePoint = new IntPoint(e.getX(), e.getY());
         final DoublePoint currentPoint = Utils.mouseToRealScale(mousePoint, context);
-        context.addPoint(currentPoint);
-        context.removePoint(prevPoint);
+        final int index = context.removePoint(prevPoint);
+        context.insertPoint(currentPoint, index);
         prevPoint = currentPoint;
     }
 }

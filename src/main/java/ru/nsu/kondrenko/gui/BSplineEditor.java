@@ -92,8 +92,7 @@ public class BSplineEditor extends JPanel implements BSplineEditorContextListene
                 {-3.0, 0.0, 3.0, 0.0},
                 {1.0, 4.0, 1.0, 0.0}
         };
-        final SimpleMatrix mSpline = new SimpleMatrix(splineCoefficientsValues);
-        mSpline.divide(6);
+        final SimpleMatrix mSpline = new SimpleMatrix(splineCoefficientsValues).divide(6);
 
         final double[] tMatrixValues = {0.0, 0.0, 0.0, 1.0};
         final SimpleMatrix tMatrix = new SimpleMatrix(tMatrixValues);

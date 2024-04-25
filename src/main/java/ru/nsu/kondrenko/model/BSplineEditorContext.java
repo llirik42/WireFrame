@@ -3,6 +3,7 @@ package ru.nsu.kondrenko.model;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -14,11 +15,11 @@ public class BSplineEditorContext {
     private double minY;
     private double maxY;
     private int polylinesNumber;
-    private final List<DoublePoint> points = new ArrayList<>();
+    private final List<DoublePoint> points = new LinkedList<>();
     private final List<BSplineEditorContextListener> listeners = new ArrayList<>();
 
     public BSplineEditorContext() {
-        polylinesNumber = 1;
+        polylinesNumber = 10;
         minX = -10;
         maxX = 10;
         minY = -10;
@@ -38,9 +39,16 @@ public class BSplineEditorContext {
         notifyListeners();
     }
 
-    public void removePoint(DoublePoint point) {
+    public void insertPoint(DoublePoint point, int index) {
+        points.add(index, point);
+        notifyListeners();
+    }
+
+    public int removePoint(DoublePoint point) {
+        final int index = points.indexOf(point);
         points.remove(point);
         notifyListeners();
+        return index;
     }
 
     public void setPolylinesNumber(int polylinesNumber) {
