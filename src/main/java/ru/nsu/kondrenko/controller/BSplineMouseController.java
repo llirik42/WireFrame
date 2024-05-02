@@ -16,27 +16,24 @@ public class BSplineMouseController extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            final IntPoint clickPoint = new IntPoint(e.getX(), e.getY());
+        final IntPoint clickPoint = new IntPoint(e.getX(), e.getY());
 
-            DoublePoint foundPoint = null;
-            for (final var p : context.getPoints()) {
-                final IntPoint mousePoint = Utils.realToMouseScale(p, context);
+        DoublePoint foundPoint = null;
+        for (final var p : context.getPoints()) {
+            final IntPoint mousePoint = Utils.realToMouseScale(p, context);
 
-                if (mousePoint.distance(clickPoint) < 10) {
-                    foundPoint = p;
-                }
+            if (mousePoint.distance(clickPoint) < 10) {
+                foundPoint = p;
             }
+        }
 
-            if (foundPoint == null) {
-                final DoublePoint realClickPoint = Utils.mouseToRealScale(clickPoint, context);
-                context.addPoint(realClickPoint);
-                prevPoint = null;
-            } else {
-                prevPoint = foundPoint;
-            }
-        } else if (e.getButton() == MouseEvent.BUTTON3) {
-            System.out.println("RIGHT");
+        if (foundPoint == null) {
+            final DoublePoint realClickPoint = Utils.mouseToRealScale(clickPoint, context);
+            System.out.println(realClickPoint);
+            context.addPoint(realClickPoint);
+            prevPoint = null;
+        } else {
+            prevPoint = foundPoint;
         }
     }
 
