@@ -11,7 +11,7 @@ public class BSplineEditorWindow extends JFrame {
         final BSplineEditorContext context = new BSplineEditorContext();
         final BSplineMouseController controller = new BSplineMouseController(context);
         add(new BSplineEditor(context, controller), BorderLayout.CENTER);
-        add(new BSplineForm(), BorderLayout.SOUTH);
+        add(new BSplineForm(context), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);

@@ -16,10 +16,11 @@ public class BSplineEditorContext {
     private double maxY;
     private int polylinesNumber;
     private final List<DoublePoint> points = new LinkedList<>();
+    private List<DoublePoint> bSplinePoints = new LinkedList<>();
     private final List<BSplineEditorContextListener> listeners = new ArrayList<>();
 
     public BSplineEditorContext() {
-        polylinesNumber = 10;
+        polylinesNumber = 1;
         minX = -10;
         maxX = 10;
         minY = -10;
@@ -36,23 +37,27 @@ public class BSplineEditorContext {
 
     public void addPoint(DoublePoint point) {
         points.add(point);
+        updateBSplinePoints();
         notifyListeners();
     }
 
     public void insertPoint(DoublePoint point, int index) {
         points.add(index, point);
+        updateBSplinePoints();
         notifyListeners();
     }
 
     public int removePoint(DoublePoint point) {
         final int index = points.indexOf(point);
         points.remove(point);
+        updateBSplinePoints();
         notifyListeners();
         return index;
     }
 
     public void setPolylinesNumber(int polylinesNumber) {
         this.polylinesNumber = polylinesNumber;
+        updateBSplinePoints();
         notifyListeners();
     }
 
@@ -98,5 +103,12 @@ public class BSplineEditorContext {
         for (final var it : listeners) {
             it.onContextChange(this);
         }
+    }
+
+    private void updateBSplinePoints() {
+        bSplinePoints = BSplineUtils.calculateBSplinePoints(
+                getPoints(),
+                getPolylinesNumber()
+        );
     }
 }

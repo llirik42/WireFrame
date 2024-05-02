@@ -1,7 +1,6 @@
 package ru.nsu.kondrenko.gui;
 
 import org.decimal4j.util.DoubleRounder;
-import org.ejml.simple.SimpleMatrix;
 import ru.nsu.kondrenko.controller.BSplineMouseController;
 import ru.nsu.kondrenko.model.*;
 
@@ -9,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
+import java.util.List;
 
 public class BSplineEditor extends JPanel implements BSplineEditorContextListener {
     private static final int CURVE_POINT_RADIUS = 10;
@@ -42,6 +43,7 @@ public class BSplineEditor extends JPanel implements BSplineEditorContextListene
         drawCurvePoints(g);
         drawAxes(g);
         drawBSpline(g);
+        drawBSplinePointsConnection(g);
     }
 
     private void drawCurvePoints(Graphics g) {
@@ -86,77 +88,37 @@ public class BSplineEditor extends JPanel implements BSplineEditorContextListene
     }
 
     private void drawBSpline(Graphics g) {
-        final double[][] splineCoefficientsValues = {
-                {-1.0, 3.0, -3.0, 1.0},
-                {3.0, -6.0, 3.0, 0.0},
-                {-3.0, 0.0, 3.0, 0.0},
-                {1.0, 4.0, 1.0, 0.0}
-        };
-        final SimpleMatrix mSpline = new SimpleMatrix(splineCoefficientsValues).divide(6);
-
-        final double[] tMatrixValues = {0.0, 0.0, 0.0, 1.0};
-        final SimpleMatrix tMatrix = new SimpleMatrix(tMatrixValues);
-        tMatrix.reshape(1, 4);
-        final double step = 1.0 / context.getPolylinesNumber();
-
-        for (int i = 0; i < context.getPoints().size() - 1; i++) {
-            final DoublePoint currentPoint = context.getPoints().get(i);
-            final DoublePoint nextPoint = context.getPoints().get(i + 1);
-
-            final IntPoint currentMousePoint = Utils.realToMouseScale(currentPoint, context);
-            final IntPoint nextMousePoint = Utils.realToMouseScale(nextPoint, context);
+        for (int i = 0; i < context.getBSplinePoints().size() - 1; i++) {
+            final IntPoint p1 = Utils.realToMouseScale(context.getBSplinePoints().get(i), context);
+            final IntPoint p2 = Utils.realToMouseScale(context.getBSplinePoints().get(i + 1), context);
 
             g.drawLine(
-                    currentMousePoint.getX(),
-                    currentMousePoint.getY(),
-                    nextMousePoint.getX(),
-                    nextMousePoint.getY()
+                    p1.getX(),
+                    p1.getY(),
+                    p2.getX(),
+                    p2.getY()
+            );
+        }
+    }
+
+    private void drawBSplinePointsConnection(Graphics g) {
+        final Color oldColor = g.getColor();
+
+        g.setColor(Color.GREEN);
+
+        for (int i = 0; i < context.getPoints().size() - 1; i++) {
+            final IntPoint p1 = Utils.realToMouseScale(context.getPoints().get(i), context);
+            final IntPoint p2 = Utils.realToMouseScale(context.getPoints().get(i + 1), context);
+
+            g.drawLine(
+                    p1.getX(),
+                    p1.getY(),
+                    p2.getX(),
+                    p2.getY()
             );
         }
 
-        for (int i = 0; i < context.getPoints().size() - 3; i++) {
-            final DoublePoint p1 = context.getPoints().get(i);
-            final DoublePoint p2 = context.getPoints().get(i + 1);
-            final DoublePoint p3 = context.getPoints().get(i + 2);
-            final DoublePoint p4 = context.getPoints().get(i + 3);
-
-            final double[][] pointsValues = {
-                    {p1.getX(), p1.getY()},
-                    {p2.getX(), p2.getY()},
-                    {p3.getX(), p3.getY()},
-                    {p4.getX(), p4.getY()},
-            };
-            final SimpleMatrix pointsMatrix = mSpline.mult(new SimpleMatrix(pointsValues));
-            System.out.println(pointsMatrix);
-            pointsMatrix.reshape(4, 2);
-            final SimpleMatrix prevMatrixPoint = tMatrix.mult(pointsMatrix);
-            DoublePoint prevPoint = new DoublePoint(prevMatrixPoint.get(0), prevMatrixPoint.get(1));
-
-            for (int j = 1; j <= context.getPolylinesNumber(); j++) {
-                final double t = j * step;
-                final double[] currentTValues = {
-                        t * t * t,
-                        t * t,
-                        t,
-                        1
-                };
-                final SimpleMatrix currentTMatrix = new SimpleMatrix(currentTValues);
-                currentTMatrix.reshape(1, 4);
-                final SimpleMatrix currentMatrixPoint = currentTMatrix.mult(pointsMatrix);
-                final DoublePoint currentPoint = new DoublePoint(currentMatrixPoint.get(0), currentMatrixPoint.get(1));
-
-                final IntPoint prevMousePoint = Utils.realToMouseScale(prevPoint, context);
-                final IntPoint currentMousePoint = Utils.realToMouseScale(currentPoint, context);
-                prevPoint = currentPoint;
-
-                g.drawLine(
-                        prevMousePoint.getX(),
-                        prevMousePoint.getY(),
-                        currentMousePoint.getX(),
-                        currentMousePoint.getY()
-                );
-            }
-        }
+        g.setColor(oldColor);
     }
 
     @Override
