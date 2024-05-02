@@ -99,6 +99,21 @@ public class BSplineEditor extends JPanel implements BSplineEditorContextListene
         tMatrix.reshape(1, 4);
         final double step = 1.0 / context.getPolylinesNumber();
 
+        for (int i = 0; i < context.getPoints().size() - 1; i++) {
+            final DoublePoint currentPoint = context.getPoints().get(i);
+            final DoublePoint nextPoint = context.getPoints().get(i + 1);
+
+            final IntPoint currentMousePoint = Utils.realToMouseScale(currentPoint, context);
+            final IntPoint nextMousePoint = Utils.realToMouseScale(nextPoint, context);
+
+            g.drawLine(
+                    currentMousePoint.getX(),
+                    currentMousePoint.getY(),
+                    nextMousePoint.getX(),
+                    nextMousePoint.getY()
+            );
+        }
+
         for (int i = 0; i < context.getPoints().size() - 3; i++) {
             final DoublePoint p1 = context.getPoints().get(i);
             final DoublePoint p2 = context.getPoints().get(i + 1);
