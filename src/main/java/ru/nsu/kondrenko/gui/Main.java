@@ -5,5 +5,6 @@ public class Main {
         // TODO: сделать масштабирование, перемещение и нормализацию в редакторе б-сплайнов
         // TODO: сделать редактор б-сплайнов resizable
         new BSplineEditorWindow();
+        new WireFrameWindow();
     }
 }
