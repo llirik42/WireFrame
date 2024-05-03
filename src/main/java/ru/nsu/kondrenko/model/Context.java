@@ -19,14 +19,15 @@ public class Context {
     private int generatricesNumber;
     private int circleSegmentsNumber;
 
-    private final List<DoublePoint> points = new LinkedList<>();
-    private List<DoublePoint> bSplinePoints = new LinkedList<>();
+    private final List<Double2DPoint> points = new LinkedList<>();
+    private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
     private final List<ContextListener> listeners = new ArrayList<>();
 
     public Context() {
         polylinesNumber = 1;
         generatricesNumber = 2;
+        circleSegmentsNumber = 1;
         minX = -10;
         maxX = 10;
         minY = -10.0 / 1280 * 620;
@@ -41,19 +42,19 @@ public class Context {
         listeners.remove(listener);
     }
 
-    public void addPoint(DoublePoint point) {
+    public void addPoint(Double2DPoint point) {
         points.add(point);
         updateBSplinePoints();
         notifyListeners();
     }
 
-    public void insertPoint(DoublePoint point, int index) {
+    public void insertPoint(Double2DPoint point, int index) {
         points.add(index, point);
         updateBSplinePoints();
         notifyListeners();
     }
 
-    public int removePoint(DoublePoint point) {
+    public int removePoint(Double2DPoint point) {
         final int index = points.indexOf(point);
         points.remove(point);
         updateBSplinePoints();

@@ -22,27 +22,27 @@ public final class BSplineUtils {
     private BSplineUtils() {
     }
 
-    public static List<DoublePoint> calculateBSplinePoints(List<DoublePoint> points, int polylinesNumber) {
-        final List<DoublePoint> result = new ArrayList<>();
+    public static List<Double2DPoint> calculateBSplinePoints(List<Double2DPoint> points, int polylinesNumber) {
+        final List<Double2DPoint> result = new ArrayList<>();
 
         final double step = 1.0 / polylinesNumber;
 
         final int pointsCount = points.size();
         for (int i = 0; i < pointsCount - 3; i++) {
-            final DoublePoint p1 = points.get(i);
-            final DoublePoint p2 = points.get(i + 1);
-            final DoublePoint p3 = points.get(i + 2);
-            final DoublePoint p4 = points.get(i + 3);
+            final Double2DPoint p1 = points.get(i);
+            final Double2DPoint p2 = points.get(i + 1);
+            final Double2DPoint p3 = points.get(i + 2);
+            final Double2DPoint p4 = points.get(i + 3);
 
             final double[][] pointsValues = {
-                    {p1.getX(), p1.getY()},
-                    {p2.getX(), p2.getY()},
-                    {p3.getX(), p3.getY()},
-                    {p4.getX(), p4.getY()},
+                    {p1.x(), p1.y()},
+                    {p2.x(), p2.y()},
+                    {p3.x(), p3.y()},
+                    {p4.x(), p4.y()},
             };
             final SimpleMatrix pointsMatrix = MATRIX.mult(new SimpleMatrix(pointsValues));
             final SimpleMatrix prevMatrixPoint = T_MATRIX.mult(pointsMatrix);
-            final DoublePoint firstPoint = new DoublePoint(
+            final Double2DPoint firstPoint = new Double2DPoint(
                     prevMatrixPoint.get(0),
                     prevMatrixPoint.get(1)
             );
@@ -60,7 +60,7 @@ public final class BSplineUtils {
                 }};
                 final SimpleMatrix currentTMatrix = new SimpleMatrix(currentTValues);
                 final SimpleMatrix currentMatrixPoint = currentTMatrix.mult(pointsMatrix);
-                final DoublePoint currentPoint = new DoublePoint(
+                final Double2DPoint currentPoint = new Double2DPoint(
                         currentMatrixPoint.get(0),
                         currentMatrixPoint.get(1)
                 );

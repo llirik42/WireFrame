@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 public class BSplineMouseController extends MouseAdapter {
     private final Context context;
     private boolean isMouseOnEditor = false;
-    private DoublePoint prevPoint;
+    private Double2DPoint prevPoint;
 
     public BSplineMouseController(Context context) {
         this.context = context;
@@ -18,7 +18,7 @@ public class BSplineMouseController extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         final IntPoint clickPoint = new IntPoint(e.getX(), e.getY());
 
-        DoublePoint foundPoint = null;
+        Double2DPoint foundPoint = null;
         for (final var p : context.getPoints()) {
             final IntPoint mousePoint = Utils.realToMouseScale(p, context);
 
@@ -28,7 +28,7 @@ public class BSplineMouseController extends MouseAdapter {
         }
 
         if (foundPoint == null) {
-            final DoublePoint realClickPoint = Utils.mouseToRealScale(clickPoint, context);
+            final Double2DPoint realClickPoint = Utils.mouseToRealScale(clickPoint, context);
             context.addPoint(realClickPoint);
             prevPoint = null;
         } else {
@@ -61,7 +61,7 @@ public class BSplineMouseController extends MouseAdapter {
         }
 
         final IntPoint mousePoint = new IntPoint(e.getX(), e.getY());
-        final DoublePoint currentPoint = Utils.mouseToRealScale(mousePoint, context);
+        final Double2DPoint currentPoint = Utils.mouseToRealScale(mousePoint, context);
         final int index = context.removePoint(prevPoint);
         context.insertPoint(currentPoint, index);
         prevPoint = currentPoint;

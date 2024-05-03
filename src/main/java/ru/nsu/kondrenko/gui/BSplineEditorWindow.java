@@ -7,8 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BSplineEditorWindow extends JFrame {
-    public BSplineEditorWindow() {
-        final Context context = new Context();
+    public BSplineEditorWindow(Context context) {
         final BSplineMouseController controller = new BSplineMouseController(context);
         add(new BSplineEditor(context, controller), BorderLayout.CENTER);
         add(new Form(context), BorderLayout.SOUTH);

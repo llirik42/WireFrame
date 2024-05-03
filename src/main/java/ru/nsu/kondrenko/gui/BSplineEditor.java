@@ -57,7 +57,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
     }
 
     private void drawAxes(Graphics g) {
-        final IntPoint centerPoint = Utils.realToMouseScale(new DoublePoint(0, 0), context);
+        final IntPoint centerPoint = Utils.realToMouseScale(new Double2DPoint(0, 0), context);
         final int yOfXAxes = centerPoint.getY();
         final int xOfYAxes = centerPoint.getX();
         g.drawLine(0, yOfXAxes, context.getWidth(), yOfXAxes);
@@ -127,18 +127,18 @@ public class BSplineEditor extends JPanel implements ContextListener {
     private void drawOXAxePoint(Graphics2D graphics2D, IntPoint point, int spread) {
         final int x = point.getX();
         final int y = point.getY();
-        final DoublePoint realPoint = Utils.mouseToRealScale(new IntPoint(x, y), context);
+        final Double2DPoint realPoint = Utils.mouseToRealScale(new IntPoint(x, y), context);
         graphics2D.drawLine(x, y - spread, x, y + spread);
-        final String label = String.valueOf(rounder.round(realPoint.getX()));
+        final String label = String.valueOf(rounder.round(realPoint.x()));
         graphics2D.drawString(label, x - label.length() * 3, y - 10);
     }
 
     private void drawOYAxePoint(Graphics2D graphics2D, IntPoint point, int spread) {
         final int x = point.getX();
         final int y = point.getY();
-        final DoublePoint realPoint = Utils.mouseToRealScale(new IntPoint(x, y), context);
+        final Double2DPoint realPoint = Utils.mouseToRealScale(new IntPoint(x, y), context);
         graphics2D.drawLine(x - spread, y, x + spread, y);
-        final String label = String.valueOf(rounder.round(realPoint.getY()));
+        final String label = String.valueOf(rounder.round(realPoint.y()));
         graphics2D.drawString(label, x + 10, y + 5);
     }
 }
