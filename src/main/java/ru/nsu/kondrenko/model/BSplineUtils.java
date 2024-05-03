@@ -27,7 +27,8 @@ public final class BSplineUtils {
 
         final double step = 1.0 / polylinesNumber;
 
-        for (int i = 0; i < points.size() - 3; i++) {
+        final int pointsCount = points.size();
+        for (int i = 0; i < pointsCount - 3; i++) {
             final DoublePoint p1 = points.get(i);
             final DoublePoint p2 = points.get(i + 1);
             final DoublePoint p3 = points.get(i + 2);
@@ -47,7 +48,9 @@ public final class BSplineUtils {
             );
             result.add(firstPoint);
 
-            for (int j = 1; j <= polylinesNumber; j++) {
+            final int delta = i == pointsCount - 4 ? 1 : 0;
+
+            for (int j = 1; j < polylinesNumber + delta; j++) {
                 final double t = j * step;
                 final double[][] currentTValues = {{
                         t * t * t,
