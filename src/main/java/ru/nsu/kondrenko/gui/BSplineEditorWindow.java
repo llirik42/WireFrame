@@ -1,14 +1,14 @@
 package ru.nsu.kondrenko.gui;
 
 import ru.nsu.kondrenko.controller.BSplineMouseController;
-import ru.nsu.kondrenko.model.BSplineEditorContext;
+import ru.nsu.kondrenko.model.Context;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class BSplineEditorWindow extends JFrame {
     public BSplineEditorWindow() {
-        final BSplineEditorContext context = new BSplineEditorContext();
+        final Context context = new Context();
         final BSplineMouseController controller = new BSplineMouseController(context);
         add(new BSplineEditor(context, controller), BorderLayout.CENTER);
         add(new BSplineForm(context), BorderLayout.SOUTH);

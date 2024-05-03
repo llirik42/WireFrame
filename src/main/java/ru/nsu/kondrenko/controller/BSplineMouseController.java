@@ -6,11 +6,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class BSplineMouseController extends MouseAdapter {
-    private final BSplineEditorContext context;
+    private final Context context;
     private boolean isMouseOnEditor = false;
     private DoublePoint prevPoint;
 
-    public BSplineMouseController(BSplineEditorContext context) {
+    public BSplineMouseController(Context context) {
         this.context = context;
     }
 
@@ -29,7 +29,6 @@ public class BSplineMouseController extends MouseAdapter {
 
         if (foundPoint == null) {
             final DoublePoint realClickPoint = Utils.mouseToRealScale(clickPoint, context);
-            System.out.println(realClickPoint);
             context.addPoint(realClickPoint);
             prevPoint = null;
         } else {

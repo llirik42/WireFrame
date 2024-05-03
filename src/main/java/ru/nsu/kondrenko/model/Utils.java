@@ -3,7 +3,7 @@ package ru.nsu.kondrenko.model;
 public final class Utils {
     private Utils() {}
 
-    public static DoublePoint mouseToRealScale(IntPoint mousePoint, BSplineEditorContext context) {
+    public static DoublePoint mouseToRealScale(IntPoint mousePoint, Context context) {
         final int width = context.getWidth();
         final int height = context.getHeight();
         final double minX = context.getMinX();
@@ -15,7 +15,7 @@ public final class Utils {
         return new DoublePoint(x, y);
     }
 
-    public static IntPoint realToMouseScale(DoublePoint realPoint, BSplineEditorContext context) {
+    public static IntPoint realToMouseScale(DoublePoint realPoint, Context context) {
         final double minX = context.getMinX();
         final double minY = context.getMinY();
         final double xRelative = (realPoint.getX() - minX) / context.getXRange();

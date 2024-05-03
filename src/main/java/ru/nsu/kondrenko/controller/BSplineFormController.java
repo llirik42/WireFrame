@@ -1,15 +1,15 @@
 package ru.nsu.kondrenko.controller;
 
-import ru.nsu.kondrenko.model.BSplineEditorContext;
+import ru.nsu.kondrenko.model.Context;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class BSplineFormController implements ChangeListener {
-    private final BSplineEditorContext context;
+    private final Context context;
 
-    public BSplineFormController(BSplineEditorContext context) {
+    public BSplineFormController(Context context) {
         this.context = context;
     }
 

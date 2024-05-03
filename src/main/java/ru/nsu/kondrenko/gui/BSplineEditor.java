@@ -9,15 +9,13 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import java.util.List;
-
-public class BSplineEditor extends JPanel implements BSplineEditorContextListener {
+public class BSplineEditor extends JPanel implements ContextListener {
     private static final int CURVE_POINT_RADIUS = 10;
     private static final int CURVE_POINT_DIAMETER = 2 * CURVE_POINT_RADIUS;
-    private final BSplineEditorContext context;
+    private final Context context;
     private final DoubleRounder rounder;
 
-    public BSplineEditor(BSplineEditorContext context, BSplineMouseController controller) {
+    public BSplineEditor(Context context, BSplineMouseController controller) {
         this.context = context;
         this.rounder = new DoubleRounder(1);
         context.addListener(this);
@@ -122,7 +120,7 @@ public class BSplineEditor extends JPanel implements BSplineEditorContextListene
     }
 
     @Override
-    public void onContextChange(BSplineEditorContext context) {
+    public void onContextChange(Context context) {
         repaint();
     }
 
