@@ -14,8 +14,10 @@ public class Context {
     private double maxX;
     private double minY;
     private double maxY;
+
     private int polylinesNumber;
-    private int generatricesCount;
+    private int generatricesNumber;
+    private int circleSegmentsNumber;
 
     private final List<DoublePoint> points = new LinkedList<>();
     private List<DoublePoint> bSplinePoints = new LinkedList<>();
@@ -24,7 +26,7 @@ public class Context {
 
     public Context() {
         polylinesNumber = 1;
-        generatricesCount = 2;
+        generatricesNumber = 2;
         minX = -10;
         maxX = 10;
         minY = -10.0 / 1280 * 620;
@@ -65,6 +67,16 @@ public class Context {
         notifyListeners();
     }
 
+    public void setGeneratricesNumber(int generatricesCount) {
+        this.generatricesNumber = generatricesCount;
+        notifyListeners();
+    }
+
+    public void setCircleSegmentsNumber(int circleSegmentsNumber) {
+        this.circleSegmentsNumber = circleSegmentsNumber;
+        notifyListeners();
+    }
+
     public void setWidth(int width) {
         this.width = width;
         notifyListeners();
@@ -101,11 +113,6 @@ public class Context {
 
     public double getYRange() {
         return maxY - minY;
-    }
-
-    public void setGeneratricesCount(int generatricesCount) {
-        this.generatricesCount = generatricesCount;
-        notifyListeners();
     }
 
     private void notifyListeners() {
