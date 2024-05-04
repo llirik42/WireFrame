@@ -8,6 +8,6 @@ public class Main {
         // TODO: сделать редактор б-сплайнов resizable
         final Context context = new Context();
         new BSplineEditorWindow(context);
-        context.addListener(new WireFrameWindow());
+        context.addListener(new WireFrameWindow(context));
     }
 }

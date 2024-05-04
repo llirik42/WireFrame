@@ -28,10 +28,10 @@ public class Context {
         polylinesNumber = 1;
         generatricesNumber = 2;
         circleSegmentsNumber = 1;
-        minX = -10;
-        maxX = 10;
-        minY = -10.0 / 1280 * 620;
-        maxY = 10.0 / 1280 * 620;
+        minX = -500;
+        maxX = 500;
+        minY = -500.0 / 1280.0 * 590.0;
+        maxY = 500.0 / 1280.0 * 590.0;
     }
 
     public void addListener(ContextListener listener) {
