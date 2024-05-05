@@ -46,6 +46,25 @@ public class Context implements Serializable {
         cameraMatrix = WireframeUtils.createDefaultCameraMatrix();
     }
 
+    public void updateValues(Context other) {
+        setWidth(other.getWidth());
+        setHeight(other.getHeight());
+        setMinX(other.getMinX());
+        setMaxX(other.getMaxX());
+        setMinY(other.getMinY());
+        setMaxY(other.getMaxY());
+        setPolylinesNumber(other.getPolylinesNumber());
+        setGeneratricesNumber(other.getGeneratricesNumber());
+        setCircleSegmentsNumber(other.getCircleSegmentsNumber());
+        setBSplineSensitivity(other.getBSplineSensitivity());
+        setWireframeSensitivity(other.getWireframeSensitivity());
+        setRotationMatrix(other.getRotationMatrix());
+        setCameraMatrix(other.getCameraMatrix());
+        setPoints(other.getPoints());
+        setBSplinePoints(other.getBSplinePoints());
+        notifyListeners();
+    }
+
     public void addListener(ContextListener listener) {
         listeners.add(listener);
     }

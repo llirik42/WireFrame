@@ -114,6 +114,16 @@ public class SwingView implements View, ContextListener {
     }
 
     @Override
+    public void showWarning(String warningMessage) {
+        JOptionPane.showMessageDialog(
+                null,
+                warningMessage,
+                "Warning",
+                JOptionPane.WARNING_MESSAGE
+        );
+    }
+
+    @Override
     public void onContextChange(Context context) {
         wireframeWindow.onContextChange(context);
     }

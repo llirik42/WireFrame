@@ -1,26 +1,24 @@
 package ru.nsu.kondrenko.controller.menu;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.nsu.kondrenko.gui.View;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.model.ContextIO;
+import ru.nsu.kondrenko.model.ContextIOException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 
+@RequiredArgsConstructor
 public class SaveController implements ActionListener {
     private final Context context;
+    private final ContextIO contextIO;
 
     @Setter
     private View view;
-
-    public SaveController(Context context) {
-        this.context = context;
-    }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
@@ -33,10 +31,9 @@ public class SaveController implements ActionListener {
         final String filePathWithoutExtension = selectedFile.toString();
         final String filePath = String.format("%s.%s", filePathWithoutExtension, Constants.SCENE_EXTENSION);
 
-        try (final FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-             final ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream)) {
-            outputStream.writeObject(context);
-        } catch (Exception exception) {
+        try {
+            contextIO.write(context, filePath);
+        } catch (ContextIOException exception) {
             view.showError("Cannot save scene");
         }
     }

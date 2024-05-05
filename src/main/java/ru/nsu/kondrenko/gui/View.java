@@ -9,6 +9,8 @@ public interface View {
 
     void showError(String errorMessage);
 
+    void showWarning(String warningMessage);
+
     void destroy();
 
     void show();
