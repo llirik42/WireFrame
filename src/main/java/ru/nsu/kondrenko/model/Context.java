@@ -12,10 +12,8 @@ import java.util.List;
 public class Context implements Serializable {
     private int width;
     private int height;
-    private double minX;
-    private double maxX;
-    private double minY;
-    private double maxY;
+    private Double2DPoint zeroPoint;
+    private double scale;
 
     private int polylinesNumber;
     private int generatricesNumber;
@@ -33,10 +31,8 @@ public class Context implements Serializable {
     private transient final List<ContextListener> listeners = new ArrayList<>();
 
     public Context() {
-        minX = Constants.START_MIN_X;
-        maxX = Constants.START_MAX_X;
-        minY = minX / 1280.0 * 590.0;
-        maxY = maxX / 1280.0 * 590.0;
+        scale = 1;
+        zeroPoint = new Double2DPoint(-10, 10);
         polylinesNumber = Constants.START_POLYLINES_NUMBER;
         generatricesNumber = Constants.START_GENERATRICES_NUMBER;
         circleSegmentsNumber = Constants.START_CIRCLE_SEGMENTS_NUMBER;
@@ -49,10 +45,7 @@ public class Context implements Serializable {
     public void updateValues(Context other) {
         setWidth(other.getWidth());
         setHeight(other.getHeight());
-        setMinX(other.getMinX());
-        setMaxX(other.getMaxX());
-        setMinY(other.getMinY());
-        setMaxY(other.getMaxY());
+        setZeroPoint(other.getZeroPoint());
         setPolylinesNumber(other.getPolylinesNumber());
         setGeneratricesNumber(other.getGeneratricesNumber());
         setCircleSegmentsNumber(other.getCircleSegmentsNumber());
@@ -127,34 +120,6 @@ public class Context implements Serializable {
     public void setHeight(int height) {
         this.height = height;
         notifyListeners();
-    }
-
-    public void setMinX(double minX) {
-        this.minX = minX;
-        notifyListeners();
-    }
-
-    public void setMaxX(double maxX) {
-        this.maxX = maxX;
-        notifyListeners();
-    }
-
-    public void setMinY(double minY) {
-        this.minY = minY;
-        notifyListeners();
-    }
-
-    public void setMaxY(double maxY) {
-        this.maxY = maxY;
-        notifyListeners();
-    }
-
-    public double getXRange() {
-        return maxX - minX;
-    }
-
-    public double getYRange() {
-        return maxY - minY;
     }
 
     public void notifyListeners() {

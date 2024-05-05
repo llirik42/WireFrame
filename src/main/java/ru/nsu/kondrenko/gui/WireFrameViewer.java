@@ -176,7 +176,12 @@ public class WireFrameViewer extends JPanel {
                 p.z() / distance
         );
 
-        return Utils.realToMouseScale(res, context);
+        final Double2DPoint tmp = new Double2DPoint(
+                (res.x() + context.getZeroPoint().x()) / context.getScale(),
+                (res.y() + context.getZeroPoint().y()) / context.getScale()
+        );
+
+        return Utils.realToScreen(tmp, context);
     }
 
     private void drawXYZ(Graphics2D g) {

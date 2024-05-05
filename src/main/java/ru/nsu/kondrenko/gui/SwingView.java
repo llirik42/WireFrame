@@ -3,10 +3,12 @@ package ru.nsu.kondrenko.gui;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.Context;
 import ru.nsu.kondrenko.model.ContextListener;
+import ru.nsu.kondrenko.model.IntPoint;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -16,6 +18,7 @@ public class SwingView implements View, ContextListener {
     private final WireframeWindow wireframeWindow;
     private final JFileChooser savingChooser;
     private final JFileChooser openChooser;
+    private final Context context;
 
     public SwingView(Context context,
                      WindowListener windowListener,
@@ -27,6 +30,7 @@ public class SwingView implements View, ContextListener {
                      ActionListener bSplineNormalizationListener,
                      ActionListener helpListener,
                      ActionListener aboutListener) {
+        this.context = context;
         bSplineEditorWindow = new BSplineEditorWindow(
                 context,
                 openListener,

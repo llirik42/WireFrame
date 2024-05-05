@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class BSplineEditorWindow extends JFrame {
+    private final BSplineEditor editor;
+
     public BSplineEditorWindow(Context context,
                                ActionListener openListener,
                                ActionListener saveListener,
@@ -17,7 +19,8 @@ public class BSplineEditorWindow extends JFrame {
                                ActionListener helpListener,
                                ActionListener aboutListener) {
         final BSplineMouseController controller = new BSplineMouseController(context);
-        add(new BSplineEditor(context, controller), BorderLayout.CENTER);
+        editor = new BSplineEditor(context, controller);
+        add(editor, BorderLayout.CENTER);
         add(new Form(context), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -42,5 +45,9 @@ public class BSplineEditorWindow extends JFrame {
         setJMenuBar(menuArea.getMenuBar());
 
         pack();
+    }
+
+    public Dimension getEditorDimension() {
+        return new Dimension(editor.getWidth(), editor.getHeight());
     }
 }

@@ -21,7 +21,7 @@ public class BSplineMouseController extends MouseController {
 
         Double2DPoint foundPoint = null;
         for (final var p : context.getPoints()) {
-            final IntPoint mousePoint = Utils.realToMouseScale(p, context);
+            final IntPoint mousePoint = Utils.realToScreen(p, context);
 
             if (mousePoint.distance(clickPoint) < 10) {
                 foundPoint = p;
@@ -29,7 +29,7 @@ public class BSplineMouseController extends MouseController {
         }
 
         if (foundPoint == null) {
-            final Double2DPoint realClickPoint = Utils.mouseToRealScale(clickPoint, context);
+            final Double2DPoint realClickPoint = Utils.screenToReal(clickPoint, context);
             context.addPoint(realClickPoint);
             prevPoint = null;
         } else {
@@ -42,10 +42,8 @@ public class BSplineMouseController extends MouseController {
         final double delta = e.getPreciseWheelRotation();
         final double sensitivity = context.getBSplineSensitivity();
         final double k = (1 + delta * sensitivity / SENSITIVITY_DIVIDER);
-        context.setMinX(context.getMinX() * k);
-        context.setMaxX(context.getMaxX() * k);
-        context.setMinY(context.getMinY() * k);
-        context.setMaxY(context.getMaxY() * k);
+        context.setScale(context.getScale() / k);
+        context.notifyListeners();
     }
 
     @Override
@@ -63,7 +61,7 @@ public class BSplineMouseController extends MouseController {
         }
 
         final IntPoint mousePoint = new IntPoint(e.getX(), e.getY());
-        final Double2DPoint currentPoint = Utils.mouseToRealScale(mousePoint, context);
+        final Double2DPoint currentPoint = Utils.screenToReal(mousePoint, context);
         final int index = context.removePoint(prevPoint);
         context.insertPoint(currentPoint, index);
         prevPoint = currentPoint;

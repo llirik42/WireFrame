@@ -48,7 +48,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
 
     private void drawCurvePoints(Graphics g) {
         for (final var p : context.getPoints()) {
-            final IntPoint mousePoint = Utils.realToMouseScale(p, context);
+            final IntPoint mousePoint = Utils.realToScreen(p, context);
             g.drawOval(
                     mousePoint.getX() - CURVE_POINT_RADIUS,
                     mousePoint.getY() - CURVE_POINT_RADIUS,
@@ -59,7 +59,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
     }
 
     private void drawAxes(Graphics g) {
-        final IntPoint centerPoint = Utils.realToMouseScale(new Double2DPoint(0, 0), context);
+        final IntPoint centerPoint = Utils.realToScreen(new Double2DPoint(0, 0), context);
         final int yOfXAxes = centerPoint.getY();
         final int xOfYAxes = centerPoint.getX();
         g.drawLine(0, yOfXAxes, context.getWidth(), yOfXAxes);
@@ -89,8 +89,8 @@ public class BSplineEditor extends JPanel implements ContextListener {
 
     private void drawBSpline(Graphics g) {
         for (int i = 0; i < context.getBSplinePoints().size() - 1; i++) {
-            final IntPoint p1 = Utils.realToMouseScale(context.getBSplinePoints().get(i), context);
-            final IntPoint p2 = Utils.realToMouseScale(context.getBSplinePoints().get(i + 1), context);
+            final IntPoint p1 = Utils.realToScreen(context.getBSplinePoints().get(i), context);
+            final IntPoint p2 = Utils.realToScreen(context.getBSplinePoints().get(i + 1), context);
 
             g.drawLine(
                     p1.getX(),
@@ -107,8 +107,8 @@ public class BSplineEditor extends JPanel implements ContextListener {
         g.setColor(Color.GREEN);
 
         for (int i = 0; i < context.getPoints().size() - 1; i++) {
-            final IntPoint p1 = Utils.realToMouseScale(context.getPoints().get(i), context);
-            final IntPoint p2 = Utils.realToMouseScale(context.getPoints().get(i + 1), context);
+            final IntPoint p1 = Utils.realToScreen(context.getPoints().get(i), context);
+            final IntPoint p2 = Utils.realToScreen(context.getPoints().get(i + 1), context);
 
             g.drawLine(
                     p1.getX(),
@@ -129,7 +129,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
     private void drawOXAxePoint(Graphics2D graphics2D, IntPoint point, int spread) {
         final int x = point.getX();
         final int y = point.getY();
-        final Double2DPoint realPoint = Utils.mouseToRealScale(new IntPoint(x, y), context);
+        final Double2DPoint realPoint = Utils.screenToReal(new IntPoint(x, y), context);
         graphics2D.drawLine(x, y - spread, x, y + spread);
         final String label = String.valueOf(rounder.round(realPoint.x()));
         graphics2D.drawString(label, x - label.length() * 3, y - 10);
@@ -138,7 +138,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
     private void drawOYAxePoint(Graphics2D graphics2D, IntPoint point, int spread) {
         final int x = point.getX();
         final int y = point.getY();
-        final Double2DPoint realPoint = Utils.mouseToRealScale(new IntPoint(x, y), context);
+        final Double2DPoint realPoint = Utils.screenToReal(new IntPoint(x, y), context);
         graphics2D.drawLine(x - spread, y, x + spread, y);
         final String label = String.valueOf(rounder.round(realPoint.y()));
         graphics2D.drawString(label, x + 10, y + 5);
