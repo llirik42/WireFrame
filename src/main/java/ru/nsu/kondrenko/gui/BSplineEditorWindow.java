@@ -23,9 +23,11 @@ public class BSplineEditorWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        addKeyListener(new BSplineMovingController());
+        final BSplineMovingController movingController = new BSplineMovingController(context);
 
-        add(new BSplineToolsArea(bSplineNormalizationListener), BorderLayout.NORTH);
+        final BSplineToolsArea toolsArea = new BSplineToolsArea(bSplineNormalizationListener, movingController);
+
+        add(toolsArea, BorderLayout.NORTH);
 
         final BSplineMenuArea menuArea = new BSplineMenuArea(
                 openListener,

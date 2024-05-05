@@ -3,10 +3,11 @@ package ru.nsu.kondrenko.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.net.URL;
 
 public class BSplineToolsArea extends JPanel {
-    public BSplineToolsArea(ActionListener bSplineNormalizationListener) {
+    public BSplineToolsArea(ActionListener bSplineNormalizationListener, KeyListener keyListener) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
         final Color backgroundColor = new Color(200, 200, 200);
@@ -19,6 +20,8 @@ public class BSplineToolsArea extends JPanel {
                 32,
                 backgroundColor
         );
+
+        normalizeButton.addKeyListener(keyListener);
 
         add(normalizeButton);
     }
