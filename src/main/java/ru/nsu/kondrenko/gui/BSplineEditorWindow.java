@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.gui;
 
 import ru.nsu.kondrenko.controller.BSplineMouseController;
+import ru.nsu.kondrenko.controller.BSplineMovingController;
 import ru.nsu.kondrenko.model.Context;
 
 import javax.swing.*;
@@ -18,6 +19,8 @@ public class BSplineEditorWindow extends JFrame {
         setPreferredSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
+
+        addKeyListener(new BSplineMovingController());
 
         final BSplineMenuArea menuArea = new BSplineMenuArea(
                 openListener,

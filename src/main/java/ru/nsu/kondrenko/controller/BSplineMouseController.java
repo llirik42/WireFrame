@@ -3,8 +3,11 @@ package ru.nsu.kondrenko.controller;
 import ru.nsu.kondrenko.model.*;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class BSplineMouseController extends MouseController {
+    private static final double SENSITIVITY_DIVIDER = 200;
+
     private final Context context;
     private Double2DPoint prevPoint;
 
@@ -32,6 +35,15 @@ public class BSplineMouseController extends MouseController {
         } else {
             prevPoint = foundPoint;
         }
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        final double delta = e.getPreciseWheelRotation();
+        context.setMinX(context.getMinX() * (1 + delta / SENSITIVITY_DIVIDER));
+        context.setMaxX(context.getMaxX() * (1 + delta / SENSITIVITY_DIVIDER));
+        context.setMinY(context.getMinY() * (1 + delta / SENSITIVITY_DIVIDER));
+        context.setMaxY(context.getMaxY() * (1 + delta / SENSITIVITY_DIVIDER));
     }
 
     @Override

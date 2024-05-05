@@ -23,6 +23,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
         setPreferredSize(new Dimension(100, 100));
         addMouseListener(controller);
         addMouseMotionListener(controller);
+        addMouseWheelListener(controller);
 
         addComponentListener(new ComponentAdapter() {
             @Override
