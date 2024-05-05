@@ -19,7 +19,7 @@ public class BSplineEditorWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        final MenuArea menuArea = new MenuArea(
+        final BSplineMenuArea menuArea = new BSplineMenuArea(
                 openListener,
                 saveListener,
                 exitListener,

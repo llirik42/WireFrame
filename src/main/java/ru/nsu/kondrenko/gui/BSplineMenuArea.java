@@ -7,16 +7,16 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 @Getter
-public class MenuArea extends JPanel {
+public class BSplineMenuArea extends JPanel {
     private static final Font FONT = new Font("G0", Font.PLAIN, 14);
 
     private final JMenuBar menuBar;
 
-    public MenuArea(ActionListener openListener,
-                    ActionListener saveListener,
-                    ActionListener exitListener,
-                    ActionListener helpListener,
-                    ActionListener aboutListener) {
+    public BSplineMenuArea(ActionListener openListener,
+                           ActionListener saveListener,
+                           ActionListener exitListener,
+                           ActionListener helpListener,
+                           ActionListener aboutListener) {
         final Color menuBackgroundColor = new Color(100, 100, 100);
         final Color buttonsFontColor = new Color(200, 200, 200);
 
