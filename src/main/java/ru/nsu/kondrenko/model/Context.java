@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.model;
 
 import lombok.Getter;
+import org.ejml.simple.SimpleMatrix;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,6 +23,9 @@ public class Context {
     private final List<Double2DPoint> points = new LinkedList<>();
     private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
+    private SimpleMatrix rotationMatrix;
+    private final SimpleMatrix cameraMatrix;
+
     private final List<ContextListener> listeners = new ArrayList<>();
 
     public Context() {
@@ -32,6 +36,16 @@ public class Context {
         maxX = 500;
         minY = -500.0 / 1280.0 * 590.0;
         maxY = 500.0 / 1280.0 * 590.0;
+
+        final double[][] cameraMatrixValues = {
+                {1, 0, 0, 0},
+                {0, 2000, 0, 0},
+                {0, 0, 2000, 0},
+                {1, 0, 0, 10}
+        };
+
+        rotationMatrix = SimpleMatrix.diag(1, 1, 1, 1);
+        cameraMatrix = new SimpleMatrix(cameraMatrixValues);
     }
 
     public void addListener(ContextListener listener) {
@@ -75,6 +89,11 @@ public class Context {
 
     public void setCircleSegmentsNumber(int circleSegmentsNumber) {
         this.circleSegmentsNumber = circleSegmentsNumber;
+        notifyListeners();
+    }
+
+    public void setRotationMatrix(SimpleMatrix rotationMatrix) {
+        this.rotationMatrix = rotationMatrix;
         notifyListeners();
     }
 

@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.gui;
 
 import org.ejml.simple.SimpleMatrix;
+import ru.nsu.kondrenko.controller.WireFrameMouseController;
 import ru.nsu.kondrenko.model.*;
 
 import javax.swing.*;
@@ -14,6 +15,9 @@ public class WireFrameViewer extends JPanel {
 
     public WireFrameViewer(Context context) {
         this.context = context;
+        final WireFrameMouseController controller = new WireFrameMouseController(context);
+        addMouseListener(controller);
+        addMouseMotionListener(controller);
     }
 
     @Override
@@ -57,11 +61,6 @@ public class WireFrameViewer extends JPanel {
                 circles.add(new Double4DPoint(x, y, p.x(), 1));
             }
         }
-
-        for (final var c : circles) {
-            System.out.println(c);
-        }
-        System.out.println();
 
         final java.util.List<java.util.List<Double4DPoint>> normalized = normalize(points, circles);
         final java.util.List<Double4DPoint> normalizedPoints = normalized.get(0);
@@ -157,21 +156,17 @@ public class WireFrameViewer extends JPanel {
     }
 
     private IntPoint calculatePointOnScreen(Double4DPoint point, Context context){
-        final double phi = Math.PI / 6;
-        double sin = Math.sin(phi);
-        double cos = Math.cos(phi);
-
-        final double[][] rotationMatrixValues = {
-                {1, 0, 0, 0},
-                {0, cos, -sin, 0},
-                {0, sin, cos, 0},
-                {0, 0, 0, 1}
-        };
-
         final double[] pointValues = {point.x(), point.y(), point.z(), point.t()};
 
-        final SimpleMatrix rotationMatrix = new SimpleMatrix(rotationMatrixValues);
-        final SimpleMatrix afterRotationMatrix = rotationMatrix.mult(new SimpleMatrix(pointValues));
+        final SimpleMatrix afterRotationMatrix = context.getRotationMatrix().mult(new SimpleMatrix(pointValues));
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                System.out.print(context.getRotationMatrix().get(i * 4 + j) + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
 
         final double[][] cameraMatrixData = {
                 {1, 0, 0, 0},

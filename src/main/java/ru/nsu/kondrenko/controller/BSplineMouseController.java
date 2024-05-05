@@ -2,12 +2,10 @@ package ru.nsu.kondrenko.controller;
 
 import ru.nsu.kondrenko.model.*;
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class BSplineMouseController extends MouseAdapter {
+public class BSplineMouseController extends MouseController {
     private final Context context;
-    private boolean isMouseOnEditor = false;
     private Double2DPoint prevPoint;
 
     public BSplineMouseController(Context context) {
@@ -45,18 +43,8 @@ public class BSplineMouseController extends MouseAdapter {
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-        isMouseOnEditor = true;
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        isMouseOnEditor = false;
-    }
-
-    @Override
     public void mouseDragged(MouseEvent e) {
-        if (!isMouseOnEditor || prevPoint == null) {
+        if (!isMouseOnEditor() || prevPoint == null) {
             return;
         }
 
