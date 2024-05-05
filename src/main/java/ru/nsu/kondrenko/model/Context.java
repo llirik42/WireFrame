@@ -24,7 +24,7 @@ public class Context {
     private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
     private SimpleMatrix rotationMatrix;
-    private final SimpleMatrix cameraMatrix;
+    private SimpleMatrix cameraMatrix;
 
     private final List<ContextListener> listeners = new ArrayList<>();
 
@@ -97,6 +97,11 @@ public class Context {
         notifyListeners();
     }
 
+    public void setCameraMatrix(SimpleMatrix cameraMatrix) {
+        this.cameraMatrix = cameraMatrix;
+        notifyListeners();
+    }
+
     public void setWidth(int width) {
         this.width = width;
         notifyListeners();
@@ -135,7 +140,7 @@ public class Context {
         return maxY - minY;
     }
 
-    private void notifyListeners() {
+    public void notifyListeners() {
         for (final var it : listeners) {
             it.onContextChange(this);
         }

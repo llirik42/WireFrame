@@ -18,6 +18,7 @@ public class WireFrameViewer extends JPanel {
         final WireFrameMouseController controller = new WireFrameMouseController(context);
         addMouseListener(controller);
         addMouseMotionListener(controller);
+        addMouseWheelListener(controller);
     }
 
     @Override
@@ -160,23 +161,7 @@ public class WireFrameViewer extends JPanel {
 
         final SimpleMatrix afterRotationMatrix = context.getRotationMatrix().mult(new SimpleMatrix(pointValues));
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                System.out.print(context.getRotationMatrix().get(i * 4 + j) + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-
-        final double[][] cameraMatrixData = {
-                {1, 0, 0, 0},
-                {0, 2000, 0, 0},
-                {0, 0, 2000, 0},
-                {1, 0, 0, 10}
-        };
-        final SimpleMatrix cameraMatrix = new SimpleMatrix(cameraMatrixData);
-
-        final SimpleMatrix pMatrix = cameraMatrix.mult(afterRotationMatrix);
+        final SimpleMatrix pMatrix = context.getCameraMatrix().mult(afterRotationMatrix);
         final Double4DPoint p = new Double4DPoint(
                 pMatrix.get(0),
                 pMatrix.get(1),

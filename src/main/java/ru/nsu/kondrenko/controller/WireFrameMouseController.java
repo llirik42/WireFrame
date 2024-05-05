@@ -1,10 +1,12 @@
 package ru.nsu.kondrenko.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.ejml.simple.SimpleMatrix;
 import ru.nsu.kondrenko.model.Context;
 import ru.nsu.kondrenko.model.WireframeUtils;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 @RequiredArgsConstructor
 public class WireFrameMouseController extends MouseController {
@@ -24,6 +26,18 @@ public class WireFrameMouseController extends MouseController {
     @Override
     public void mouseReleased(MouseEvent e) {
         hasPrevPoint = false;
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        final double precision = e.getPreciseWheelRotation();
+
+        final SimpleMatrix cameraMatrix = context.getCameraMatrix();
+        final double v1 = cameraMatrix.get(1, 1);
+        final double v2 = cameraMatrix.get(2, 2);
+        cameraMatrix.set(1, 1, v1 * (1 - precision / 50));
+        cameraMatrix.set(2, 2, v2 * (1 - precision / 50));
+        context.notifyListeners();
     }
 
     @Override
