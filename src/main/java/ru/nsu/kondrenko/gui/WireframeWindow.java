@@ -6,15 +6,14 @@ import ru.nsu.kondrenko.model.ContextListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class WireFrameWindow extends JFrame implements ContextListener {
+public class WireframeWindow extends JFrame implements ContextListener {
     private final WireFrameViewer viewer;
 
-    public WireFrameWindow(Context context) {
+    public WireframeWindow(Context context) {
         setPreferredSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.viewer = new WireFrameViewer(context);
         add(viewer);
-        setVisible(true);
         pack();
     }
 

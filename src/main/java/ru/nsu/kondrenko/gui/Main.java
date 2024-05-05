@@ -1,13 +1,32 @@
 package ru.nsu.kondrenko.gui;
 
+import ru.nsu.kondrenko.controller.menu.ExitController;
+import ru.nsu.kondrenko.controller.menu.OpenController;
+import ru.nsu.kondrenko.controller.menu.SaveController;
 import ru.nsu.kondrenko.model.Context;
 
 public class Main {
     public static void main(String[] args) {
-        // TODO: сделать масштабирование, перемещение и нормализацию в редакторе б-сплайнов
-        // TODO: сделать редактор б-сплайнов resizable
         final Context context = new Context();
-        new BSplineEditorWindow(context);
-        context.addListener(new WireFrameWindow(context));
+
+        final OpenController openController = new OpenController(context);
+        final SaveController saveController = new SaveController(context);
+        final ExitController exitController = new ExitController();
+
+        final SwingView view = new SwingView(
+                context,
+                exitController,
+                openController,
+                saveController,
+                exitController
+        );
+
+        context.addListener(view);
+
+        openController.setView(view);
+        saveController.setView(view);
+        exitController.setView(view);
+
+        view.show();
     }
 }

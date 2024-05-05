@@ -4,12 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.ejml.simple.SimpleMatrix;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @Getter
-public class Context {
+public class Context implements Serializable {
     private int width;
     private int height;
     private double minX;
@@ -30,7 +31,7 @@ public class Context {
     private SimpleMatrix rotationMatrix;
     private SimpleMatrix cameraMatrix;
 
-    private final List<ContextListener> listeners = new ArrayList<>();
+    private transient final List<ContextListener> listeners = new ArrayList<>();
 
     public Context() {
         polylinesNumber = 1;

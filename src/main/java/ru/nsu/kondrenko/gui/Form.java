@@ -8,10 +8,26 @@ import java.awt.*;
 
 public class Form extends JPanel {
     public Form(Context context) {
-        final IntegerSpinner polylinesSpinner = new IntegerSpinner(1, 50);
-        final IntegerSpinner generatricesSpinner = new IntegerSpinner(2, 50);
-        final IntegerSpinner circleSegmentsSpinner = new IntegerSpinner(1, 50);
-        final IntegerSpinner wireframeSensitivitySpinner = new IntegerSpinner(1, 100);
+        final IntegerSpinner polylinesSpinner = new IntegerSpinner(
+                1,
+                50,
+                context.getPolylinesNumber()
+        );
+        final IntegerSpinner generatricesSpinner = new IntegerSpinner(
+                2,
+                50,
+                context.getGeneratricesNumber()
+        );
+        final IntegerSpinner circleSegmentsSpinner = new IntegerSpinner(
+                1,
+                50,
+                context.getCircleSegmentsNumber()
+        );
+        final IntegerSpinner wireframeSensitivitySpinner = new IntegerSpinner(
+                1,
+                100,
+                context.getWireframeSensitivity()
+        );
 
         final FormController formController = new FormController(
                 polylinesSpinner,

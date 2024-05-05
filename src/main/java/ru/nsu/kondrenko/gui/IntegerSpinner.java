@@ -3,7 +3,7 @@ package ru.nsu.kondrenko.gui;
 import javax.swing.*;
 
 public class IntegerSpinner extends JSpinner {
-    public IntegerSpinner(int minValue, int maxValue) {
+    public IntegerSpinner(int minValue, int maxValue, int startValue) {
         super();
 
         final int variantsCount = maxValue - minValue + 1;
@@ -13,7 +13,7 @@ public class IntegerSpinner extends JSpinner {
         }
 
         final SpinnerListModel model = new SpinnerListModel(variants);
-        model.setValue(Integer.toString(minValue));
+        model.setValue(Integer.toString(startValue));
 
         setModel(model);
     }
