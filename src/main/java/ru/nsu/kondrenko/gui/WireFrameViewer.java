@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 public class WireFrameViewer extends JPanel {
     private final Context context;
 
+    private record ScreenCalculationResult(IntPoint screenPoint, float scale) {}
+
     public WireFrameViewer(Context context) {
         this.context = context;
         final WireFrameMouseController controller = new WireFrameMouseController(context);
@@ -69,13 +71,18 @@ public class WireFrameViewer extends JPanel {
         final List<Double4DPoint> normalizedCircles = normalized.get(1);
 
         for (int i = 0; i < context.getGeneratricesNumber(); i++) {
-            IntPoint prevPointOnScreen = calculatePointOnScreen(normalizedPoints.get(i * bSplinePointsNumber), context);
+            final var res1 = calculatePointOnScreen(normalizedPoints.get(i * bSplinePointsNumber), context);
 
+            IntPoint prevPointOnScreen = res1.screenPoint;
             for (int j = 1; j < bSplinePointsNumber; j++) {
-                IntPoint currentPointsOnScreen = calculatePointOnScreen(
+                final var res2 = calculatePointOnScreen(
                         normalizedPoints.get(i * bSplinePointsNumber + j),
                         context
                 );
+
+                IntPoint currentPointsOnScreen = res2.screenPoint;
+
+                g.setColor(new Color(res1.scale, res1.scale, res1.scale));
                 g.drawLine(
                         prevPointOnScreen.getX(),
                         prevPointOnScreen.getY(),
@@ -87,11 +94,16 @@ public class WireFrameViewer extends JPanel {
         }
 
         for (int i = 0; i < bSplinePointsNumber; i++) {
-            IntPoint startPoint = calculatePointOnScreen(normalizedCircles.get(allSegmentsNumber * i), context);
+            final var res1 = calculatePointOnScreen(normalizedCircles.get(allSegmentsNumber * i), context);
+
+            IntPoint startPoint = res1.screenPoint;
             IntPoint prevPointOnScreen = startPoint;
 
             for (int j = 1; j < allSegmentsNumber; j++) {
-                IntPoint currentPointsOnScreen = calculatePointOnScreen(normalizedCircles.get(allSegmentsNumber * i + j), context);
+                final var res2 = calculatePointOnScreen(normalizedCircles.get(allSegmentsNumber * i + j), context);
+
+                IntPoint currentPointsOnScreen = res2.screenPoint;
+                g.setColor(new Color(res1.scale, res1.scale, res1.scale));
                 g.drawLine(
                         prevPointOnScreen.getX(),
                         prevPointOnScreen.getY(),
@@ -101,6 +113,7 @@ public class WireFrameViewer extends JPanel {
                 prevPointOnScreen = currentPointsOnScreen;
             }
 
+            g.setColor(new Color(res1.scale, res1.scale, res1.scale));
             g.drawLine(
                     prevPointOnScreen.getX(),
                     prevPointOnScreen.getY(),
@@ -157,7 +170,7 @@ public class WireFrameViewer extends JPanel {
         return res;
     }
 
-    private IntPoint calculatePointOnScreen(Double4DPoint point, Context context){
+    private ScreenCalculationResult calculatePointOnScreen(Double4DPoint point, Context context){
         final double[] pointValues = {point.x(), point.y(), point.z(), point.t()};
 
         final SimpleMatrix afterRotationMatrix = context.getRotationMatrix().mult(new SimpleMatrix(pointValues));
@@ -181,7 +194,10 @@ public class WireFrameViewer extends JPanel {
                 (res.y() + context.getZeroPoint().y()) / context.getScale()
         );
 
-        return Utils.realToScreen(tmp, context);
+        return new ScreenCalculationResult(
+                Utils.realToScreen(tmp, context),
+                (float) (Math.pow(-afterRotationMatrix.get(0,0) * 0.35 + 0.75, 2))
+        );
     }
 
     private void drawXYZ(Graphics2D g) {
