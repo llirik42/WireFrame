@@ -30,6 +30,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
             public void componentResized(ComponentEvent e) {
                 context.setWidth(e.getComponent().getWidth());
                 context.setHeight(e.getComponent().getHeight());
+                context.notifyListeners();
             }
         });
 

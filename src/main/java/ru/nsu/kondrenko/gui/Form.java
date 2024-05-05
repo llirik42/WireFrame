@@ -59,18 +59,24 @@ public class Form extends JPanel {
         add(new JLabel("N"));
         add(polylinesSpinner);
 
+        add(new JPanel());
+
         add(new JLabel("M"));
         add(generatricesSpinner);
+
+        add(new JPanel());
 
         add(new JLabel("M1"));
         add(circleSegmentsSpinner);
 
+        add(new JPanel());
+
         add(new JLabel("B-Sensitivity"));
         add(bSplineSensitivitySpinner);
 
+        add(new JPanel());
+
         add(new JLabel("W-Sensitivity"));
         add(wireframeSensitivitySpinner);
-
-        setPreferredSize(new Dimension(-1, 100));
     }
 }

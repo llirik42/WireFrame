@@ -21,7 +21,8 @@ public class BSplineEditorWindow extends JFrame {
         add(new Form(context), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setResizable(false);
+
+        setMinimumSize(new Dimension(640, 480));
 
         final BSplineMovingController movingController = new BSplineMovingController(context);
 
