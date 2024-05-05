@@ -29,9 +29,10 @@ public class BSplineNormalizationController implements ActionListener {
                 maxY = Double.max(it.y(), maxY);
             }
 
-            final double scale = Double.max(maxX - minX, maxY - minY) / 100;
-            context.setZeroPoint(new Double2DPoint(minX + scale * 10, maxY - scale * 10));
-//            context.setScale(Double.max());
+            final double scale = Double.max(maxX - minX, maxY - minY) / 400;
+            System.out.println(scale);
+            context.setZeroPoint(new Double2DPoint(minX, maxY));
+            context.setScale(1 / scale);
         }
 
         context.notifyListeners();
