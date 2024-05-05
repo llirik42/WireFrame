@@ -1,4 +1,4 @@
-package ru.nsu.kondrenko.controller.menu;
+package ru.nsu.kondrenko.controller;
 
 import lombok.RequiredArgsConstructor;
 import ru.nsu.kondrenko.model.Context;
@@ -8,11 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @RequiredArgsConstructor
-public class ResetAngleController implements ActionListener {
+public class ResetDistanceController implements ActionListener {
     private final Context context;
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        context.setRotationMatrix(WireframeUtils.createDefaultRotationMatrix());
+        context.setCameraMatrix(WireframeUtils.createDefaultCameraMatrix());
     }
 }

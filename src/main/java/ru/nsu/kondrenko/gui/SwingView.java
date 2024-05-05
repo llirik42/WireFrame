@@ -24,13 +24,17 @@ public class SwingView implements View, ContextListener {
                      ActionListener exitListener,
                      ActionListener resetAngleListener,
                      ActionListener resetDistanceListener,
+                     ActionListener bSplineNormalizationListener,
                      ActionListener helpListener,
                      ActionListener aboutListener) {
         bSplineEditorWindow = new BSplineEditorWindow(
                 context,
                 openListener,
                 saveListener,
-                exitListener
+                exitListener,
+                bSplineNormalizationListener,
+                helpListener,
+                aboutListener
         );
         wireframeWindow = new WireframeWindow(
                 context,

@@ -15,6 +15,7 @@ public class BSplineMenuArea extends JPanel {
     public BSplineMenuArea(ActionListener openListener,
                            ActionListener saveListener,
                            ActionListener exitListener,
+                           ActionListener bSplineNormalizationListener,
                            ActionListener helpListener,
                            ActionListener aboutListener) {
         final Color menuBackgroundColor = new Color(100, 100, 100);

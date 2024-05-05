@@ -26,6 +26,6 @@ public class Constants {
     public static final int START_WIREFRAME_SENSITIVITY = 10;
     public static final int MAX_WIREFRAME_SENSITIVITY = 100;
 
-    public static final double START_MIN_X = -10;
-    public static final double START_MAX_X = 10;
+    public static final double START_MIN_X = -11;
+    public static final double START_MAX_X = 11;
 }

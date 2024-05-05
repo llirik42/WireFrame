@@ -1,4 +1,4 @@
-package ru.nsu.kondrenko.controller.menu;
+package ru.nsu.kondrenko.controller;
 
 import lombok.Setter;
 import ru.nsu.kondrenko.gui.View;

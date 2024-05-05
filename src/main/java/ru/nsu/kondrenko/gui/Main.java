@@ -1,6 +1,6 @@
 package ru.nsu.kondrenko.gui;
 
-import ru.nsu.kondrenko.controller.menu.*;
+import ru.nsu.kondrenko.controller.*;
 import ru.nsu.kondrenko.model.Context;
 import ru.nsu.kondrenko.model.ContextIO;
 import ru.nsu.kondrenko.model.ContextIOException;
@@ -20,6 +20,9 @@ public class Main {
         final ExitController exitController = new ExitController();
         final ResetAngleController resetAngleController = new ResetAngleController(context);
         final ResetDistanceController resetDistanceController = new ResetDistanceController(context);
+        final BSplineNormalizationController bSplineNormalizationController = new BSplineNormalizationController(context);
+        final HelpController helpController = new HelpController();
+        final AboutController aboutController = new AboutController();
 
         final SwingView view = new SwingView(
                 context,
@@ -29,8 +32,9 @@ public class Main {
                 exitController,
                 resetAngleController,
                 resetDistanceController,
-                null,
-                null
+                bSplineNormalizationController,
+                helpController,
+                aboutController
         );
 
         try {
@@ -50,6 +54,8 @@ public class Main {
         openController.setView(view);
         saveController.setView(view);
         exitController.setView(view);
+        helpController.setView(view);
+        aboutController.setView(view);
 
         view.show();
     }

@@ -40,10 +40,12 @@ public class BSplineMouseController extends MouseController {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         final double delta = e.getPreciseWheelRotation();
-        context.setMinX(context.getMinX() * (1 + delta / SENSITIVITY_DIVIDER));
-        context.setMaxX(context.getMaxX() * (1 + delta / SENSITIVITY_DIVIDER));
-        context.setMinY(context.getMinY() * (1 + delta / SENSITIVITY_DIVIDER));
-        context.setMaxY(context.getMaxY() * (1 + delta / SENSITIVITY_DIVIDER));
+        final double sensitivity = context.getBSplineSensitivity();
+        final double k = (1 + delta * sensitivity / SENSITIVITY_DIVIDER);
+        context.setMinX(context.getMinX() * k);
+        context.setMaxX(context.getMaxX() * k);
+        context.setMinY(context.getMinY() * k);
+        context.setMaxY(context.getMaxY() * k);
     }
 
     @Override
