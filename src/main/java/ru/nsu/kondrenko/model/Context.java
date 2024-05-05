@@ -1,7 +1,6 @@
 package ru.nsu.kondrenko.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.ejml.simple.SimpleMatrix;
 
 import java.io.Serializable;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@Getter
+@Data
 public class Context implements Serializable {
     private int width;
     private int height;
@@ -22,37 +21,29 @@ public class Context implements Serializable {
     private int generatricesNumber;
     private int circleSegmentsNumber;
 
-    @Setter
+    private int bSplineSensitivity;
     private int wireframeSensitivity;
-
-    private final List<Double2DPoint> points = new LinkedList<>();
-    private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
     private SimpleMatrix rotationMatrix;
     private SimpleMatrix cameraMatrix;
 
+    private List<Double2DPoint> points = new LinkedList<>();
+    private List<Double2DPoint> bSplinePoints = new LinkedList<>();
+
     private transient final List<ContextListener> listeners = new ArrayList<>();
 
     public Context() {
-        polylinesNumber = 1;
-        generatricesNumber = 2;
-        circleSegmentsNumber = 1;
-        minX = -500;
-        maxX = 500;
-        minY = -500.0 / 1280.0 * 590.0;
-        maxY = 500.0 / 1280.0 * 590.0;
-
-        wireframeSensitivity = 1;
-
-        final double[][] cameraMatrixValues = {
-                {1, 0, 0, 0},
-                {0, 2000, 0, 0},
-                {0, 0, 2000, 0},
-                {1, 0, 0, 10}
-        };
-
-        rotationMatrix = SimpleMatrix.diag(1, 1, 1, 1);
-        cameraMatrix = new SimpleMatrix(cameraMatrixValues);
+        minX = Constants.START_MIN_X;
+        maxX = Constants.START_MAX_X;
+        minY = minX / 1280.0 * 590.0;
+        maxY = maxX / 1280.0 * 590.0;
+        polylinesNumber = Constants.START_POLYLINES_NUMBER;
+        generatricesNumber = Constants.START_GENERATRICES_NUMBER;
+        circleSegmentsNumber = Constants.START_CIRCLE_SEGMENTS_NUMBER;
+        bSplineSensitivity = Constants.START_BSPLINE_SENSITIVITY;
+        wireframeSensitivity = Constants.START_WIREFRAME_SENSITIVITY;
+        rotationMatrix = WireframeUtils.createDefaultRotationMatrix();
+        cameraMatrix = WireframeUtils.createDefaultCameraMatrix();
     }
 
     public void addListener(ContextListener listener) {

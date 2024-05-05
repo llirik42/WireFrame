@@ -1,8 +1,8 @@
 package ru.nsu.kondrenko.controller.menu;
 
 import lombok.RequiredArgsConstructor;
-import org.ejml.simple.SimpleMatrix;
 import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.model.WireframeUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +13,6 @@ public class ResetAngleController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        context.setRotationMatrix(SimpleMatrix.identity(4));
+        context.setRotationMatrix(WireframeUtils.createDefaultRotationMatrix());
     }
 }

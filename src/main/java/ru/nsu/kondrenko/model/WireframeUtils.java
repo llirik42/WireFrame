@@ -3,6 +3,13 @@ package ru.nsu.kondrenko.model;
 import org.ejml.simple.SimpleMatrix;
 
 public final class WireframeUtils {
+    private static final double[][] CAMERA_MATRIX_VALUES = {
+            {1, 0, 0, 0},
+            {0, Constants.CAMERA_MATRIX_VALUE, 0, 0},
+            {0, 0, Constants.CAMERA_MATRIX_VALUE, 0},
+            {0, 0, 0, Constants.CAMERA_DISTANCE}
+    };
+
     private WireframeUtils() {
     }
 
@@ -36,5 +43,13 @@ public final class WireframeUtils {
         }
 
         return rotationMatrix;
+    }
+
+    public static SimpleMatrix createDefaultRotationMatrix() {
+        return SimpleMatrix.identity(4);
+    }
+
+    public static SimpleMatrix createDefaultCameraMatrix() {
+        return new SimpleMatrix(CAMERA_MATRIX_VALUES);
     }
 }

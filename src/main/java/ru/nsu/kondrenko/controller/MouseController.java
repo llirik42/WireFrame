@@ -3,7 +3,7 @@ package ru.nsu.kondrenko.controller;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MouseController extends MouseAdapter {
+public abstract class MouseController extends MouseAdapter {
     private boolean isMouseOnEditor = false;
 
     @Override
