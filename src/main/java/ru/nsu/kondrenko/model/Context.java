@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class Context {
     private int generatricesNumber;
     private int circleSegmentsNumber;
 
+    @Setter
+    private int wireframeSensitivity;
+
     private final List<Double2DPoint> points = new LinkedList<>();
     private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
@@ -36,6 +40,8 @@ public class Context {
         maxX = 500;
         minY = -500.0 / 1280.0 * 590.0;
         maxY = 500.0 / 1280.0 * 590.0;
+
+        wireframeSensitivity = 1;
 
         final double[][] cameraMatrixValues = {
                 {1, 0, 0, 0},

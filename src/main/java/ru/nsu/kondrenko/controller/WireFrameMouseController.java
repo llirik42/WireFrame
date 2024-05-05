@@ -31,12 +31,13 @@ public class WireFrameMouseController extends MouseController {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         final double precision = e.getPreciseWheelRotation();
+        final int sensitivity = context.getWireframeSensitivity();
 
         final SimpleMatrix cameraMatrix = context.getCameraMatrix();
         final double v1 = cameraMatrix.get(1, 1);
         final double v2 = cameraMatrix.get(2, 2);
-        cameraMatrix.set(1, 1, v1 * (1 - precision / 50));
-        cameraMatrix.set(2, 2, v2 * (1 - precision / 50));
+        cameraMatrix.set(1, 1, v1 * (1 - sensitivity * precision / 200));
+        cameraMatrix.set(2, 2, v2 * (1 - sensitivity * precision / 200));
         context.notifyListeners();
     }
 

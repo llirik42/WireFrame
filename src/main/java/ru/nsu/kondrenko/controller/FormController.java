@@ -12,6 +12,7 @@ public class FormController implements ChangeListener {
     private final IntegerSpinner polylinesSpinner;
     private final IntegerSpinner generatricesSpinner;
     private final IntegerSpinner circleSegmentsSpinner;
+    private final IntegerSpinner wireframeSensitivitySpinner;
     private final Context context;
 
     @Override
@@ -29,6 +30,10 @@ public class FormController implements ChangeListener {
 
         if (source == circleSegmentsSpinner) {
             context.setCircleSegmentsNumber(source.getIntValue());
+        }
+
+        if (source == wireframeSensitivitySpinner) {
+            context.setWireframeSensitivity(wireframeSensitivitySpinner.getIntValue());
         }
     }
 }
