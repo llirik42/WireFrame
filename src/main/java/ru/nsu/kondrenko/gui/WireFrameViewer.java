@@ -24,6 +24,7 @@ public class WireFrameViewer extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawXYZ((Graphics2D) g);
 
         if (context.getBSplinePoints().isEmpty()) {
             return;
@@ -176,5 +177,83 @@ public class WireFrameViewer extends JPanel {
         );
 
         return Utils.realToMouseScale(res, context);
+    }
+
+    private void drawXYZ(Graphics2D g) {
+        final double[][] xyzCameraMatrixData = {
+                {1, 0, 0, 0},
+                {0, 200, 0, 0},
+                {0, 0, 200, 0},
+                {1, 0, 0, 10}
+        };
+
+        final SimpleMatrix xyxCameraMatrix = new SimpleMatrix(xyzCameraMatrixData);
+
+        final SimpleMatrix centerMatrix = new SimpleMatrix(new double[]{0, 0, 0, 1});
+        final SimpleMatrix xMatrix = new SimpleMatrix(new double[]{1, 0, 0, 1});
+        final SimpleMatrix yMatrix = new SimpleMatrix(new double[]{0, 1, 0, 1});
+        final SimpleMatrix zMatrix = new SimpleMatrix(new double[]{0, 0, 1, 1});
+
+        final SimpleMatrix centerPointOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(centerMatrix));
+        final SimpleMatrix xOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(xMatrix));
+        final SimpleMatrix yOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(yMatrix));
+        final SimpleMatrix zOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(zMatrix));
+
+        final int t1 = getWidth() - 50;
+        final int t2 = getHeight() - 50;
+        final double k = 2;
+
+        IntPoint centerPointOnScreen = new IntPoint(
+                (int)(centerPointOnScreenMatrix.get(1) / centerPointOnScreenMatrix.get(3) * k) + t1,
+                (int)(-centerPointOnScreenMatrix.get(2) / centerPointOnScreenMatrix.get(3) * k) + t2
+        );
+
+        IntPoint xPointOnScreen = new IntPoint(
+                (int)(xOnScreenMatrix.get(1) / xOnScreenMatrix.get(3) * k) + t1,
+                (int)(-xOnScreenMatrix.get(2) / xOnScreenMatrix.get(3) * k) + t2
+        );
+
+        IntPoint yPointOnScreen = new IntPoint(
+                (int)(yOnScreenMatrix.get(1) / yOnScreenMatrix.get(3) * k) + t1,
+                (int)(-yOnScreenMatrix.get(2) / yOnScreenMatrix.get(3) * k) + t2
+        );
+
+        IntPoint zPointOnScreen = new IntPoint(
+                (int)(zOnScreenMatrix.get(1) / zOnScreenMatrix.get(3) * k) + t1,
+                (int)(-zOnScreenMatrix.get(2) / zOnScreenMatrix.get(3) * k) + t2
+        );
+
+        final Color oldColor = g.getColor();
+        final Stroke oldStroke = g.getStroke();
+
+        final Stroke stroke = new BasicStroke(3);
+
+        g.setStroke(stroke);
+        g.setColor(Color.RED);
+        g.drawLine(
+                centerPointOnScreen.getX(),
+                centerPointOnScreen.getY(),
+                xPointOnScreen.getX(),
+                xPointOnScreen.getY()
+        );
+
+        g.setColor(Color.GREEN);
+        g.drawLine(
+                centerPointOnScreen.getX(),
+                centerPointOnScreen.getY(),
+                yPointOnScreen.getX(),
+                yPointOnScreen.getY()
+        );
+
+        g.setColor(Color.BLUE);
+        g.drawLine(
+                centerPointOnScreen.getX(),
+                centerPointOnScreen.getY(),
+                zPointOnScreen.getX(),
+                zPointOnScreen.getY()
+        );
+
+        g.setStroke(oldStroke);
+        g.setColor(oldColor);
     }
 }
