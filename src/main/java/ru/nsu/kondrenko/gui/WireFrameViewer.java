@@ -189,8 +189,16 @@ public class WireFrameViewer extends JPanel {
                 p.z() / distance
         );
 
+        final Context fakeContext = new Context();
+        fakeContext.setMinX(-10);
+        fakeContext.setMaxX(10);
+        fakeContext.setMinY(-10);
+        fakeContext.setMaxY(10);
+        fakeContext.setWidth(getWidth());
+        fakeContext.setHeight(getHeight());
+
         return new ScreenCalculationResult(
-                Utils.realToScreen(res, context),
+                Utils.realToScreen(res, fakeContext),
                 (float) (Math.pow(-afterRotationMatrix.get(0,0) * 0.35 + 0.75, 2))
         );
     }
