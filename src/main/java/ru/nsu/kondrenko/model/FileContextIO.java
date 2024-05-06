@@ -7,7 +7,8 @@ public class FileContextIO implements ContextIO {
         try (final FileInputStream fileInputStream = new FileInputStream(path);
              final ObjectInputStream inputStream = new ObjectInputStream(fileInputStream)) {
             return (Context) inputStream.readObject();
-        } catch (ClassNotFoundException | InvalidClassException | StreamCorruptedException | OptionalDataException exception) {
+        } catch (ClassNotFoundException | InvalidClassException | StreamCorruptedException |
+                 OptionalDataException exception) {
             throw new ContextIOException("Invalid format of file", exception);
         } catch (Exception exception) {
             throw new ContextIOException("Cannot read context", exception);

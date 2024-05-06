@@ -13,7 +13,8 @@ import java.util.stream.Stream;
 public class WireFrameViewer extends JPanel {
     private final Context context;
 
-    private record ScreenCalculationResult(IntPoint screenPoint, float scale) {}
+    private record ScreenCalculationResult(IntPoint screenPoint, float scale) {
+    }
 
     public WireFrameViewer(Context context) {
         this.context = context;
@@ -170,7 +171,7 @@ public class WireFrameViewer extends JPanel {
         return res;
     }
 
-    private ScreenCalculationResult calculatePointOnScreen(Double4DPoint point, Context context){
+    private ScreenCalculationResult calculatePointOnScreen(Double4DPoint point, Context context) {
         final double[] pointValues = {point.x(), point.y(), point.z(), point.t()};
 
         final SimpleMatrix afterRotationMatrix = context.getRotationMatrix().mult(new SimpleMatrix(pointValues));
@@ -200,7 +201,7 @@ public class WireFrameViewer extends JPanel {
 
         return new ScreenCalculationResult(
                 Utils.realToScreen(res, fakeContext),
-                (float) (Math.pow(-afterRotationMatrix.get(0,0) * 0.35 + 0.75, 2))
+                (float) (Math.pow(-afterRotationMatrix.get(0, 0) * 0.35 + 0.75, 2))
         );
     }
 
@@ -229,23 +230,23 @@ public class WireFrameViewer extends JPanel {
         final double k = 2;
 
         IntPoint centerPointOnScreen = new IntPoint(
-                (int)(centerPointOnScreenMatrix.get(1) / centerPointOnScreenMatrix.get(3) * k) + t1,
-                (int)(-centerPointOnScreenMatrix.get(2) / centerPointOnScreenMatrix.get(3) * k) + t2
+                (int) (centerPointOnScreenMatrix.get(1) / centerPointOnScreenMatrix.get(3) * k) + t1,
+                (int) (-centerPointOnScreenMatrix.get(2) / centerPointOnScreenMatrix.get(3) * k) + t2
         );
 
         IntPoint xPointOnScreen = new IntPoint(
-                (int)(xOnScreenMatrix.get(1) / xOnScreenMatrix.get(3) * k) + t1,
-                (int)(-xOnScreenMatrix.get(2) / xOnScreenMatrix.get(3) * k) + t2
+                (int) (xOnScreenMatrix.get(1) / xOnScreenMatrix.get(3) * k) + t1,
+                (int) (-xOnScreenMatrix.get(2) / xOnScreenMatrix.get(3) * k) + t2
         );
 
         IntPoint yPointOnScreen = new IntPoint(
-                (int)(yOnScreenMatrix.get(1) / yOnScreenMatrix.get(3) * k) + t1,
-                (int)(-yOnScreenMatrix.get(2) / yOnScreenMatrix.get(3) * k) + t2
+                (int) (yOnScreenMatrix.get(1) / yOnScreenMatrix.get(3) * k) + t1,
+                (int) (-yOnScreenMatrix.get(2) / yOnScreenMatrix.get(3) * k) + t2
         );
 
         IntPoint zPointOnScreen = new IntPoint(
-                (int)(zOnScreenMatrix.get(1) / zOnScreenMatrix.get(3) * k) + t1,
-                (int)(-zOnScreenMatrix.get(2) / zOnScreenMatrix.get(3) * k) + t2
+                (int) (zOnScreenMatrix.get(1) / zOnScreenMatrix.get(3) * k) + t1,
+                (int) (-zOnScreenMatrix.get(2) / zOnScreenMatrix.get(3) * k) + t2
         );
 
         final Color oldColor = g.getColor();

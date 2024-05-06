@@ -1,7 +1,8 @@
 package ru.nsu.kondrenko.model;
 
 public final class Utils {
-    private Utils() {}
+    private Utils() {
+    }
 
     public static Double2DPoint screenToReal(IntPoint mousePoint, Context context) {
         final int width = context.getWidth();

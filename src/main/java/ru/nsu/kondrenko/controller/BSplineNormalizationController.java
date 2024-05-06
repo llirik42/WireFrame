@@ -3,7 +3,6 @@ package ru.nsu.kondrenko.controller;
 import lombok.RequiredArgsConstructor;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.Context;
-import ru.nsu.kondrenko.model.Double2DPoint;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

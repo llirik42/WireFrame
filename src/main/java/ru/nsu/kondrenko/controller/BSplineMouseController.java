@@ -1,6 +1,9 @@
 package ru.nsu.kondrenko.controller;
 
-import ru.nsu.kondrenko.model.*;
+import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.model.Double2DPoint;
+import ru.nsu.kondrenko.model.IntPoint;
+import ru.nsu.kondrenko.model.Utils;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;

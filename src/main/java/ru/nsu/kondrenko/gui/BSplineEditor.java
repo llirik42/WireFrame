@@ -70,7 +70,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
 
         final int width = getWidth();
         final int height = getHeight();
-        final Graphics2D g2d = (Graphics2D)g;
+        final Graphics2D g2d = (Graphics2D) g;
         final int yCenter = centerPoint.getY();
         final int xCenter = centerPoint.getX();
         final int axesPointCount = 20;
