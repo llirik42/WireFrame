@@ -1,16 +1,14 @@
 package ru.nsu.kondrenko.model;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class FileContextIO implements ContextIO {
     public Context read(String path) throws ContextIOException {
-        System.out.println(path);
         try (final FileInputStream fileInputStream = new FileInputStream(path);
              final ObjectInputStream inputStream = new ObjectInputStream(fileInputStream)) {
             return (Context) inputStream.readObject();
+        } catch (ClassNotFoundException | InvalidClassException | StreamCorruptedException | OptionalDataException exception) {
+            throw new ContextIOException("Invalid format of file", exception);
         } catch (Exception exception) {
             throw new ContextIOException("Cannot read context", exception);
         }

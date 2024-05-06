@@ -30,7 +30,7 @@ public class OpenController implements ActionListener {
         try {
             context.updateValues(contextIO.read(selectedFile.toString()));
         } catch (ContextIOException exception) {
-            view.showError("Cannot open scene");
+            view.showError("Cannot open scene: " + exception.getLocalizedMessage());
         }
     }
 }
