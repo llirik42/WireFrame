@@ -36,8 +36,6 @@ public class Context implements Serializable {
 
     private transient final List<BSplineContextListener> bSplineContextListeners = new ArrayList<>();
 
-    private transient final List<ContextListener> listeners = new ArrayList<>();
-
     public Context() {
         minX = Constants.START_MIN_X;
         maxX = Constants.START_MAX_X;
@@ -82,10 +80,6 @@ public class Context implements Serializable {
 
     public void addBSplineListener(BSplineContextListener listener) {
         bSplineContextListeners.add(listener);
-    }
-
-    public void addListener(ContextListener listener) {
-        listeners.add(listener);
     }
 
     public double getHeightWidthRatio() {
