@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.gui;
 
 import ru.nsu.kondrenko.model.Constants;
+import ru.nsu.kondrenko.model.context.BSplineContextListener;
 import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.context.ContextListener;
 
@@ -11,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.io.File;
 
-public class SwingView implements View, ContextListener {
+public class SwingView implements View, ContextListener, BSplineContextListener {
     private final BSplineEditorWindow bSplineEditorWindow;
     private final WireframeWindow wireframeWindow;
     private final JFileChooser savingChooser;
@@ -162,5 +163,10 @@ public class SwingView implements View, ContextListener {
                      <b>Created by</b>: Kondrenko Kirill, student of group 21203 in NSU in May 2024 as task of the course "Engineering and computer graphics"</b>
                 </html>
                 """;
+    }
+
+    @Override
+    public void onBSplineContextChange(Context context) {
+        bSplineEditorWindow.onBSplineContextChange(context);
     }
 }

@@ -2,13 +2,14 @@ package ru.nsu.kondrenko.gui;
 
 import ru.nsu.kondrenko.controller.bspline.BSplineMouseController;
 import ru.nsu.kondrenko.controller.bspline.BSplineMovingController;
+import ru.nsu.kondrenko.model.context.BSplineContextListener;
 import ru.nsu.kondrenko.model.context.Context;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class BSplineEditorWindow extends JFrame {
+public class BSplineEditorWindow extends JFrame implements BSplineContextListener {
     private final BSplineEditor editor;
 
     public BSplineEditorWindow(Context context,
@@ -47,5 +48,10 @@ public class BSplineEditorWindow extends JFrame {
 
     public Dimension getEditorDimension() {
         return new Dimension(editor.getWidth(), editor.getHeight());
+    }
+
+    @Override
+    public void onBSplineContextChange(Context context) {
+        editor.onBSplineContextChange(context);
     }
 }

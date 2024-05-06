@@ -2,19 +2,18 @@ package ru.nsu.kondrenko.gui;
 
 import org.decimal4j.util.DoubleRounder;
 import ru.nsu.kondrenko.controller.bspline.BSplineMouseController;
-import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.Double2DPoint;
 import ru.nsu.kondrenko.model.IntPoint;
 import ru.nsu.kondrenko.model.Utils;
+import ru.nsu.kondrenko.model.context.BSplineContextListener;
 import ru.nsu.kondrenko.model.context.Context;
-import ru.nsu.kondrenko.model.context.ContextListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class BSplineEditor extends JPanel implements ContextListener {
+public class BSplineEditor extends JPanel implements BSplineContextListener {
     private static final int CURVE_POINT_RADIUS = 10;
     private static final int CURVE_POINT_DIAMETER = 2 * CURVE_POINT_RADIUS;
     private final Context context;
@@ -23,7 +22,6 @@ public class BSplineEditor extends JPanel implements ContextListener {
     public BSplineEditor(Context context, BSplineMouseController controller) {
         this.context = context;
         this.rounder = new DoubleRounder(1);
-        context.addListener(this);
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(100, 100));
         addMouseListener(controller);
@@ -33,12 +31,26 @@ public class BSplineEditor extends JPanel implements ContextListener {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                context.setWidth(e.getComponent().getWidth());
-                context.setHeight(e.getComponent().getHeight());
-                final double k = 1.0 * context.getHeight() / context.getWidth();
-                context.setMinY(Constants.START_MIN_X * k);
-                context.setMaxY(Constants.START_MAX_X * k);
-                context.notifyListeners();
+                final int oldWidth = context.getWidth();
+                final int oldHeight = context.getHeight();
+
+                final int newWidth = e.getComponent().getWidth();
+                final int newHeight = e.getComponent().getHeight();
+
+                context.setWidth(newWidth);
+                context.setHeight(newHeight);
+
+                if (newWidth != oldWidth) {
+                    final double k = 1.0 * oldWidth / newWidth;
+                    context.setMinY(context.getMinY() * k);
+                    context.setMaxY(context.getMaxY() * k);
+                }
+
+                if (newHeight != oldHeight) {
+                    final double k = 1.0 * oldHeight / newHeight;
+                    context.setMinX(context.getMinX() * k);
+                    context.setMaxX(context.getMaxX() * k);
+                }
             }
         });
 
@@ -129,11 +141,6 @@ public class BSplineEditor extends JPanel implements ContextListener {
         g.setColor(oldColor);
     }
 
-    @Override
-    public void onContextChange(Context context) {
-        repaint();
-    }
-
     private void drawOXAxePoint(Graphics2D graphics2D, IntPoint point, int spread) {
         final int x = point.getX();
         final int y = point.getY();
@@ -150,5 +157,10 @@ public class BSplineEditor extends JPanel implements ContextListener {
         graphics2D.drawLine(x - spread, y, x + spread, y);
         final String label = String.valueOf(rounder.round(realPoint.getY()));
         graphics2D.drawString(label, x + 10, y + 5);
+    }
+
+    @Override
+    public void onBSplineContextChange(Context context) {
+        repaint();
     }
 }

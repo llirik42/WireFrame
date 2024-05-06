@@ -41,7 +41,6 @@ public class WireFrameMouseController extends MouseController {
         final double k = 1 - sensitivity * precision / SENSITIVITY_DIVIDER;
         cameraMatrix.set(1, 1, v1 * k);
         cameraMatrix.set(2, 2, v2 * k);
-        context.notifyListeners();
     }
 
     @Override

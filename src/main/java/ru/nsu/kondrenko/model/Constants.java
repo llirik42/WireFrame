@@ -3,6 +3,8 @@ package ru.nsu.kondrenko.model;
 public class Constants {
     public static final String SCENE_EXTENSION = "wfctx";
 
+    public static final int PIVOT_POINT_RADIUS = 10;
+
     public static final double CAMERA_DISTANCE = 10;
     public static final double CAMERA_MATRIX_VALUE = 75;
 

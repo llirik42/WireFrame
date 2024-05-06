@@ -54,7 +54,7 @@ public class Main {
             view.showWarning("Error during reading start scene");
         }
 
-        context.addListener(view);
+        context.addBSplineListener(view);
         openController.setView(view);
         saveController.setView(view);
         exitController.setView(view);

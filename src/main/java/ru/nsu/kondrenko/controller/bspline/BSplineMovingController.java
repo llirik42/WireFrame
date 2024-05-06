@@ -14,34 +14,37 @@ public class BSplineMovingController extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         final int keyCode = e.getKeyCode();
         final double sensitivity = context.getBSplineSensitivity();
-        final double k = 1.0 * context.getHeight() / context.getWidth();
         final double delta = 0.05 * sensitivity;
 
+        final double minX = context.getMinX();
+        final double maxX = context.getMaxX();
+        final double minY = context.getMinY();
+        final double maxY = context.getMaxY();
+
         if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
-            context.setMinX(context.getMinX() + delta);
-            context.setMaxX(context.getMaxX() + delta);
-            context.notifyListeners();
-            return;
+            context.setMinX(minX + delta);
+            context.setMaxX(maxX + delta);
+            context.notifyBSplineListeners();
         }
 
         if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
-            context.setMinX(context.getMinX() - delta);
-            context.setMaxX(context.getMaxX() - delta);
-            context.notifyListeners();
-            return;
+            context.setMinX(minX - delta);
+            context.setMaxX(maxX - delta);
+            context.notifyBSplineListeners();
         }
 
+        final double ratio = context.getHeightWidthRatio();
+
         if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-            context.setMinY(context.getMinY() + delta / k);
-            context.setMaxY(context.getMaxY() + delta / k);
-            context.notifyListeners();
-            return;
+            context.setMinY(minY + delta / ratio);
+            context.setMaxY(maxY + delta / ratio);
+            context.notifyBSplineListeners();
         }
 
         if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
-            context.setMinY(context.getMinY() - delta / k);
-            context.setMaxY(context.getMaxY() - delta / k);
-            context.notifyListeners();
+            context.setMinY(minY - delta / ratio);
+            context.setMaxY(maxY - delta / ratio);
+            context.notifyBSplineListeners();
         }
     }
 }

@@ -34,6 +34,8 @@ public class Context implements Serializable {
     private List<Double2DPoint> points = new LinkedList<>();
     private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
+    private transient final List<BSplineContextListener> bSplineContextListeners = new ArrayList<>();
+
     private transient final List<ContextListener> listeners = new ArrayList<>();
 
     public Context() {
@@ -41,6 +43,8 @@ public class Context implements Serializable {
         maxX = Constants.START_MAX_X;
         minY = minX / 1280.0 * 590.0;
         maxY = maxX / 1280.0 * 590.0;
+        width = 1280;
+        height = 590;
         polylinesNumber = Constants.START_POLYLINES_NUMBER;
         generatricesNumber = Constants.START_GENERATRICES_NUMBER;
         circleSegmentsNumber = Constants.START_CIRCLE_SEGMENTS_NUMBER;
@@ -66,7 +70,6 @@ public class Context implements Serializable {
         setCameraMatrix(other.getCameraMatrix());
         setPoints(other.getPoints());
         setBSplinePoints(other.getBSplinePoints());
-        notifyListeners();
     }
 
     public double getXRange() {
@@ -77,73 +80,38 @@ public class Context implements Serializable {
         return maxY - minY;
     }
 
+    public void addBSplineListener(BSplineContextListener listener) {
+        bSplineContextListeners.add(listener);
+    }
+
     public void addListener(ContextListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(ContextListener listener) {
-        listeners.remove(listener);
+    public double getHeightWidthRatio() {
+        return 1.0 * height / width;
     }
 
     public void addPoint(Double2DPoint point) {
         points.add(point);
         updateBSplinePoints();
-        notifyListeners();
     }
 
     public void insertPoint(Double2DPoint point, int index) {
         points.add(index, point);
         updateBSplinePoints();
-        notifyListeners();
     }
 
     public int removePoint(Double2DPoint point) {
         final int index = points.indexOf(point);
         points.remove(point);
         updateBSplinePoints();
-        notifyListeners();
         return index;
     }
 
-    public void setPolylinesNumber(int polylinesNumber) {
-        this.polylinesNumber = polylinesNumber;
-        updateBSplinePoints();
-        notifyListeners();
-    }
-
-    public void setGeneratricesNumber(int generatricesCount) {
-        this.generatricesNumber = generatricesCount;
-        notifyListeners();
-    }
-
-    public void setCircleSegmentsNumber(int circleSegmentsNumber) {
-        this.circleSegmentsNumber = circleSegmentsNumber;
-        notifyListeners();
-    }
-
-    public void setRotationMatrix(SimpleMatrix rotationMatrix) {
-        this.rotationMatrix = rotationMatrix;
-        notifyListeners();
-    }
-
-    public void setCameraMatrix(SimpleMatrix cameraMatrix) {
-        this.cameraMatrix = cameraMatrix;
-        notifyListeners();
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-        notifyListeners();
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-        notifyListeners();
-    }
-
-    public void notifyListeners() {
-        for (final var it : listeners) {
-            it.onContextChange(this);
+    public void notifyBSplineListeners() {
+        for (final var it : bSplineContextListeners) {
+            it.onBSplineContextChange(this);
         }
     }
 
