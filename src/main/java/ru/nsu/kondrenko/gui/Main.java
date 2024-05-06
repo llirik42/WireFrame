@@ -21,7 +21,6 @@ public class Main {
         final ResetAngleController resetAngleController = new ResetAngleController(context);
         final ResetDistanceController resetDistanceController = new ResetDistanceController(context);
         final BSplineNormalizationController bSplineNormalizationController = new BSplineNormalizationController(context);
-        final HelpController helpController = new HelpController();
         final AboutController aboutController = new AboutController();
 
         final SwingView view = new SwingView(
@@ -33,7 +32,6 @@ public class Main {
                 resetAngleController,
                 resetDistanceController,
                 bSplineNormalizationController,
-                helpController,
                 aboutController
         );
 
@@ -54,7 +52,6 @@ public class Main {
         openController.setView(view);
         saveController.setView(view);
         exitController.setView(view);
-        helpController.setView(view);
         aboutController.setView(view);
 
         view.show();

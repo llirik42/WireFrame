@@ -16,7 +16,6 @@ public class WireframeWindow extends JFrame implements ContextListener {
                            ActionListener exitListener,
                            ActionListener resetAngleListener,
                            ActionListener resetDistanceListener,
-                           ActionListener helpListener,
                            ActionListener aboutListener) {
         setMinimumSize(new Dimension(640, 480));
         setPreferredSize(new Dimension(1280, 720));
@@ -31,7 +30,6 @@ public class WireframeWindow extends JFrame implements ContextListener {
                 exitListener,
                 resetAngleListener,
                 resetDistanceListener,
-                helpListener,
                 aboutListener
         ).getMenuBar());
 

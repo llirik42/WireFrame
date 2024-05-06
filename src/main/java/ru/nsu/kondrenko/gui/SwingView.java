@@ -26,7 +26,6 @@ public class SwingView implements View, ContextListener {
                      ActionListener resetAngleListener,
                      ActionListener resetDistanceListener,
                      ActionListener bSplineNormalizationListener,
-                     ActionListener helpListener,
                      ActionListener aboutListener) {
         aboutTextPane = createAboutTextArea();
         bSplineEditorWindow = new BSplineEditorWindow(
@@ -35,7 +34,6 @@ public class SwingView implements View, ContextListener {
                 saveListener,
                 exitListener,
                 bSplineNormalizationListener,
-                helpListener,
                 aboutListener
         );
         wireframeWindow = new WireframeWindow(
@@ -45,7 +43,6 @@ public class SwingView implements View, ContextListener {
                 exitListener,
                 resetAngleListener,
                 resetDistanceListener,
-                helpListener,
                 aboutListener
         );
 

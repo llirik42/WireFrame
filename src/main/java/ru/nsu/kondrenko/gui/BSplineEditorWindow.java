@@ -16,7 +16,6 @@ public class BSplineEditorWindow extends JFrame {
                                ActionListener saveListener,
                                ActionListener exitListener,
                                ActionListener bSplineNormalizationListener,
-                               ActionListener helpListener,
                                ActionListener aboutListener) {
         final BSplineMouseController controller = new BSplineMouseController(context);
         editor = new BSplineEditor(context, controller);
@@ -38,7 +37,6 @@ public class BSplineEditorWindow extends JFrame {
                 saveListener,
                 exitListener,
                 bSplineNormalizationListener,
-                helpListener,
                 aboutListener
         );
 
