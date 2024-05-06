@@ -190,10 +190,11 @@ public class WireFrameViewer extends JPanel {
         );
 
         final Context fakeContext = new Context();
+        final double k = 1.0 * getHeight() / getWidth();
         fakeContext.setMinX(-10);
         fakeContext.setMaxX(10);
-        fakeContext.setMinY(-10);
-        fakeContext.setMaxY(10);
+        fakeContext.setMinY(-10 * k);
+        fakeContext.setMaxY(10 * k);
         fakeContext.setWidth(getWidth());
         fakeContext.setHeight(getHeight());
 
