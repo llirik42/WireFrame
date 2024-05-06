@@ -18,6 +18,7 @@ public class WireframeWindow extends JFrame implements ContextListener {
                            ActionListener resetDistanceListener,
                            ActionListener helpListener,
                            ActionListener aboutListener) {
+        setMinimumSize(new Dimension(640, 480));
         setPreferredSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.viewer = new WireFrameViewer(context);
