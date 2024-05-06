@@ -56,7 +56,7 @@ public class WireFrameViewer extends JPanel {
         // Дуги
         final int allSegmentsNumber = generatricesNumber * context.getCircleSegmentsNumber();
         final double segmentsDelta = (2 * Math.PI) / allSegmentsNumber;
-        for (final var p : context.getBSplinePoints()) {
+        for (final var p : context.getBSplinePoints()) { // TODO: context.getPoints()
             for (int j = 0; j < allSegmentsNumber; j++) {
                 final double angle = segmentsDelta * j;
                 final double sin = Math.sin(angle);
@@ -174,9 +174,11 @@ public class WireFrameViewer extends JPanel {
     private ScreenCalculationResult calculatePointOnScreen(Double4DPoint point, Context context) {
         final double[] pointValues = {point.x(), point.y(), point.z(), point.t()};
 
-        final SimpleMatrix afterRotationMatrix = context.getRotationMatrix().mult(new SimpleMatrix(pointValues));
+        final SimpleMatrix tmp = context.getCameraMatrix();
+        tmp.set(0, 3, 1) ;
 
-        final SimpleMatrix pMatrix = context.getCameraMatrix().mult(afterRotationMatrix);
+        final SimpleMatrix afterRotationMatrix = context.getRotationMatrix().mult(new SimpleMatrix(pointValues));
+        final SimpleMatrix pMatrix = tmp.transpose().mult(afterRotationMatrix);
         final Double4DPoint p = new Double4DPoint(
                 pMatrix.get(0),
                 pMatrix.get(1),
@@ -185,6 +187,7 @@ public class WireFrameViewer extends JPanel {
         );
 
         final double distance = p.t();
+
         final Double2DPoint res = new Double2DPoint(
                 p.y() / distance,
                 p.z() / distance
@@ -201,7 +204,7 @@ public class WireFrameViewer extends JPanel {
 
         return new ScreenCalculationResult(
                 Utils.realToScreen(res, fakeContext),
-                (float) (Math.pow(-afterRotationMatrix.get(0, 0) * 0.35 + 0.75, 2))
+                (float) (Math.pow(afterRotationMatrix.get(0, 0) * 0.35 + 0.75, 2))
         );
     }
 

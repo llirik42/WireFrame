@@ -7,7 +7,7 @@ public final class WireframeUtils {
             {1, 0, 0, 0},
             {0, Constants.CAMERA_MATRIX_VALUE, 0, 0},
             {0, 0, Constants.CAMERA_MATRIX_VALUE, 0},
-            {0, 0, 0, Constants.CAMERA_DISTANCE}
+            {1, 0, 0, Constants.CAMERA_DISTANCE}
     };
 
     private WireframeUtils() {
@@ -17,7 +17,7 @@ public final class WireframeUtils {
         SimpleMatrix rotationMatrix = SimpleMatrix.identity(4);
 
         if (mouseDeltaX != 0) {
-            final double xAngle = Math.PI / 100 * mouseDeltaX;
+            final double xAngle = 0.5 * Math.PI / 100 * mouseDeltaX;
             final double sin = Math.sin(xAngle);
             final double cos = Math.cos(xAngle);
             final double[][] matrixData = {
@@ -30,7 +30,7 @@ public final class WireframeUtils {
         }
 
         if (mouseDeltaY != 0) {
-            final double yAngle = Math.PI / 100 * mouseDeltaY;
+            final double yAngle = 0.5 * Math.PI / 100 * mouseDeltaY;
             final double sin = Math.sin(yAngle);
             final double cos = Math.cos(yAngle);
             final double[][] matrixData = {
