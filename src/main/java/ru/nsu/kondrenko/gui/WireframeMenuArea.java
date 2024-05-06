@@ -37,16 +37,16 @@ public class WireframeMenuArea extends JPanel {
                 FONT
         ));
 
-        menuBar.add(createInfoMenu(
-                aboutListener,
+        menuBar.add(createViewMenu(
+                resetAngleListener,
+                resetDistanceListener,
                 menuBackgroundColor,
                 buttonsFontColor,
                 FONT
         ));
 
-        menuBar.add(createViewMenu(
-                resetAngleListener,
-                resetDistanceListener,
+        menuBar.add(createInfoMenu(
+                aboutListener,
                 menuBackgroundColor,
                 buttonsFontColor,
                 FONT
