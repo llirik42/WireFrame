@@ -12,8 +12,10 @@ import java.util.List;
 public class Context implements Serializable {
     private int width;
     private int height;
-    private Double2DPoint zeroPoint;
-    private double scale;
+    private double minX;
+    private double maxX;
+    private double minY;
+    private double maxY;
 
     private int polylinesNumber;
     private int generatricesNumber;
@@ -31,8 +33,10 @@ public class Context implements Serializable {
     private transient final List<ContextListener> listeners = new ArrayList<>();
 
     public Context() {
-        scale = 1;
-        zeroPoint = new Double2DPoint(-10, 10);
+        minX = Constants.START_MIN_X;
+        maxX = Constants.START_MAX_X;
+        minY = minX / 1280.0 * 590.0;
+        maxY = maxX / 1280.0 * 590.0;
         polylinesNumber = Constants.START_POLYLINES_NUMBER;
         generatricesNumber = Constants.START_GENERATRICES_NUMBER;
         circleSegmentsNumber = Constants.START_CIRCLE_SEGMENTS_NUMBER;
@@ -45,7 +49,10 @@ public class Context implements Serializable {
     public void updateValues(Context other) {
         setWidth(other.getWidth());
         setHeight(other.getHeight());
-        setZeroPoint(other.getZeroPoint());
+        setMinX(other.getMinX());
+        setMaxX(other.getMaxX());
+        setMinY(other.getMinY());
+        setMaxY(other.getMaxY());
         setPolylinesNumber(other.getPolylinesNumber());
         setGeneratricesNumber(other.getGeneratricesNumber());
         setCircleSegmentsNumber(other.getCircleSegmentsNumber());
@@ -56,6 +63,14 @@ public class Context implements Serializable {
         setPoints(other.getPoints());
         setBSplinePoints(other.getBSplinePoints());
         notifyListeners();
+    }
+
+    public double getXRange() {
+        return maxX - minX;
+    }
+
+    public double getYRange() {
+        return maxY - minY;
     }
 
     public void addListener(ContextListener listener) {

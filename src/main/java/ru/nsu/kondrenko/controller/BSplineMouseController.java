@@ -42,7 +42,10 @@ public class BSplineMouseController extends MouseController {
         final double delta = e.getPreciseWheelRotation();
         final double sensitivity = context.getBSplineSensitivity();
         final double k = (1 + delta * sensitivity / SENSITIVITY_DIVIDER);
-        context.setScale(context.getScale() / k);
+        context.setMinY(context.getMinY() * k);
+        context.setMaxY(context.getMaxY() * k);
+        context.setMinX(context.getMinX() * k);
+        context.setMaxX(context.getMaxX() * k);
         context.notifyListeners();
     }
 

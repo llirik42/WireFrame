@@ -189,13 +189,8 @@ public class WireFrameViewer extends JPanel {
                 p.z() / distance
         );
 
-        final Double2DPoint tmp = new Double2DPoint(
-                (res.x() + context.getZeroPoint().x()) / context.getScale(),
-                (res.y() + context.getZeroPoint().y()) / context.getScale()
-        );
-
         return new ScreenCalculationResult(
-                Utils.realToScreen(tmp, context),
+                Utils.realToScreen(res, context),
                 (float) (Math.pow(-afterRotationMatrix.get(0,0) * 0.35 + 0.75, 2))
         );
     }

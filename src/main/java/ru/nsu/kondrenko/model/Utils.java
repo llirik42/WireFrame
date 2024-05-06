@@ -4,24 +4,24 @@ public final class Utils {
     private Utils() {}
 
     public static Double2DPoint screenToReal(IntPoint mousePoint, Context context) {
-        final double xCenter = mousePoint.getX() - context.getWidth() / 2.0;
-        final double yCenter = mousePoint.getY() - context.getHeight() / 2.0;
-        final double xScale = xCenter / context.getScale();
-        final double yScale = yCenter / context.getScale();
-        final double xDiff = xScale + context.getZeroPoint().x();
-        final double yDiff = yScale + context.getZeroPoint().y();
-        return new Double2DPoint(xDiff, yDiff);
+        final int width = context.getWidth();
+        final int height = context.getHeight();
+        final double minX = context.getMinX();
+        final double minY = context.getMinY();
+        final double xRelative = 1.0 * mousePoint.getX() / width;
+        final double yRelative = 1.0 * mousePoint.getY() / height;
+        final double x = minX + xRelative * context.getXRange();
+        final double y = minY + context.getYRange() * (1 - yRelative);
+        return new Double2DPoint(x, y);
     }
 
     public static IntPoint realToScreen(Double2DPoint realPoint, Context context) {
-        final Double2DPoint tmp = new Double2DPoint(
-                (realPoint.x() - context.getZeroPoint().x()) * context.getScale(),
-                (realPoint.y() - context.getZeroPoint().y()) * context.getScale()
-        );
-
-        return new IntPoint(
-                (int) (Math.round(tmp.x() + context.getWidth() / 2.0)),
-                (int) (Math.round(tmp.y() + context.getHeight() / 2.0))
-        );
+        final double minX = context.getMinX();
+        final double minY = context.getMinY();
+        final double xRelative = (realPoint.x() - minX) / context.getXRange();
+        final double yRelative = (realPoint.y() - minY) / context.getYRange();
+        final int x = (int) Math.round(xRelative * context.getWidth());
+        final int y = (int) Math.round((1 - yRelative) * context.getHeight());
+        return new IntPoint(x, y);
     }
 }

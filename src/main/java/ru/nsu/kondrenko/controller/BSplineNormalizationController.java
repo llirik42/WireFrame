@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.controller;
 
 import lombok.RequiredArgsConstructor;
+import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.Context;
 import ru.nsu.kondrenko.model.Double2DPoint;
 
@@ -14,8 +15,12 @@ public class BSplineNormalizationController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (context.getPoints().isEmpty()) {
-            context.setZeroPoint(new Double2DPoint(-10, 10));
-            context.setScale(1);
+            final double k = 1.0 * context.getHeight() / context.getWidth();
+            context.setMinX(Constants.START_MIN_X);
+            context.setMaxX(Constants.START_MAX_X);
+            context.setMinY(Constants.START_MIN_X * k);
+            context.setMaxY(Constants.START_MAX_X * k);
+            context.notifyListeners();
         } else {
             double minX = context.getPoints().get(0).x();
             double maxX = context.getPoints().get(0).x();
@@ -29,10 +34,11 @@ public class BSplineNormalizationController implements ActionListener {
                 maxY = Double.max(it.y(), maxY);
             }
 
-            final double scale = Double.max(maxX - minX, maxY - minY) / 400;
-            System.out.println(scale);
-            context.setZeroPoint(new Double2DPoint(minX, maxY));
-            context.setScale(1 / scale);
+            context.setMinX(minX - 1);
+            context.setMaxX(maxX + 1);
+            context.setMinY(minY - 1);
+            context.setMaxY(maxY + 1);
+            context.notifyListeners();
         }
 
         context.notifyListeners();
