@@ -1,7 +1,7 @@
-package ru.nsu.kondrenko.controller;
+package ru.nsu.kondrenko.controller.bspline;
 
 import lombok.RequiredArgsConstructor;
-import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.model.context.Context;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

@@ -1,8 +1,8 @@
 package ru.nsu.kondrenko.gui;
 
 import ru.nsu.kondrenko.model.Constants;
-import ru.nsu.kondrenko.model.Context;
-import ru.nsu.kondrenko.model.ContextListener;
+import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.ContextListener;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;

@@ -1,10 +1,16 @@
 package ru.nsu.kondrenko.gui;
 
-import ru.nsu.kondrenko.controller.*;
-import ru.nsu.kondrenko.model.Context;
-import ru.nsu.kondrenko.model.ContextIO;
+import ru.nsu.kondrenko.controller.AboutController;
+import ru.nsu.kondrenko.controller.ExitController;
+import ru.nsu.kondrenko.controller.OpenController;
+import ru.nsu.kondrenko.controller.SaveController;
+import ru.nsu.kondrenko.controller.bspline.BSplineNormalizationController;
+import ru.nsu.kondrenko.controller.wireframe.WireframeResetAngleController;
+import ru.nsu.kondrenko.controller.wireframe.WireframeResetDistanceController;
 import ru.nsu.kondrenko.model.ContextIOException;
-import ru.nsu.kondrenko.model.FileContextIO;
+import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.ContextIO;
+import ru.nsu.kondrenko.model.context.FileContextIO;
 
 import java.net.URL;
 
@@ -18,8 +24,8 @@ public class Main {
         final OpenController openController = new OpenController(context, contextIO);
         final SaveController saveController = new SaveController(context, contextIO);
         final ExitController exitController = new ExitController();
-        final ResetAngleController resetAngleController = new ResetAngleController(context);
-        final ResetDistanceController resetDistanceController = new ResetDistanceController(context);
+        final WireframeResetAngleController resetAngleController = new WireframeResetAngleController(context);
+        final WireframeResetDistanceController resetDistanceController = new WireframeResetDistanceController(context);
         final BSplineNormalizationController bSplineNormalizationController = new BSplineNormalizationController(context);
         final AboutController aboutController = new AboutController();
 

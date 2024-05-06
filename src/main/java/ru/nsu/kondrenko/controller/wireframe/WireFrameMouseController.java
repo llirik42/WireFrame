@@ -1,9 +1,10 @@
-package ru.nsu.kondrenko.controller;
+package ru.nsu.kondrenko.controller.wireframe;
 
 import lombok.RequiredArgsConstructor;
 import org.ejml.simple.SimpleMatrix;
-import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.controller.MouseController;
 import ru.nsu.kondrenko.model.WireframeUtils;
+import ru.nsu.kondrenko.model.context.Context;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;

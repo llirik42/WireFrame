@@ -1,8 +1,8 @@
-package ru.nsu.kondrenko.controller;
+package ru.nsu.kondrenko.controller.bspline;
 
 import lombok.RequiredArgsConstructor;
 import ru.nsu.kondrenko.model.Constants;
-import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.model.context.Context;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

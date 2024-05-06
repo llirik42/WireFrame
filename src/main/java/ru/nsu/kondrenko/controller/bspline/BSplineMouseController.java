@@ -1,9 +1,10 @@
-package ru.nsu.kondrenko.controller;
+package ru.nsu.kondrenko.controller.bspline;
 
-import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.controller.MouseController;
 import ru.nsu.kondrenko.model.Double2DPoint;
 import ru.nsu.kondrenko.model.IntPoint;
 import ru.nsu.kondrenko.model.Utils;
+import ru.nsu.kondrenko.model.context.Context;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;

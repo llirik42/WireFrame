@@ -1,14 +1,14 @@
-package ru.nsu.kondrenko.controller;
+package ru.nsu.kondrenko.controller.bspline;
 
 import lombok.RequiredArgsConstructor;
 import ru.nsu.kondrenko.gui.IntegerSpinner;
-import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.model.context.Context;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 @RequiredArgsConstructor
-public class FormController implements ChangeListener {
+public class BSplineFormController implements ChangeListener {
     private final IntegerSpinner polylinesSpinner;
     private final IntegerSpinner generatricesSpinner;
     private final IntegerSpinner circleSegmentsSpinner;

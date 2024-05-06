@@ -1,7 +1,11 @@
-package ru.nsu.kondrenko.model;
+package ru.nsu.kondrenko.model.context;
 
 import lombok.Data;
 import org.ejml.simple.SimpleMatrix;
+import ru.nsu.kondrenko.model.BSplineUtils;
+import ru.nsu.kondrenko.model.Constants;
+import ru.nsu.kondrenko.model.Double2DPoint;
+import ru.nsu.kondrenko.model.WireframeUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

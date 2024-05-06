@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.nsu.kondrenko.gui.View;
 import ru.nsu.kondrenko.model.Constants;
-import ru.nsu.kondrenko.model.Context;
-import ru.nsu.kondrenko.model.ContextIO;
 import ru.nsu.kondrenko.model.ContextIOException;
+import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.ContextIO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

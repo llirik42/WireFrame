@@ -1,8 +1,8 @@
 package ru.nsu.kondrenko.gui;
 
-import ru.nsu.kondrenko.controller.BSplineMouseController;
-import ru.nsu.kondrenko.controller.BSplineMovingController;
-import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.controller.bspline.BSplineMouseController;
+import ru.nsu.kondrenko.controller.bspline.BSplineMovingController;
+import ru.nsu.kondrenko.model.context.Context;
 
 import javax.swing.*;
 import java.awt.*;

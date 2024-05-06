@@ -1,8 +1,12 @@
 package ru.nsu.kondrenko.gui;
 
 import org.ejml.simple.SimpleMatrix;
-import ru.nsu.kondrenko.controller.WireFrameMouseController;
-import ru.nsu.kondrenko.model.*;
+import ru.nsu.kondrenko.controller.wireframe.WireFrameMouseController;
+import ru.nsu.kondrenko.model.Double2DPoint;
+import ru.nsu.kondrenko.model.Double4DPoint;
+import ru.nsu.kondrenko.model.IntPoint;
+import ru.nsu.kondrenko.model.Utils;
+import ru.nsu.kondrenko.model.context.Context;
 
 import javax.swing.*;
 import java.awt.*;

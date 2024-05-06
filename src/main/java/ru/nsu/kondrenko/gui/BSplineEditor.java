@@ -1,8 +1,13 @@
 package ru.nsu.kondrenko.gui;
 
 import org.decimal4j.util.DoubleRounder;
-import ru.nsu.kondrenko.controller.BSplineMouseController;
-import ru.nsu.kondrenko.model.*;
+import ru.nsu.kondrenko.controller.bspline.BSplineMouseController;
+import ru.nsu.kondrenko.model.Constants;
+import ru.nsu.kondrenko.model.Double2DPoint;
+import ru.nsu.kondrenko.model.IntPoint;
+import ru.nsu.kondrenko.model.Utils;
+import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.ContextListener;
 
 import javax.swing.*;
 import java.awt.*;

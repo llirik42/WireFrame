@@ -1,8 +1,8 @@
 package ru.nsu.kondrenko.gui;
 
-import ru.nsu.kondrenko.controller.FormController;
+import ru.nsu.kondrenko.controller.bspline.BSplineFormController;
 import ru.nsu.kondrenko.model.Constants;
-import ru.nsu.kondrenko.model.Context;
+import ru.nsu.kondrenko.model.context.Context;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +35,7 @@ public class Form extends JPanel {
                 context.getWireframeSensitivity()
         );
 
-        final FormController formController = new FormController(
+        final BSplineFormController formController = new BSplineFormController(
                 polylinesSpinner,
                 generatricesSpinner,
                 circleSegmentsSpinner,

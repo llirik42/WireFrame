@@ -1,5 +1,7 @@
 package ru.nsu.kondrenko.model;
 
+import ru.nsu.kondrenko.model.context.Context;
+
 public final class Utils {
     private Utils() {
     }

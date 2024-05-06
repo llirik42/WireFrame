@@ -1,4 +1,6 @@
-package ru.nsu.kondrenko.model;
+package ru.nsu.kondrenko.model.context;
+
+import ru.nsu.kondrenko.model.ContextIOException;
 
 import java.io.*;
 
