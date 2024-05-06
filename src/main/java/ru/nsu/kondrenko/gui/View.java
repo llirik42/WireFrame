@@ -13,5 +13,7 @@ public interface View {
 
     void destroy();
 
+    void showAbout();
+
     void show();
 }

@@ -3,12 +3,10 @@ package ru.nsu.kondrenko.gui;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.Context;
 import ru.nsu.kondrenko.model.ContextListener;
-import ru.nsu.kondrenko.model.IntPoint;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -18,7 +16,7 @@ public class SwingView implements View, ContextListener {
     private final WireframeWindow wireframeWindow;
     private final JFileChooser savingChooser;
     private final JFileChooser openChooser;
-    private final Context context;
+    private final JTextPane aboutTextPane;
 
     public SwingView(Context context,
                      WindowListener windowListener,
@@ -30,7 +28,7 @@ public class SwingView implements View, ContextListener {
                      ActionListener bSplineNormalizationListener,
                      ActionListener helpListener,
                      ActionListener aboutListener) {
-        this.context = context;
+        aboutTextPane = createAboutTextArea();
         bSplineEditorWindow = new BSplineEditorWindow(
                 context,
                 openListener,
@@ -71,6 +69,16 @@ public class SwingView implements View, ContextListener {
         wireframeWindow.setVisible(false);
         bSplineEditorWindow.dispose();
         wireframeWindow.dispose();
+    }
+
+    @Override
+    public void showAbout() {
+        JOptionPane.showMessageDialog(
+                null,
+                aboutTextPane,
+                "About",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     @Override
@@ -134,5 +142,35 @@ public class SwingView implements View, ContextListener {
     @Override
     public void onContextChange(Context context) {
         wireframeWindow.onContextChange(context);
+    }
+
+    private static JTextPane createAboutTextArea() {
+        final JTextPane result = createHelpAboutTextPane();
+        result.setText(getAboutText());
+        return result;
+    }
+
+    private static JTextPane createHelpAboutTextPane() {
+        final JTextPane result = new JTextPane();
+        result.setEditable(false);
+        result.setBackground(null);
+        result.setContentType("text/html");
+        return result;
+    }
+
+    private static String getAboutText() {
+        return """
+                <html>
+                     <p><b><i>Photoshop</i></b> represents a program for opening images and apply to it filters and transformations</p>
+                     <b>Created by:</b>
+                     <ul>
+                         <li>Vorobyov Andrew</li>
+                         <li>Kondrenko Kirill</li>
+                         <li>Sirotkin Michail</li>
+                     </ul>
+                     <p>students of group 21203 in NSU in March 2024 as task of the course "engineering and computer graphics" </p>
+                     <p>link to github of project <u>https://github.com/Wooshey1411/ICGFilters</u>
+                </html>
+                """;
     }
 }
