@@ -37,6 +37,13 @@ public class WireframeMenuArea extends JPanel {
                 FONT
         ));
 
+        menuBar.add(createInfoMenu(
+                aboutListener,
+                menuBackgroundColor,
+                buttonsFontColor,
+                FONT
+        ));
+
         menuBar.add(createViewMenu(
                 resetAngleListener,
                 resetDistanceListener,
@@ -67,6 +74,15 @@ public class WireframeMenuArea extends JPanel {
         final JMenu result = createMenu("View", menuBackgroundColor, buttonsFontColor, font);
         result.add(createItem("Reset angle", resetAngleListener, font, menuBackgroundColor));
         result.add(createItem("Reset distance", resetDistanceListener, font, menuBackgroundColor));
+        return result;
+    }
+
+    private static JMenu createInfoMenu(ActionListener aboutListener,
+                                        Color menuBackgroundColor,
+                                        Color buttonsFontColor,
+                                        Font font) {
+        final JMenu result = createMenu("Info", menuBackgroundColor, buttonsFontColor, font);
+        result.add(createItem("About", aboutListener, font, menuBackgroundColor));
         return result;
     }
 

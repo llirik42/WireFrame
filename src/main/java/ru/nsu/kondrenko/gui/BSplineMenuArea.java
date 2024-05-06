@@ -35,6 +35,20 @@ public class BSplineMenuArea extends JPanel {
                 buttonsFontColor,
                 FONT
         ));
+
+        menuBar.add(createViewMenu(
+                bSplineNormalizationListener,
+                menuBackgroundColor,
+                buttonsFontColor,
+                FONT
+        ));
+
+        menuBar.add(createInfoMenu(
+                aboutListener,
+                menuBackgroundColor,
+                buttonsFontColor,
+                FONT
+        ));
     }
 
     private static JMenu createFileMenu(ActionListener openListener,
@@ -43,10 +57,28 @@ public class BSplineMenuArea extends JPanel {
                                         Color menuBackgroundColor,
                                         Color buttonsFontColor,
                                         Font font) {
-        final JMenu result = createMenu("File", menuBackgroundColor, buttonsFontColor, font);
+        final JMenu result = createMenu("View", menuBackgroundColor, buttonsFontColor, font);
         result.add(createItem("Open", openListener, font, menuBackgroundColor));
         result.add(createItem("Save", saveListener, font, menuBackgroundColor));
         result.add(createItem("Exit", exitListener, font, menuBackgroundColor));
+        return result;
+    }
+
+    private static JMenu createViewMenu(ActionListener bSplineNormalizationListener,
+                                        Color menuBackgroundColor,
+                                        Color buttonsFontColor,
+                                        Font font) {
+        final JMenu result = createMenu("File", menuBackgroundColor, buttonsFontColor, font);
+        result.add(createItem("Normalize", bSplineNormalizationListener, font, menuBackgroundColor));
+        return result;
+    }
+
+    private static JMenu createInfoMenu(ActionListener aboutListener,
+                                        Color menuBackgroundColor,
+                                        Color buttonsFontColor,
+                                        Font font) {
+        final JMenu result = createMenu("About", menuBackgroundColor, buttonsFontColor, font);
+        result.add(createItem("About", aboutListener, font, menuBackgroundColor));
         return result;
     }
 
