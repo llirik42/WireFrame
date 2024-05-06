@@ -161,15 +161,8 @@ public class SwingView implements View, ContextListener {
     private static String getAboutText() {
         return """
                 <html>
-                     <p><b><i>Photoshop</i></b> represents a program for opening images and apply to it filters and transformations</p>
-                     <b>Created by:</b>
-                     <ul>
-                         <li>Vorobyov Andrew</li>
-                         <li>Kondrenko Kirill</li>
-                         <li>Sirotkin Michail</li>
-                     </ul>
-                     <p>students of group 21203 in NSU in March 2024 as task of the course "engineering and computer graphics" </p>
-                     <p>link to github of project <u>https://github.com/Wooshey1411/ICGFilters</u>
+                     <p><b><i>Wireframe</i></b> represents a program for visualising simple rotation shapes</p>
+                     <b>Created by</b>: Kondrenko Kirill, student of group 21203 in NSU in May 2024 as task of the course "Engineering and computer graphics"</b>
                 </html>
                 """;
     }
