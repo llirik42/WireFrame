@@ -51,9 +51,9 @@ public class WireFrameViewer extends JPanel {
             final double cos = Math.cos(angle);
 
             for (final var it : context.getBSplinePoints()) {
-                double x = it.y() * cos;
-                double y = it.y() * sin;
-                points.add(new Double4DPoint(x, y, it.x(), 1));
+                double x = it.getY() * cos;
+                double y = it.getY() * sin;
+                points.add(new Double4DPoint(x, y, it.getX(), 1));
             }
         }
 
@@ -67,9 +67,9 @@ public class WireFrameViewer extends JPanel {
                 final double angle = segmentsDelta * j;
                 final double sin = Math.sin(angle);
                 final double cos = Math.cos(angle);
-                final double x = p.y() * cos;
-                final double y = p.y() * sin;
-                circles.add(new Double4DPoint(x, y, p.x(), 1));
+                final double x = p.getY() * cos;
+                final double y = p.getY() * sin;
+                circles.add(new Double4DPoint(x, y, p.getX(), 1));
             }
         }
 
@@ -138,20 +138,20 @@ public class WireFrameViewer extends JPanel {
     private List<List<Double4DPoint>> normalize(List<Double4DPoint> points, List<Double4DPoint> circles) {
         final List<Double4DPoint> allPoints = Stream.concat(points.stream(), circles.stream()).toList();
 
-        double minX = points.get(0).x();
+        double minX = points.get(0).getX();
         double maxX = minX;
-        double minY = points.get(0).y();
+        double minY = points.get(0).getY();
         double maxY = minY;
-        double minZ = points.get(0).z();
+        double minZ = points.get(0).getZ();
         double maxZ = minZ;
 
         for (final var p : allPoints) {
-            minX = Double.min(minX, p.x());
-            maxX = Double.max(maxX, p.x());
-            minY = Double.min(minY, p.y());
-            maxY = Double.max(maxY, p.y());
-            minZ = Double.min(minZ, p.z());
-            maxZ = Double.max(maxZ, p.z());
+            minX = Double.min(minX, p.getX());
+            maxX = Double.max(maxX, p.getX());
+            minY = Double.min(minY, p.getY());
+            maxY = Double.max(maxY, p.getY());
+            minZ = Double.min(minZ, p.getZ());
+            maxZ = Double.max(maxZ, p.getZ());
         }
 
         final double xRange = maxX - minX;
@@ -183,7 +183,7 @@ public class WireFrameViewer extends JPanel {
     }
 
     private ScreenCalculationResult calculatePointOnScreen(Double4DPoint point, Context context) {
-        final double[] pointValues = {point.x(), point.y(), point.z(), point.t()};
+        final double[] pointValues = {point.getX(), point.getY(), point.getZ(), point.getT()};
 
         final SimpleMatrix tmp = context.getCameraMatrix();
         tmp.set(0, 3, 1) ;
@@ -197,11 +197,11 @@ public class WireFrameViewer extends JPanel {
                 pMatrix.get(3)
         );
 
-        final double distance = p.t();
+        final double distance = p.getT();
 
         final Double2DPoint res = new Double2DPoint(
-                p.y() / distance,
-                p.z() / distance
+                p.getY() / distance,
+                p.getZ() / distance
         );
 
         final Context fakeContext = new Context();

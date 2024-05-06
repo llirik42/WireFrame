@@ -35,10 +35,10 @@ public final class BSplineUtils {
             final Double2DPoint p4 = points.get(i + 3);
 
             final double[][] pointsValues = {
-                    {p1.x(), p1.y()},
-                    {p2.x(), p2.y()},
-                    {p3.x(), p3.y()},
-                    {p4.x(), p4.y()},
+                    {p1.getX(), p1.getY()},
+                    {p2.getX(), p2.getY()},
+                    {p3.getX(), p3.getY()},
+                    {p4.getX(), p4.getY()},
             };
             final SimpleMatrix pointsMatrix = MATRIX.mult(new SimpleMatrix(pointsValues));
             final SimpleMatrix prevMatrixPoint = T_MATRIX.mult(pointsMatrix);

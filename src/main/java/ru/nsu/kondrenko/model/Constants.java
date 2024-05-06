@@ -4,7 +4,7 @@ public class Constants {
     public static final String SCENE_EXTENSION = "wfctx";
 
     public static final double CAMERA_DISTANCE = 10;
-    public static final double CAMERA_MATRIX_VALUE = 100;
+    public static final double CAMERA_MATRIX_VALUE = 75;
 
     public static final int MIN_POLYLINES_NUMBER = 1;
     public static final int START_POLYLINES_NUMBER = 10;

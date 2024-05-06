@@ -1,6 +1,14 @@
 package ru.nsu.kondrenko.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.io.Serializable;
 
-public record Double2DPoint(double x, double y) implements Serializable {
+@Data
+@AllArgsConstructor
+public class Double2DPoint implements Serializable {
+    private double x;
+
+    private double y;
 }

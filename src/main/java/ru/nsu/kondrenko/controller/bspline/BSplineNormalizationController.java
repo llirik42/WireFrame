@@ -21,16 +21,16 @@ public class BSplineNormalizationController implements ActionListener {
             context.setMaxY(Constants.START_MAX_X * k);
             context.notifyListeners();
         } else {
-            double minX = context.getPoints().get(0).x();
-            double maxX = context.getPoints().get(0).x();
-            double minY = context.getPoints().get(0).y();
-            double maxY = context.getPoints().get(0).y();
+            double minX = context.getPoints().get(0).getX();
+            double maxX = context.getPoints().get(0).getX();
+            double minY = context.getPoints().get(0).getY();
+            double maxY = context.getPoints().get(0).getY();
 
             for (final var it : context.getPoints()) {
-                minX = Double.min(it.x(), minX);
-                maxX = Double.max(it.x(), maxX);
-                minY = Double.min(it.y(), minY);
-                maxY = Double.max(it.y(), maxY);
+                minX = Double.min(it.getX(), minX);
+                maxX = Double.max(it.getX(), maxX);
+                minY = Double.min(it.getY(), minY);
+                maxY = Double.max(it.getY(), maxY);
             }
 
             context.setMinX(minX - 1);

@@ -21,8 +21,8 @@ public final class Utils {
     public static IntPoint realToScreen(Double2DPoint realPoint, Context context) {
         final double minX = context.getMinX();
         final double minY = context.getMinY();
-        final double xRelative = (realPoint.x() - minX) / context.getXRange();
-        final double yRelative = (realPoint.y() - minY) / context.getYRange();
+        final double xRelative = (realPoint.getX() - minX) / context.getXRange();
+        final double yRelative = (realPoint.getY() - minY) / context.getYRange();
         final int x = (int) Math.round(xRelative * context.getWidth());
         final int y = (int) Math.round((1 - yRelative) * context.getHeight());
         return new IntPoint(x, y);

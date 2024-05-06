@@ -139,7 +139,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
         final int y = point.getY();
         final Double2DPoint realPoint = Utils.screenToReal(new IntPoint(x, y), context);
         graphics2D.drawLine(x, y - spread, x, y + spread);
-        final String label = String.valueOf(rounder.round(realPoint.x()));
+        final String label = String.valueOf(rounder.round(realPoint.getX()));
         graphics2D.drawString(label, x - label.length() * 3, y - 10);
     }
 
@@ -148,7 +148,7 @@ public class BSplineEditor extends JPanel implements ContextListener {
         final int y = point.getY();
         final Double2DPoint realPoint = Utils.screenToReal(new IntPoint(x, y), context);
         graphics2D.drawLine(x - spread, y, x + spread, y);
-        final String label = String.valueOf(rounder.round(realPoint.y()));
+        final String label = String.valueOf(rounder.round(realPoint.getY()));
         graphics2D.drawString(label, x + 10, y + 5);
     }
 }

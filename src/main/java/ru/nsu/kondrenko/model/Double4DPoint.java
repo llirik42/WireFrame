@@ -1,6 +1,19 @@
 package ru.nsu.kondrenko.model;
 
-public record Double4DPoint(double x, double y, double z, double t) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class Double4DPoint {
+    private double x;
+
+    private double y;
+
+    private double z;
+
+    private double t;
+
     public Double4DPoint minus(Double4DPoint p) {
         return new Double4DPoint(
                 x - p.x,
