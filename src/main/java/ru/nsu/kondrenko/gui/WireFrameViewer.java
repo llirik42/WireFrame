@@ -56,8 +56,10 @@ public class WireFrameViewer extends JPanel {
         // Дуги
         final int allSegmentsNumber = generatricesNumber * context.getCircleSegmentsNumber();
         final double segmentsDelta = (2 * Math.PI) / allSegmentsNumber;
-        for (final var p : context.getBSplinePoints()) { // TODO: context.getPoints()
+        final int stop = context.getPolylinesNumber() == 1 ? bSplinePointsNumber : bSplinePointsNumber + 1;
+        for (int i = 0; i < stop; i += context.getPolylinesNumber()) {
             for (int j = 0; j < allSegmentsNumber; j++) {
+                final Double2DPoint p = context.getBSplinePoints().get(i);
                 final double angle = segmentsDelta * j;
                 final double sin = Math.sin(angle);
                 final double cos = Math.cos(angle);
@@ -94,7 +96,12 @@ public class WireFrameViewer extends JPanel {
             }
         }
 
-        for (int i = 0; i < bSplinePointsNumber; i++) {
+        int stop2 = bSplinePointsNumber / context.getPolylinesNumber();
+        if (context.getPolylinesNumber() > 1) {
+            stop2++;
+        }
+
+        for (int i = 0; i < stop2; i++) {
             final var res1 = calculatePointOnScreen(normalizedCircles.get(allSegmentsNumber * i), context);
 
             IntPoint startPoint = res1.screenPoint;
