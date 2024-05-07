@@ -3,6 +3,7 @@ package ru.nsu.kondrenko.gui.controller.bspline;
 import lombok.RequiredArgsConstructor;
 import ru.nsu.kondrenko.gui.controller.common.MouseController;
 import ru.nsu.kondrenko.model.CommonUtils;
+import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.context.ContextUtils;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
@@ -29,7 +30,7 @@ public class BSplineMouseController extends MouseController {
                     context
             );
 
-            if (mousePoint.distance(clickPoint) < 10) {
+            if (mousePoint.distance(clickPoint) < Constants.PIVOT_POINT_RADIUS) {
                 foundPoint = p;
             }
         }
