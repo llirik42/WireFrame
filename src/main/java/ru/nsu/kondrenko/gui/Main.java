@@ -1,16 +1,17 @@
 package ru.nsu.kondrenko.gui;
 
-import ru.nsu.kondrenko.controller.AboutController;
-import ru.nsu.kondrenko.controller.ExitController;
-import ru.nsu.kondrenko.controller.OpenController;
-import ru.nsu.kondrenko.controller.SaveController;
-import ru.nsu.kondrenko.controller.bspline.BSplineNormalizationController;
-import ru.nsu.kondrenko.controller.wireframe.WireframeResetAngleController;
-import ru.nsu.kondrenko.controller.wireframe.WireframeResetDistanceController;
-import ru.nsu.kondrenko.model.ContextIOException;
+import ru.nsu.kondrenko.gui.controller.bspline.BSplineNormalizationController;
+import ru.nsu.kondrenko.gui.controller.common.AboutController;
+import ru.nsu.kondrenko.gui.controller.common.ExitController;
+import ru.nsu.kondrenko.gui.controller.common.OpenController;
+import ru.nsu.kondrenko.gui.controller.common.SaveController;
+import ru.nsu.kondrenko.gui.controller.wireframe.WireframeResetAngleController;
+import ru.nsu.kondrenko.gui.controller.wireframe.WireframeResetDistanceController;
+import ru.nsu.kondrenko.gui.view.SwingView;
 import ru.nsu.kondrenko.model.context.Context;
-import ru.nsu.kondrenko.model.context.ContextIO;
-import ru.nsu.kondrenko.model.context.FileContextIO;
+import ru.nsu.kondrenko.model.context.io.ContextIO;
+import ru.nsu.kondrenko.model.context.io.ContextIOException;
+import ru.nsu.kondrenko.model.context.io.FileContextIO;
 
 import java.net.URL;
 
@@ -55,6 +56,7 @@ public class Main {
         }
 
         context.addBSplineListener(view);
+        context.addWireframeListener(view);
         openController.setView(view);
         saveController.setView(view);
         exitController.setView(view);

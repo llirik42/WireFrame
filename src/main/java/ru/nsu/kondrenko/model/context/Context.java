@@ -2,10 +2,10 @@ package ru.nsu.kondrenko.model.context;
 
 import lombok.Data;
 import org.ejml.simple.SimpleMatrix;
-import ru.nsu.kondrenko.model.BSplineUtils;
 import ru.nsu.kondrenko.model.Constants;
-import ru.nsu.kondrenko.model.Double2DPoint;
-import ru.nsu.kondrenko.model.WireframeUtils;
+import ru.nsu.kondrenko.model.bspline.BSplineUtils;
+import ru.nsu.kondrenko.model.dto.Double2DPoint;
+import ru.nsu.kondrenko.model.wireframe.WireframeUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ public class Context implements Serializable {
     private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
     private transient final List<BSplineContextListener> bSplineContextListeners = new ArrayList<>();
+    private transient final List<WireframeListener> wireframeListeners = new ArrayList<>();
 
     public Context() {
         minX = Constants.START_MIN_X;
@@ -53,21 +54,21 @@ public class Context implements Serializable {
     }
 
     public void updateValues(Context other) {
-        setWidth(other.getWidth());
-        setHeight(other.getHeight());
-        setMinX(other.getMinX());
-        setMaxX(other.getMaxX());
-        setMinY(other.getMinY());
-        setMaxY(other.getMaxY());
-        setPolylinesNumber(other.getPolylinesNumber());
-        setGeneratricesNumber(other.getGeneratricesNumber());
-        setCircleSegmentsNumber(other.getCircleSegmentsNumber());
-        setBSplineSensitivity(other.getBSplineSensitivity());
-        setWireframeSensitivity(other.getWireframeSensitivity());
-        setRotationMatrix(other.getRotationMatrix());
-        setCameraMatrix(other.getCameraMatrix());
-        setPoints(other.getPoints());
-        setBSplinePoints(other.getBSplinePoints());
+        width = other.getWidth();
+        height = other.getHeight();
+        minX = other.getMinX();
+        maxX = other.getMaxX();
+        minY = other.getMinY();
+        maxY = other.getMaxY();
+        polylinesNumber = other.getPolylinesNumber();
+        generatricesNumber = other.getGeneratricesNumber();
+        circleSegmentsNumber = other.getCircleSegmentsNumber();
+        bSplineSensitivity = other.getBSplineSensitivity();
+        wireframeSensitivity = other.getWireframeSensitivity();
+        rotationMatrix = other.getRotationMatrix();
+        cameraMatrix = other.getCameraMatrix();
+        points = other.getPoints();
+        bSplinePoints = other.getBSplinePoints();
     }
 
     public double getXRange() {
@@ -80,6 +81,10 @@ public class Context implements Serializable {
 
     public void addBSplineListener(BSplineContextListener listener) {
         bSplineContextListeners.add(listener);
+    }
+
+    public void addWireframeListener(WireframeListener listener) {
+        wireframeListeners.add(listener);
     }
 
     public double getHeightWidthRatio() {
@@ -109,7 +114,13 @@ public class Context implements Serializable {
         }
     }
 
-    private void updateBSplinePoints() {
+    public void notifyWireframeListeners() {
+        for (final var it : wireframeListeners) {
+            it.onWireframeChange(this);
+        }
+    }
+
+    public void updateBSplinePoints() {
         bSplinePoints = BSplineUtils.calculateBSplinePoints(
                 getPoints(),
                 getPolylinesNumber()
