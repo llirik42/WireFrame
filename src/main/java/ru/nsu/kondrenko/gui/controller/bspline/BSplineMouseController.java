@@ -24,7 +24,7 @@ public class BSplineMouseController extends MouseController {
         final IntPoint clickPoint = new IntPoint(e.getX(), e.getY());
 
         Double2DPoint foundPoint = null;
-        for (final var p : context.getPoints()) {
+        for (final var p : context.getPivotPoints()) {
             final IntPoint mousePoint = ContextUtils.realToScreenBSpline(
                     p,
                     context
@@ -45,7 +45,7 @@ public class BSplineMouseController extends MouseController {
                     context.getBSplineMinY(),
                     context.getBSplineMaxY()
             );
-            context.addPoint(realClickPoint);
+            context.addPivotPoint(realClickPoint);
             context.notifyBSplineListeners();
             context.notifyWireframeListeners();
             prevPoint = null;
@@ -69,7 +69,7 @@ public class BSplineMouseController extends MouseController {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (prevPoint != null) {
-            context.removePoint(prevPoint);
+            context.removePivotPoint(prevPoint);
             context.notifyBSplineListeners();
             context.notifyWireframeListeners();
             prevPoint = null;
@@ -87,8 +87,8 @@ public class BSplineMouseController extends MouseController {
                 mousePoint,
                 context
         );
-        final int index = context.removePoint(prevPoint);
-        context.insertPoint(currentPoint, index);
+        final int index = context.removePivotPoint(prevPoint);
+        context.insertPivotPoint(currentPoint, index);
         context.notifyBSplineListeners();
         context.notifyWireframeListeners();
         prevPoint = currentPoint;

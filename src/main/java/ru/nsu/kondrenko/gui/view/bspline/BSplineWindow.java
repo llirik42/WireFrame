@@ -18,6 +18,7 @@ public class BSplineWindow extends Window implements BSplineListener, FormDataLi
                          ActionListener saveListener,
                          ActionListener exitListener,
                          ActionListener bSplineNormalizationListener,
+                         ActionListener bSplineClearListener,
                          ActionListener aboutListener,
                          KeyListener keyListener,
                          MouseListener mouseListener,
@@ -31,7 +32,11 @@ public class BSplineWindow extends Window implements BSplineListener, FormDataLi
                 mouseWheelListener,
                 bSplineEditorListener);
         form = new BSplineForm(context);
-        final BSplineToolsArea toolsArea = new BSplineToolsArea(bSplineNormalizationListener, keyListener);
+        final BSplineToolsArea toolsArea = new BSplineToolsArea(
+                bSplineNormalizationListener,
+                bSplineClearListener,
+                keyListener
+        );
 
         add(editor, BorderLayout.CENTER);
         add(form, BorderLayout.SOUTH);

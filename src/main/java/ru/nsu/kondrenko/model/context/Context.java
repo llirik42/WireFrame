@@ -5,6 +5,7 @@ import org.ejml.simple.SimpleMatrix;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.bspline.BSplineUtils;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
+import ru.nsu.kondrenko.model.dto.Double4DPoint;
 import ru.nsu.kondrenko.model.wireframe.WireframeUtils;
 
 import java.io.Serializable;
@@ -40,12 +41,15 @@ public class Context implements Serializable {
     private SimpleMatrix rotationMatrix;
     private SimpleMatrix cameraMatrix;
 
-    private List<Double2DPoint> points = new LinkedList<>();
-    private List<Double2DPoint> bSplinePoints = new LinkedList<>();
+    private List<Double2DPoint> pivotPoints = new LinkedList<>();
+    private List<Double2DPoint> bSplinePoints = new ArrayList<>();
+    private List<Double4DPoint> generatricesPoints = new ArrayList<>();
+    private List<Double4DPoint> circlesPoints = new ArrayList<>();
 
     private transient final List<BSplineListener> bSplineContextListeners = new ArrayList<>();
     private transient final List<WireframeListener> wireframeListeners = new ArrayList<>();
     private transient final List<FormDataListener> formDataListeners = new ArrayList<>();
+    private transient final List<RotationListener> rotationListeners = new ArrayList<>();
 
     public Context() {
         final double bSplineRatio = 1.0 * START_BSPLINE_EDITOR_WIDTH / START_BSPLINE_EDITOR_HEIGHT;
@@ -73,6 +77,17 @@ public class Context implements Serializable {
         updateBSplinePoints();
     }
 
+    public void setGeneratricesNumber(int generatricesNumber) {
+        this.generatricesNumber = generatricesNumber;
+        updateGeneratricesPoints();
+        updateCirclesPoints();
+    }
+
+    public void setCircleSegmentsNumber(int circleSegmentsNumber) {
+        this.circleSegmentsNumber = circleSegmentsNumber;
+        updateCirclesPoints();
+    }
+
     public void updateValues(Context other) {
         bSplineWidth = other.getBSplineWidth();
         bSplineHeight = other.getBSplineHeight();
@@ -87,7 +102,7 @@ public class Context implements Serializable {
         wireframeSensitivity = other.getWireframeSensitivity();
         rotationMatrix = other.getRotationMatrix();
         cameraMatrix = other.getCameraMatrix();
-        points = other.getPoints();
+        pivotPoints = other.getPivotPoints();
         bSplinePoints = other.getBSplinePoints();
     }
 
@@ -107,25 +122,35 @@ public class Context implements Serializable {
         formDataListeners.add(listener);
     }
 
+    public void addRotationListener(RotationListener rotationListener) {
+        rotationListeners.add(rotationListener);
+    }
+
     public double getHeightWidthRatio() {
         return 1.0 * bSplineHeight / bSplineWidth;
     }
 
-    public void addPoint(Double2DPoint point) {
-        points.add(point);
+    public void addPivotPoint(Double2DPoint point) {
+        pivotPoints.add(point);
         updateBSplinePoints();
     }
 
-    public void insertPoint(Double2DPoint point, int index) {
-        points.add(index, point);
+    public void insertPivotPoint(Double2DPoint point, int index) {
+        pivotPoints.add(index, point);
         updateBSplinePoints();
     }
 
-    public int removePoint(Double2DPoint point) {
-        final int index = points.indexOf(point);
-        points.remove(point);
+    public int removePivotPoint(Double2DPoint point) {
+        final int index = pivotPoints.indexOf(point);
+        pivotPoints.remove(point);
         updateBSplinePoints();
         return index;
+    }
+
+    public void clearPivotPoints() {
+        pivotPoints.clear();
+        bSplinePoints.clear();
+        updateBSplinePoints();
     }
 
     public void notifyBSplineListeners() {
@@ -146,10 +171,38 @@ public class Context implements Serializable {
         }
     }
 
+    public void notifyRotationListeners() {
+        for (final var it : rotationListeners) {
+            it.onRotationChange(this);
+        }
+    }
+
     private void updateBSplinePoints() {
         bSplinePoints = BSplineUtils.calculateBSplinePoints(
-                getPoints(),
+                getPivotPoints(),
                 getPolylinesNumber()
+        );
+        updateGeneratricesPoints();
+        updateCirclesPoints();
+    }
+
+    private void updateGeneratricesPoints() {
+        generatricesPoints = WireframeUtils.calculateGeneratricesPoints(
+                generatricesNumber,
+                bSplinePoints
+        );
+    }
+
+    private void updateCirclesPoints() {
+        if (bSplinePoints.isEmpty()) {
+            return;
+        }
+
+        circlesPoints = WireframeUtils.calculateCirclesPoints(
+                polylinesNumber,
+                generatricesNumber,
+                circleSegmentsNumber,
+                bSplinePoints
         );
     }
 }

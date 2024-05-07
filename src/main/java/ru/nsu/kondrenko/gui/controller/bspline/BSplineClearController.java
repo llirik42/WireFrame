@@ -8,11 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @RequiredArgsConstructor
-public class BSplineNormalizationController implements ActionListener {
+public class BSplineClearController implements ActionListener {
     private final Context context;
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        context.clearPivotPoints();
         ContextUtils.normalizeContext(context);
+        context.notifyWireframeListeners();
     }
 }

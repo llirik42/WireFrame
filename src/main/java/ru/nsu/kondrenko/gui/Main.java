@@ -1,9 +1,6 @@
 package ru.nsu.kondrenko.gui;
 
-import ru.nsu.kondrenko.gui.controller.bspline.BSplineMouseController;
-import ru.nsu.kondrenko.gui.controller.bspline.BSplineMovingController;
-import ru.nsu.kondrenko.gui.controller.bspline.BSplineNormalizationController;
-import ru.nsu.kondrenko.gui.controller.bspline.BSplineResizeController;
+import ru.nsu.kondrenko.gui.controller.bspline.*;
 import ru.nsu.kondrenko.gui.controller.common.AboutController;
 import ru.nsu.kondrenko.gui.controller.common.ExitController;
 import ru.nsu.kondrenko.gui.controller.common.OpenController;
@@ -33,6 +30,7 @@ public class Main {
         final WireframeResetAngleController resettingAngleController = new WireframeResetAngleController(context);
         final WireframeResetDistanceController resettingDistanceController = new WireframeResetDistanceController(context);
         final BSplineNormalizationController normalizationController = new BSplineNormalizationController(context);
+        final BSplineClearController clearController = new BSplineClearController(context);
         final AboutController aboutController = new AboutController();
         final BSplineMovingController bSplineMovingController = new BSplineMovingController(context);
         final BSplineMouseController bSplineMouseController = new BSplineMouseController(context);
@@ -48,6 +46,7 @@ public class Main {
                 resettingAngleController,
                 resettingDistanceController,
                 normalizationController,
+                clearController,
                 aboutController,
                 bSplineMovingController,
                 bSplineMouseController,

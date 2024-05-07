@@ -8,13 +8,13 @@ import ru.nsu.kondrenko.model.context.WireframeListener;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
 import ru.nsu.kondrenko.model.dto.Double4DPoint;
 import ru.nsu.kondrenko.model.dto.IntPoint;
+import ru.nsu.kondrenko.model.wireframe.WireframeUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class WireFrameViewer extends JPanel implements WireframeListener {
     private final Context context;
@@ -55,48 +55,24 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
         super.paintComponent(g);
         drawXYZ((Graphics2D) g);
 
-        if (context.getBSplinePoints().isEmpty()) {
+        final List<Double2DPoint> bSplinePoints = context.getBSplinePoints();
+        final int bSplinePointsNumber = bSplinePoints.size();
+
+        if (bSplinePointsNumber == 0) {
             return;
         }
 
         final int generatricesNumber = context.getGeneratricesNumber();
-        final double rotationDelta = (2 * Math.PI) / (generatricesNumber);
-        final int bSplinePointsNumber = context.getBSplinePoints().size();
+        final int circleSegmentsNumber = context.getCircleSegmentsNumber();
 
-        final java.util.List<Double4DPoint> points = new ArrayList<>();
-        final java.util.List<Double4DPoint> circles = new ArrayList<>();
+        final List<Double4DPoint> generatricesPoints = context.getGeneratricesPoints();
 
-        // 3D-каркас
-        for (int i = 0; i < generatricesNumber; i++) {
-            final double angle = rotationDelta * i;
-            final double sin = Math.sin(angle);
-            final double cos = Math.cos(angle);
+        final List<Double4DPoint> circlesPoints = context.getCirclesPoints();
 
-            for (final var it : context.getBSplinePoints()) {
-                double x = it.getY() * cos;
-                double y = it.getY() * sin;
-                points.add(new Double4DPoint(x, y, it.getX(), 1));
-            }
-        }
+        final int allSegmentsNumber = generatricesNumber * circleSegmentsNumber;
 
-        // Дуги
-        final int allSegmentsNumber = generatricesNumber * context.getCircleSegmentsNumber();
-        final double segmentsDelta = (2 * Math.PI) / allSegmentsNumber;
-        final int stop = context.getPolylinesNumber() == 1 ? bSplinePointsNumber : bSplinePointsNumber + 1;
-        for (int i = 0; i < stop; i += context.getPolylinesNumber()) {
-            for (int j = 0; j < allSegmentsNumber; j++) {
-                final Double2DPoint p = context.getBSplinePoints().get(i);
-                final double angle = segmentsDelta * j;
-                final double sin = Math.sin(angle);
-                final double cos = Math.cos(angle);
-                final double x = p.getY() * cos;
-                final double y = p.getY() * sin;
-                circles.add(new Double4DPoint(x, y, p.getX(), 1));
-            }
-        }
-
-        final java.util.List<java.util.List<Double4DPoint>> normalized = normalize(points, circles);
-        final java.util.List<Double4DPoint> normalizedPoints = normalized.get(0);
+        final List<List<Double4DPoint>> normalized = normalize(generatricesPoints, circlesPoints);
+        final List<Double4DPoint> normalizedPoints = normalized.get(0);
         final List<Double4DPoint> normalizedCircles = normalized.get(1);
 
         for (int i = 0; i < context.getGeneratricesNumber(); i++) {
@@ -155,24 +131,15 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
         }
     }
 
-    private List<List<Double4DPoint>> normalize(List<Double4DPoint> points, List<Double4DPoint> circles) {
-        final List<Double4DPoint> allPoints = Stream.concat(points.stream(), circles.stream()).toList();
-
-        double minX = points.get(0).getX();
-        double maxX = minX;
-        double minY = points.get(0).getY();
-        double maxY = minY;
-        double minZ = points.get(0).getZ();
-        double maxZ = minZ;
-
-        for (final var p : allPoints) {
-            minX = Double.min(minX, p.getX());
-            maxX = Double.max(maxX, p.getX());
-            minY = Double.min(minY, p.getY());
-            maxY = Double.max(maxY, p.getY());
-            minZ = Double.min(minZ, p.getZ());
-            maxZ = Double.max(maxZ, p.getZ());
-        }
+    private List<List<Double4DPoint>> normalize(List<Double4DPoint> generatricesPoints,
+                                                List<Double4DPoint> circlesPoints) {
+        final double[] minMaxValues = WireframeUtils.findMinMax(generatricesPoints, circlesPoints);
+        final double minX = minMaxValues[0];
+        final double maxX = minMaxValues[1];
+        final double minY = minMaxValues[2];
+        final double maxY = minMaxValues[3];
+        final double minZ = minMaxValues[4];
+        final double maxZ = minMaxValues[5];
 
         final double xRange = maxX - minX;
         final double yRange = maxY - minY;
@@ -187,12 +154,12 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
         final List<List<Double4DPoint>> res = new ArrayList<>();
 
         final List<Double4DPoint> normalizedPoints = new ArrayList<>();
-        for (final var p : points) {
+        for (final var p : generatricesPoints) {
             normalizedPoints.add(p.minus(centerPoint).divide(maxRange));
         }
 
         final List<Double4DPoint> normalizedCircles = new ArrayList<>();
-        for (final var c : circles) {
+        for (final var c : circlesPoints) {
             normalizedCircles.add(c.minus(centerPoint).divide(maxRange));
         }
 
@@ -203,6 +170,9 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
     }
 
     private ScreenCalculationResult calculatePointOnScreen(Double4DPoint point, Context context) {
+        // Camera
+        // Rotation
+
         final double[] pointValues = {point.getX(), point.getY(), point.getZ(), point.getT()};
 
         final SimpleMatrix tmp = context.getCameraMatrix();
@@ -233,11 +203,13 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
         );
     }
 
-    private void drawXYZ(Graphics2D g) {
+    private void drawXYZ(Graphics2D graphics2D) {
+        // Rotation
+
         final double[][] xyzCameraMatrixData = {
                 {1, 0, 0, 0},
-                {0, 200, 0, 0},
-                {0, 0, 200, 0},
+                {0, 500, 0, 0},
+                {0, 0, 500, 0},
                 {1, 0, 0, 10}
         };
 
@@ -253,58 +225,57 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
         final SimpleMatrix yOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(yMatrix));
         final SimpleMatrix zOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(zMatrix));
 
-        final int t1 = getWidth() - 50;
-        final int t2 = getHeight() - 50;
-        final double k = 2;
+        final int t1 = getWidth() - 60;
+        final int t2 = getHeight() - 60;
 
         IntPoint centerPointOnScreen = new IntPoint(
-                (int) (centerPointOnScreenMatrix.get(1) / centerPointOnScreenMatrix.get(3) * k) + t1,
-                (int) (-centerPointOnScreenMatrix.get(2) / centerPointOnScreenMatrix.get(3) * k) + t2
+                (int) (centerPointOnScreenMatrix.get(1) / centerPointOnScreenMatrix.get(3)) + t1,
+                (int) (-centerPointOnScreenMatrix.get(2) / centerPointOnScreenMatrix.get(3)) + t2
         );
 
         IntPoint xPointOnScreen = new IntPoint(
-                (int) (xOnScreenMatrix.get(1) / xOnScreenMatrix.get(3) * k) + t1,
-                (int) (-xOnScreenMatrix.get(2) / xOnScreenMatrix.get(3) * k) + t2
+                (int) (xOnScreenMatrix.get(1) / xOnScreenMatrix.get(3)) + t1,
+                (int) (-xOnScreenMatrix.get(2) / xOnScreenMatrix.get(3)) + t2
         );
 
         IntPoint yPointOnScreen = new IntPoint(
-                (int) (yOnScreenMatrix.get(1) / yOnScreenMatrix.get(3) * k) + t1,
-                (int) (-yOnScreenMatrix.get(2) / yOnScreenMatrix.get(3) * k) + t2
+                (int) (yOnScreenMatrix.get(1) / yOnScreenMatrix.get(3)) + t1,
+                (int) (-yOnScreenMatrix.get(2) / yOnScreenMatrix.get(3)) + t2
         );
 
         IntPoint zPointOnScreen = new IntPoint(
-                (int) (zOnScreenMatrix.get(1) / zOnScreenMatrix.get(3) * k) + t1,
-                (int) (-zOnScreenMatrix.get(2) / zOnScreenMatrix.get(3) * k) + t2
+                (int) (zOnScreenMatrix.get(1) / zOnScreenMatrix.get(3)) + t1,
+                (int) (-zOnScreenMatrix.get(2) / zOnScreenMatrix.get(3)) + t2
         );
 
-        final Color oldColor = g.getColor();
-        final Stroke oldStroke = g.getStroke();
+        final Color oldColor = graphics2D.getColor();
+        final Stroke oldStroke = graphics2D.getStroke();
 
         final Stroke stroke = new BasicStroke(3);
 
-        g.setStroke(stroke);
-        g.setColor(Color.RED);
+        graphics2D.setStroke(stroke);
+        graphics2D.setColor(Color.RED);
         SwingUtils.drawLine(
-                g,
+                graphics2D,
                 centerPointOnScreen,
                 xPointOnScreen
         );
 
-        g.setColor(Color.GREEN);
+        graphics2D.setColor(Color.GREEN);
         SwingUtils.drawLine(
-                g,
+                graphics2D,
                 centerPointOnScreen,
                 yPointOnScreen
         );
 
-        g.setColor(Color.BLUE);
+        graphics2D.setColor(Color.BLUE);
         SwingUtils.drawLine(
-                g,
+                graphics2D,
                 centerPointOnScreen,
                 zPointOnScreen
         );
 
-        g.setStroke(oldStroke);
-        g.setColor(oldColor);
+        graphics2D.setStroke(oldStroke);
+        graphics2D.setColor(oldColor);
     }
 }

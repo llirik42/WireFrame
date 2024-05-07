@@ -53,7 +53,7 @@ public class BSplineEditor extends JPanel implements BSplineListener {
     }
 
     private void drawCurvePoints(Graphics g) {
-        for (final var p : context.getPoints()) {
+        for (final var p : context.getPivotPoints()) {
             final IntPoint mousePoint = ContextUtils.realToScreenBSpline(
                     p,
                     context
@@ -90,7 +90,7 @@ public class BSplineEditor extends JPanel implements BSplineListener {
     }
 
     private void drawBSplinePointsConnection(Graphics g) {
-        final List<Double2DPoint> points = context.getPoints();
+        final List<Double2DPoint> points = context.getPivotPoints();
         if (points.isEmpty()) {
             return;
         }
@@ -104,7 +104,7 @@ public class BSplineEditor extends JPanel implements BSplineListener {
 
         for (int i = 0; i < points.size(); i++) {
             final IntPoint currentPoint = ContextUtils.realToScreenBSpline(
-                    context.getPoints().get(i),
+                    context.getPivotPoints().get(i),
                     context
             );
 
