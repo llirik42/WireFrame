@@ -28,4 +28,8 @@ public class IntegerSpinner extends JSpinner {
     public int getIntValue() {
         return Integer.parseInt(getValue().toString());
     }
+
+    public void setIntValue(int value) {
+        setValue(Integer.toString(value));
+    }
 }
