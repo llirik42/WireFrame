@@ -184,6 +184,6 @@ public class SwingView implements View, BSplineListener, WireframeListener, Form
 
     @Override
     public void onFormDataChange(Context context) {
-
+        bSplineWindow.onFormDataChange(context);
     }
 }

@@ -91,12 +91,8 @@ public class Context implements Serializable {
         bSplinePoints = other.getBSplinePoints();
     }
 
-    public double getXRange() {
+    public double getBSplineXRange() {
         return bSplineMaxX - bSplineMinX;
-    }
-
-    public double getYRange() {
-        return bSplineMaxY - bSplineMinY;
     }
 
     public void addBSplineListener(BSplineListener listener) {
@@ -141,6 +137,12 @@ public class Context implements Serializable {
     public void notifyWireframeListeners() {
         for (final var it : wireframeListeners) {
             it.onWireframeChange(this);
+        }
+    }
+
+    public void notifyFormDataListeners() {
+        for (final var it : formDataListeners) {
+            it.onFormDataChange(this);
         }
     }
 

@@ -68,6 +68,8 @@ public class Main {
 
         context.addBSplineListener(view);
         context.addWireframeListener(view);
+        context.addFormDataListener(view);
+
         openController.setView(view);
         saveController.setView(view);
         exitController.setView(view);

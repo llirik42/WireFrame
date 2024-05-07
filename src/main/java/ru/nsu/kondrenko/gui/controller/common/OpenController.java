@@ -31,6 +31,7 @@ public class OpenController implements ActionListener {
             context.updateValues(contextIO.read(selectedFile.toString()));
             context.notifyBSplineListeners();
             context.notifyWireframeListeners();
+            context.notifyFormDataListeners();
         } catch (ContextIOException exception) {
             view.showError("Cannot open scene");
         }

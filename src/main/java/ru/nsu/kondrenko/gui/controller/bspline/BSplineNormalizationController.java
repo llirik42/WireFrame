@@ -55,7 +55,7 @@ public class BSplineNormalizationController implements ActionListener {
                 context.setBSplineMaxY(maxY);
             }
 
-            final double offset = 2 * Constants.PIVOT_POINT_RADIUS * context.getXRange() / context.getBSplineWidth();
+            final double offset = 2 * Constants.PIVOT_POINT_RADIUS * context.getBSplineXRange() / context.getBSplineWidth();
 
             context.setBSplineMinX(context.getBSplineMinX() - offset);
             context.setBSplineMaxX(context.getBSplineMaxX() + offset);
