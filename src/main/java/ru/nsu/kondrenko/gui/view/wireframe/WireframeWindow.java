@@ -18,11 +18,11 @@ public class WireframeWindow extends Window implements WireframeListener {
                            ActionListener resetDistanceListener,
                            ActionListener aboutListener) {
         super();
-        setMinimumSize(new Dimension(640, 480));
-        setPreferredSize(new Dimension(1280, 720));
-        this.viewer = new WireFrameViewer(context);
+        viewer = new WireFrameViewer(context);
 
         add(new WireframeToolsArea(resetAngleListener, resetDistanceListener), BorderLayout.NORTH);
+
+        add(viewer);
 
         setJMenuBar(new WireframeMenuArea(
                 openListener,
@@ -33,7 +33,6 @@ public class WireframeWindow extends Window implements WireframeListener {
                 aboutListener
         ).getMenuBar());
 
-        add(viewer);
         pack();
     }
 
