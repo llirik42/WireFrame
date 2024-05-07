@@ -7,6 +7,7 @@ import ru.nsu.kondrenko.model.dto.Double2DPoint;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class BSplineNormalizationController implements ActionListener {
@@ -14,7 +15,13 @@ public class BSplineNormalizationController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        if (context.getPoints().isEmpty()) {
+        final List<Double2DPoint> points = context.getPoints();
+
+        if (points.size() == 1) {
+            return;
+        }
+
+        if (points.isEmpty()) {
             final double ratio = context.getHeightWidthRatio();
             context.setBSplineMinX(Constants.BSPLINE_START_MIN_X);
             context.setBSplineMaxX(Constants.BSPLINE_START_MAX_X);
@@ -40,23 +47,22 @@ public class BSplineNormalizationController implements ActionListener {
             final double yRange = maxY - minY;
 
             if (xRange * context.getHeightWidthRatio() >= yRange) {
-                final double newYRange = xRange * ratio;
-                final double scale = newYRange / yRange;
+                final double newYRangeHalved = 0.5 * xRange * ratio;
+                final double avgY = (maxY + minY) / 2;
                 context.setBSplineMinX(minX);
                 context.setBSplineMaxX(maxX);
-                context.setBSplineMinY(minY * scale);
-                context.setBSplineMaxY(maxY * scale);
+                context.setBSplineMinY(-newYRangeHalved + avgY);
+                context.setBSplineMaxY(newYRangeHalved + avgY);
             } else {
-                final double newXRange = yRange / ratio;
-                final double scale = newXRange / xRange;
-                context.setBSplineMinX(minX * scale);
-                context.setBSplineMaxX(maxX * scale);
+                final double newXRangeHalved = 0.5 * yRange / ratio;
+                final double avgX = (maxX + minX) / 2;
+                context.setBSplineMinX(-newXRangeHalved + avgX);
+                context.setBSplineMaxX(newXRangeHalved + avgX);
                 context.setBSplineMinY(minY);
                 context.setBSplineMaxY(maxY);
             }
 
             final double offset = 2 * Constants.PIVOT_POINT_RADIUS * context.getBSplineXRange() / context.getBSplineWidth();
-
             context.setBSplineMinX(context.getBSplineMinX() - offset);
             context.setBSplineMaxX(context.getBSplineMaxX() + offset);
             context.setBSplineMinY(context.getBSplineMinY() - offset);
