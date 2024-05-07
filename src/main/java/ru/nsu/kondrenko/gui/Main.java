@@ -57,6 +57,10 @@ public class Main {
                 wireFrameMouseController
         );
 
+        context.addBSplineListener(view);
+        context.addWireframeListener(view);
+        context.addFormDataListener(view);
+
         try {
             final URL url = Main.class.getClassLoader().getResource(START_SCENE_PATH);
 
@@ -69,10 +73,6 @@ public class Main {
         } catch (ContextIOException exception) {
             view.showWarning("Error during reading start scene");
         }
-
-        context.addBSplineListener(view);
-        context.addWireframeListener(view);
-        context.addFormDataListener(view);
 
         openController.setView(view);
         saveController.setView(view);
