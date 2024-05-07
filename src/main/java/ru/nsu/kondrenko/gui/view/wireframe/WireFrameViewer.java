@@ -1,7 +1,7 @@
 package ru.nsu.kondrenko.gui.view.wireframe;
 
 import org.ejml.simple.SimpleMatrix;
-import ru.nsu.kondrenko.gui.controller.wireframe.WireFrameMouseController;
+import ru.nsu.kondrenko.gui.view.SwingUtils;
 import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.context.ContextUtils;
 import ru.nsu.kondrenko.model.context.WireframeListener;
@@ -11,8 +11,7 @@ import ru.nsu.kondrenko.model.dto.IntPoint;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -28,12 +27,14 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
     private record ScreenCalculationResult(IntPoint screenPoint, float scale) {
     }
 
-    public WireFrameViewer(Context context) {
+    public WireFrameViewer(Context context,
+                           MouseListener mouseListener,
+                           MouseMotionListener mouseMotionListener,
+                           MouseWheelListener mouseWheelListener) {
         this.context = context;
-        final WireFrameMouseController controller = new WireFrameMouseController(context);
-        addMouseListener(controller);
-        addMouseMotionListener(controller);
-        addMouseWheelListener(controller);
+        addMouseListener(mouseListener);
+        addMouseMotionListener(mouseMotionListener);
+        addMouseWheelListener(mouseWheelListener);
 
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -111,11 +112,10 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
                 IntPoint currentPointsOnScreen = res2.screenPoint;
 
                 g.setColor(new Color(res1.scale, res1.scale, res1.scale));
-                g.drawLine(
-                        prevPointOnScreen.getX(),
-                        prevPointOnScreen.getY(),
-                        currentPointsOnScreen.getX(),
-                        currentPointsOnScreen.getY()
+                SwingUtils.drawLine(
+                        g,
+                        prevPointOnScreen,
+                        currentPointsOnScreen
                 );
                 prevPointOnScreen = currentPointsOnScreen;
             }
@@ -137,21 +137,20 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
 
                 IntPoint currentPointsOnScreen = res2.screenPoint;
                 g.setColor(new Color(res1.scale, res1.scale, res1.scale));
-                g.drawLine(
-                        prevPointOnScreen.getX(),
-                        prevPointOnScreen.getY(),
-                        currentPointsOnScreen.getX(),
-                        currentPointsOnScreen.getY()
+                SwingUtils.drawLine(
+                        g,
+                        prevPointOnScreen,
+                        currentPointsOnScreen
                 );
                 prevPointOnScreen = currentPointsOnScreen;
             }
 
             g.setColor(new Color(res1.scale, res1.scale, res1.scale));
-            g.drawLine(
-                    prevPointOnScreen.getX(),
-                    prevPointOnScreen.getY(),
-                    startPoint.getX(),
-                    startPoint.getY()
+
+            SwingUtils.drawLine(
+                    g,
+                    prevPointOnScreen,
+                    startPoint
             );
         }
     }
@@ -285,27 +284,24 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
 
         g.setStroke(stroke);
         g.setColor(Color.RED);
-        g.drawLine(
-                centerPointOnScreen.getX(),
-                centerPointOnScreen.getY(),
-                xPointOnScreen.getX(),
-                xPointOnScreen.getY()
+        SwingUtils.drawLine(
+                g,
+                centerPointOnScreen,
+                xPointOnScreen
         );
 
         g.setColor(Color.GREEN);
-        g.drawLine(
-                centerPointOnScreen.getX(),
-                centerPointOnScreen.getY(),
-                yPointOnScreen.getX(),
-                yPointOnScreen.getY()
+        SwingUtils.drawLine(
+                g,
+                centerPointOnScreen,
+                yPointOnScreen
         );
 
         g.setColor(Color.BLUE);
-        g.drawLine(
-                centerPointOnScreen.getX(),
-                centerPointOnScreen.getY(),
-                zPointOnScreen.getX(),
-                zPointOnScreen.getY()
+        SwingUtils.drawLine(
+                g,
+                centerPointOnScreen,
+                zPointOnScreen
         );
 
         g.setStroke(oldStroke);

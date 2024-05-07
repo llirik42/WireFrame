@@ -6,6 +6,9 @@ import ru.nsu.kondrenko.model.context.WireframeListener;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
 
 public class WireframeWindow extends Window implements WireframeListener {
     private final WireFrameViewer viewer;
@@ -16,9 +19,17 @@ public class WireframeWindow extends Window implements WireframeListener {
                            ActionListener exitListener,
                            ActionListener resetAngleListener,
                            ActionListener resetDistanceListener,
-                           ActionListener aboutListener) {
+                           ActionListener aboutListener,
+                           MouseListener mouseListener,
+                           MouseMotionListener mouseMotionListener,
+                           MouseWheelListener mouseWheelListener) {
         super();
-        viewer = new WireFrameViewer(context);
+        viewer = new WireFrameViewer(
+                context,
+                mouseListener,
+                mouseMotionListener,
+                mouseWheelListener
+        );
 
         add(new WireframeToolsArea(resetAngleListener, resetDistanceListener), BorderLayout.NORTH);
 

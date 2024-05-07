@@ -8,6 +8,7 @@ import ru.nsu.kondrenko.gui.controller.common.AboutController;
 import ru.nsu.kondrenko.gui.controller.common.ExitController;
 import ru.nsu.kondrenko.gui.controller.common.OpenController;
 import ru.nsu.kondrenko.gui.controller.common.SaveController;
+import ru.nsu.kondrenko.gui.controller.wireframe.WireFrameMouseController;
 import ru.nsu.kondrenko.gui.controller.wireframe.WireframeResetAngleController;
 import ru.nsu.kondrenko.gui.controller.wireframe.WireframeResetDistanceController;
 import ru.nsu.kondrenko.gui.view.SwingView;
@@ -35,6 +36,7 @@ public class Main {
         final AboutController aboutController = new AboutController();
         final BSplineMovingController bSplineMovingController = new BSplineMovingController(context);
         final BSplineMouseController bSplineMouseController = new BSplineMouseController(context);
+        final WireFrameMouseController wireFrameMouseController = new WireFrameMouseController(context);
 
         final SwingView view = new SwingView(
                 context,
@@ -50,7 +52,10 @@ public class Main {
                 bSplineMovingController,
                 bSplineMouseController,
                 bSplineMouseController,
-                bSplineMouseController
+                bSplineMouseController,
+                wireFrameMouseController,
+                wireFrameMouseController,
+                wireFrameMouseController
         );
 
         try {

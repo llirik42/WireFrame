@@ -32,9 +32,12 @@ public class SwingView implements View, BSplineListener, WireframeListener, Form
                      ActionListener bSplineNormalizationListener,
                      ActionListener aboutListener,
                      KeyListener keyListener,
-                     MouseListener mouseListener,
-                     MouseMotionListener mouseMotionListener,
-                     MouseWheelListener mouseWheelListener) {
+                     MouseListener bSplineMouseListener,
+                     MouseMotionListener bSplineMouseMotionListener,
+                     MouseWheelListener bSplineMouseWheelListener,
+                     MouseListener wireframeMouseListener,
+                     MouseMotionListener wireframeMouseMotionListener,
+                     MouseWheelListener wireframeMouseWheelListener) {
         aboutTextPane = createAboutTextArea();
         bSplineWindow = new BSplineWindow(
                 context,
@@ -45,9 +48,9 @@ public class SwingView implements View, BSplineListener, WireframeListener, Form
                 bSplineNormalizationListener,
                 aboutListener,
                 keyListener,
-                mouseListener,
-                mouseMotionListener,
-                mouseWheelListener
+                bSplineMouseListener,
+                bSplineMouseMotionListener,
+                bSplineMouseWheelListener
         );
         wireframeWindow = new WireframeWindow(
                 context,
@@ -56,7 +59,10 @@ public class SwingView implements View, BSplineListener, WireframeListener, Form
                 exitListener,
                 resetAngleListener,
                 resetDistanceListener,
-                aboutListener
+                aboutListener,
+                wireframeMouseListener,
+                wireframeMouseMotionListener,
+                wireframeMouseWheelListener
         );
 
         bSplineWindow.addWindowListener(windowListener);
