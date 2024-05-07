@@ -3,6 +3,9 @@ package ru.nsu.kondrenko.model;
 public class Constants {
     public static final String SCENE_EXTENSION = "wfctx";
 
+    public static final int START_BSPLINE_EDITOR_WIDTH = 1280;
+    public static final int START_BSPLINE_EDITOR_HEIGHT = 540;
+
     public static final int PIVOT_POINT_RADIUS = 10;
 
     public static final double CAMERA_DISTANCE = 10;
@@ -28,6 +31,9 @@ public class Constants {
     public static final int START_WIREFRAME_SENSITIVITY = 10;
     public static final int MAX_WIREFRAME_SENSITIVITY = 100;
 
-    public static final double START_MIN_X = -11;
-    public static final double START_MAX_X = 11;
+    public static final double BSPLINE_START_MIN_X = -10;
+    public static final double BSPLINE_START_MAX_X = 10;
+
+    public static final double WIREFRAME_MIN_X = -10;
+    public static final double WIREFRAME_MAX_X = 10;
 }

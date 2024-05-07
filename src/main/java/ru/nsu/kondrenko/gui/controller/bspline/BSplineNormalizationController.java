@@ -16,10 +16,10 @@ public class BSplineNormalizationController implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (context.getPoints().isEmpty()) {
             final double ratio = context.getHeightWidthRatio();
-            context.setMinX(Constants.START_MIN_X);
-            context.setMaxX(Constants.START_MAX_X);
-            context.setMinY(Constants.START_MIN_X * ratio);
-            context.setMaxY(Constants.START_MAX_X * ratio);
+            context.setBSplineMinX(Constants.BSPLINE_START_MIN_X);
+            context.setBSplineMaxX(Constants.BSPLINE_START_MAX_X);
+            context.setBSplineMinY(Constants.BSPLINE_START_MIN_X * ratio);
+            context.setBSplineMaxY(Constants.BSPLINE_START_MAX_X * ratio);
         } else {
             final Double2DPoint firstPoint = context.getPoints().get(0);
             double minX = firstPoint.getX();
@@ -42,25 +42,25 @@ public class BSplineNormalizationController implements ActionListener {
             if (xRange * context.getHeightWidthRatio() >= yRange) {
                 final double newYRange = xRange * ratio;
                 final double scale = newYRange / yRange;
-                context.setMinX(minX);
-                context.setMaxX(maxX);
-                context.setMinY(minY * scale);
-                context.setMaxY(maxY * scale);
+                context.setBSplineMinX(minX);
+                context.setBSplineMaxX(maxX);
+                context.setBSplineMinY(minY * scale);
+                context.setBSplineMaxY(maxY * scale);
             } else {
                 final double newXRange = yRange / ratio;
                 final double scale = newXRange / xRange;
-                context.setMinX(minX * scale);
-                context.setMaxX(maxX * scale);
-                context.setMinY(minY);
-                context.setMaxY(maxY);
+                context.setBSplineMinX(minX * scale);
+                context.setBSplineMaxX(maxX * scale);
+                context.setBSplineMinY(minY);
+                context.setBSplineMaxY(maxY);
             }
 
-            final double offset = 2 * Constants.PIVOT_POINT_RADIUS * context.getXRange() / context.getWidth();
+            final double offset = 2 * Constants.PIVOT_POINT_RADIUS * context.getXRange() / context.getBSplineWidth();
 
-            context.setMinX(context.getMinX() - offset);
-            context.setMaxX(context.getMaxX() + offset);
-            context.setMinY(context.getMinY() - offset);
-            context.setMaxY(context.getMaxY() + offset);
+            context.setBSplineMinX(context.getBSplineMinX() - offset);
+            context.setBSplineMaxX(context.getBSplineMaxX() + offset);
+            context.setBSplineMinY(context.getBSplineMinY() - offset);
+            context.setBSplineMaxY(context.getBSplineMaxY() + offset);
         }
 
         context.notifyBSplineListeners();

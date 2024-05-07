@@ -1,6 +1,5 @@
 package ru.nsu.kondrenko.model;
 
-import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
 import ru.nsu.kondrenko.model.dto.IntPoint;
 
@@ -8,25 +7,33 @@ public final class CommonUtils {
     private CommonUtils() {
     }
 
-    public static Double2DPoint screenToReal(IntPoint mousePoint, Context context) {
-        final int width = context.getWidth();
-        final int height = context.getHeight();
-        final double minX = context.getMinX();
-        final double minY = context.getMinY();
-        final double xRelative = 1.0 * mousePoint.getX() / width;
-        final double yRelative = 1.0 * mousePoint.getY() / height;
-        final double x = minX + xRelative * context.getXRange();
-        final double y = minY + context.getYRange() * (1 - yRelative);
+    public static Double2DPoint screenToReal(IntPoint screenPoint,
+                                             int screenWidth,
+                                             int screenHeight,
+                                             double realMinX,
+                                             double realMaxX,
+                                             double realMinY,
+                                             double realMaxY) {
+        final double xRelative = 1.0 * screenPoint.getX() / screenWidth;
+        final double yRelative = 1.0 * screenPoint.getY() / screenHeight;
+        final double x = realMinX + xRelative * (realMaxX - realMinX);
+        final double y = realMinY + (realMaxY - realMinY) * (1 - yRelative);
         return new Double2DPoint(x, y);
     }
 
-    public static IntPoint realToScreen(Double2DPoint realPoint, Context context) {
-        final double minX = context.getMinX();
-        final double minY = context.getMinY();
-        final double xRelative = (realPoint.getX() - minX) / context.getXRange();
-        final double yRelative = (realPoint.getY() - minY) / context.getYRange();
-        final int x = (int) Math.round(xRelative * context.getWidth());
-        final int y = (int) Math.round((1 - yRelative) * context.getHeight());
+    public static IntPoint realToScreen(Double2DPoint realPoint,
+                                        int screenWidth,
+                                        int screenHeight,
+                                        double realMinX,
+                                        double realMaxX,
+                                        double realMinY,
+                                        double realMaxY) {
+        final double xRange = realMaxX - realMinX;
+        final double yRange = realMaxY - realMinY;
+        final double xRelative = (realPoint.getX() - realMinX) / xRange;
+        final double yRelative = (realPoint.getY() - realMinY) / yRange;
+        final int x = (int) Math.round(xRelative * screenWidth);
+        final int y = (int) Math.round((1 - yRelative) * screenHeight);
         return new IntPoint(x, y);
     }
 }

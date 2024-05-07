@@ -16,34 +16,34 @@ public class BSplineMovingController extends KeyAdapter {
         final double sensitivity = context.getBSplineSensitivity();
         final double delta = 0.05 * sensitivity;
 
-        final double minX = context.getMinX();
-        final double maxX = context.getMaxX();
-        final double minY = context.getMinY();
-        final double maxY = context.getMaxY();
+        final double minX = context.getBSplineMinX();
+        final double maxX = context.getBSplineMaxX();
+        final double minY = context.getBSplineMinY();
+        final double maxY = context.getBSplineMaxY();
 
         if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
-            context.setMinX(minX + delta);
-            context.setMaxX(maxX + delta);
+            context.setBSplineMinX(minX + delta);
+            context.setBSplineMaxX(maxX + delta);
             context.notifyBSplineListeners();
         }
 
         if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
-            context.setMinX(minX - delta);
-            context.setMaxX(maxX - delta);
+            context.setBSplineMinX(minX - delta);
+            context.setBSplineMaxX(maxX - delta);
             context.notifyBSplineListeners();
         }
 
         final double ratio = context.getHeightWidthRatio();
 
         if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-            context.setMinY(minY + delta / ratio);
-            context.setMaxY(maxY + delta / ratio);
+            context.setBSplineMinY(minY + delta / ratio);
+            context.setBSplineMaxY(maxY + delta / ratio);
             context.notifyBSplineListeners();
         }
 
         if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
-            context.setMinY(minY - delta / ratio);
-            context.setMaxY(maxY - delta / ratio);
+            context.setBSplineMinY(minY - delta / ratio);
+            context.setBSplineMaxY(maxY - delta / ratio);
             context.notifyBSplineListeners();
         }
     }

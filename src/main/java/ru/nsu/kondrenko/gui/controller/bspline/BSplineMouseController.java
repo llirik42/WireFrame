@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ru.nsu.kondrenko.gui.controller.common.MouseController;
 import ru.nsu.kondrenko.model.CommonUtils;
 import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.ContextUtils;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
 import ru.nsu.kondrenko.model.dto.IntPoint;
 
@@ -23,7 +24,10 @@ public class BSplineMouseController extends MouseController {
 
         Double2DPoint foundPoint = null;
         for (final var p : context.getPoints()) {
-            final IntPoint mousePoint = CommonUtils.realToScreen(p, context);
+            final IntPoint mousePoint = ContextUtils.realToScreenBSpline(
+                    p,
+                    context
+            );
 
             if (mousePoint.distance(clickPoint) < 10) {
                 foundPoint = p;
@@ -31,7 +35,15 @@ public class BSplineMouseController extends MouseController {
         }
 
         if (foundPoint == null) {
-            final Double2DPoint realClickPoint = CommonUtils.screenToReal(clickPoint, context);
+            final Double2DPoint realClickPoint = CommonUtils.screenToReal(
+                    clickPoint,
+                    context.getBSplineWidth(),
+                    context.getBSplineHeight(),
+                    context.getBSplineMinX(),
+                    context.getBSplineMaxX(),
+                    context.getBSplineMinY(),
+                    context.getBSplineMaxY()
+            );
             context.addPoint(realClickPoint);
             context.notifyBSplineListeners();
             context.notifyWireframeListeners();
@@ -46,10 +58,10 @@ public class BSplineMouseController extends MouseController {
         final double delta = e.getPreciseWheelRotation();
         final double sensitivity = context.getBSplineSensitivity();
         final double k = (1 + delta * sensitivity / SENSITIVITY_DIVIDER);
-        context.setMinY(context.getMinY() * k);
-        context.setMaxY(context.getMaxY() * k);
-        context.setMinX(context.getMinX() * k);
-        context.setMaxX(context.getMaxX() * k);
+        context.setBSplineMinY(context.getBSplineMinY() * k);
+        context.setBSplineMaxY(context.getBSplineMaxY() * k);
+        context.setBSplineMinX(context.getBSplineMinX() * k);
+        context.setBSplineMaxX(context.getBSplineMaxX() * k);
         context.notifyBSplineListeners();
     }
 
@@ -69,7 +81,10 @@ public class BSplineMouseController extends MouseController {
         }
 
         final IntPoint mousePoint = new IntPoint(e.getX(), e.getY());
-        final Double2DPoint currentPoint = CommonUtils.screenToReal(mousePoint, context);
+        final Double2DPoint currentPoint = ContextUtils.screenToRealBspline(
+                mousePoint,
+                context
+        );
         final int index = context.removePoint(prevPoint);
         context.insertPoint(currentPoint, index);
         context.notifyBSplineListeners();

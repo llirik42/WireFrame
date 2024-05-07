@@ -12,14 +12,23 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static ru.nsu.kondrenko.model.Constants.*;
+
 @Data
 public class Context implements Serializable {
-    private int width;
-    private int height;
-    private double minX;
-    private double maxX;
-    private double minY;
-    private double maxY;
+    private int bSplineWidth;
+    private int bSplineHeight;
+    private double bSplineMinX;
+    private double bSplineMaxX;
+    private double bSplineMinY;
+    private double bSplineMaxY;
+
+    private int wireframeWidth;
+    private int wireframeHeight;
+    private double wireframeMinX;
+    private double wireframeMaxX;
+    private double wireframeMinY;
+    private double wireframeMaxY;
 
     private int polylinesNumber;
     private int generatricesNumber;
@@ -38,12 +47,17 @@ public class Context implements Serializable {
     private transient final List<WireframeListener> wireframeListeners = new ArrayList<>();
 
     public Context() {
-        minX = Constants.START_MIN_X;
-        maxX = Constants.START_MAX_X;
-        minY = minX / 1280.0 * 590.0;
-        maxY = maxX / 1280.0 * 590.0;
-        width = 1280;
-        height = 590;
+        final double bSplineRatio = 1.0 * START_BSPLINE_EDITOR_WIDTH / START_BSPLINE_EDITOR_HEIGHT;
+        bSplineMinX = Constants.BSPLINE_START_MIN_X;
+        bSplineMaxX = Constants.BSPLINE_START_MAX_X;
+        bSplineWidth = START_BSPLINE_EDITOR_WIDTH;
+        bSplineHeight = START_BSPLINE_EDITOR_HEIGHT;
+        bSplineMinY = bSplineMinX / bSplineRatio;
+        bSplineMaxY = bSplineMaxX / bSplineRatio;
+
+        wireframeMinX = WIREFRAME_MIN_X;
+        wireframeMaxX = WIREFRAME_MAX_X;
+
         polylinesNumber = Constants.START_POLYLINES_NUMBER;
         generatricesNumber = Constants.START_GENERATRICES_NUMBER;
         circleSegmentsNumber = Constants.START_CIRCLE_SEGMENTS_NUMBER;
@@ -54,12 +68,12 @@ public class Context implements Serializable {
     }
 
     public void updateValues(Context other) {
-        width = other.getWidth();
-        height = other.getHeight();
-        minX = other.getMinX();
-        maxX = other.getMaxX();
-        minY = other.getMinY();
-        maxY = other.getMaxY();
+        bSplineWidth = other.getBSplineWidth();
+        bSplineHeight = other.getBSplineHeight();
+        bSplineMinX = other.getBSplineMinX();
+        bSplineMaxX = other.getBSplineMaxX();
+        bSplineMinY = other.getBSplineMinY();
+        bSplineMaxY = other.getBSplineMaxY();
         polylinesNumber = other.getPolylinesNumber();
         generatricesNumber = other.getGeneratricesNumber();
         circleSegmentsNumber = other.getCircleSegmentsNumber();
@@ -72,11 +86,11 @@ public class Context implements Serializable {
     }
 
     public double getXRange() {
-        return maxX - minX;
+        return bSplineMaxX - bSplineMinX;
     }
 
     public double getYRange() {
-        return maxY - minY;
+        return bSplineMaxY - bSplineMinY;
     }
 
     public void addBSplineListener(BSplineContextListener listener) {
@@ -88,7 +102,7 @@ public class Context implements Serializable {
     }
 
     public double getHeightWidthRatio() {
-        return 1.0 * height / width;
+        return 1.0 * bSplineHeight / bSplineWidth;
     }
 
     public void addPoint(Double2DPoint point) {

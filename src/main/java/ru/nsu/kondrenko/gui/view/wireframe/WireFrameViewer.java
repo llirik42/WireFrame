@@ -2,8 +2,8 @@ package ru.nsu.kondrenko.gui.view.wireframe;
 
 import org.ejml.simple.SimpleMatrix;
 import ru.nsu.kondrenko.gui.controller.wireframe.WireFrameMouseController;
-import ru.nsu.kondrenko.model.CommonUtils;
 import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.ContextUtils;
 import ru.nsu.kondrenko.model.context.WireframeListener;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
 import ru.nsu.kondrenko.model.dto.Double4DPoint;
@@ -11,6 +11,8 @@ import ru.nsu.kondrenko.model.dto.IntPoint;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -32,6 +34,19 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
         addMouseListener(controller);
         addMouseMotionListener(controller);
         addMouseWheelListener(controller);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                final int newWidth = e.getComponent().getWidth();
+                final int newHeight = e.getComponent().getHeight();
+                final double ratio = 1.0 * newHeight / newWidth;
+                context.setWireframeWidth(newWidth);
+                context.setWireframeHeight(newHeight);
+                context.setWireframeMinY(context.getWireframeMinX() * ratio);
+                context.setWireframeMaxY(context.getWireframeMaxX() * ratio);
+            }
+        });
     }
 
     @Override
@@ -210,17 +225,11 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
                 p.getZ() / distance
         );
 
-        final Context fakeContext = new Context();
-        final double k = 1.0 * getHeight() / getWidth();
-        fakeContext.setMinX(-10);
-        fakeContext.setMaxX(10);
-        fakeContext.setMinY(-10 * k);
-        fakeContext.setMaxY(10 * k);
-        fakeContext.setWidth(getWidth());
-        fakeContext.setHeight(getHeight());
-
         return new ScreenCalculationResult(
-                CommonUtils.realToScreen(res, fakeContext),
+                ContextUtils.realToScreenWireframe(
+                        res,
+                        context
+                ),
                 (float) (Math.pow(afterRotationMatrix.get(0, 0) * 0.35 + 0.75, 2))
         );
     }
