@@ -3,7 +3,10 @@ package ru.nsu.kondrenko.model.context;
 import ru.nsu.kondrenko.model.CommonUtils;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
+import ru.nsu.kondrenko.model.dto.Double4DPoint;
 import ru.nsu.kondrenko.model.dto.IntPoint;
+import ru.nsu.kondrenko.model.wireframe.WireframeScreenPoint;
+import ru.nsu.kondrenko.model.wireframe.WireframeUtils;
 
 import java.util.List;
 
@@ -32,9 +35,11 @@ public class ContextUtils {
         );
     }
 
-    public static IntPoint realToScreenWireframe(Double2DPoint realPoint, Context context) {
-        return CommonUtils.realToScreen(
-                realPoint,
+    public static WireframeScreenPoint calculateScreenPoint(Double4DPoint point, Context context) {
+        return WireframeUtils.calculatePointOnScreen(
+                point,
+                context.getCameraMatrix(),
+                context.getRotationMatrix(),
                 context.getWireframeWidth(),
                 context.getWireframeHeight(),
                 context.getWireframeMinX(),

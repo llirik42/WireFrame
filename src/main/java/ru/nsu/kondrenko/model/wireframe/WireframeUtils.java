@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.model.wireframe;
 
 import org.ejml.simple.SimpleMatrix;
+import ru.nsu.kondrenko.model.CommonUtils;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
 import ru.nsu.kondrenko.model.dto.Double4DPoint;
@@ -137,6 +138,93 @@ public final class WireframeUtils {
                 xPointOnScreen,
                 yPointOnScreen,
                 zPointOnScreen
+        );
+    }
+
+    public static List<List<Double4DPoint>> normalizePoints(List<Double4DPoint> generatricesPoints,
+                                                            List<Double4DPoint> circlesPoints) {
+        final double[] minMaxValues = WireframeUtils.findMinMax(generatricesPoints, circlesPoints);
+        final double minX = minMaxValues[0];
+        final double maxX = minMaxValues[1];
+        final double minY = minMaxValues[2];
+        final double maxY = minMaxValues[3];
+        final double minZ = minMaxValues[4];
+        final double maxZ = minMaxValues[5];
+
+        final double xRange = maxX - minX;
+        final double yRange = maxY - minY;
+        final double zRange = maxZ - minZ;
+        final double maxRange = Double.max(xRange, Double.max(yRange, zRange));
+        final double xCenter = (maxX + minX) / 2.0;
+        final double yCenter = (maxY + minY) / 2.0;
+        final double zCenter = (maxZ + minZ) / 2.0;
+
+        final Double4DPoint centerPoint = new Double4DPoint(xCenter, yCenter, zCenter, 0);
+
+        final List<List<Double4DPoint>> res = new ArrayList<>();
+
+        final List<Double4DPoint> normalizedPoints = new ArrayList<>();
+        for (final var p : generatricesPoints) {
+            normalizedPoints.add(p.minus(centerPoint).divide(maxRange));
+        }
+
+        final List<Double4DPoint> normalizedCircles = new ArrayList<>();
+        for (final var c : circlesPoints) {
+            normalizedCircles.add(c.minus(centerPoint).divide(maxRange));
+        }
+
+        res.add(normalizedPoints);
+        res.add(normalizedCircles);
+
+        return res;
+    }
+
+    public static WireframeScreenPoint calculatePointOnScreen(Double4DPoint point,
+                                                              SimpleMatrix cameraMatrix,
+                                                              SimpleMatrix rotationMatrix,
+                                                              int screenWidth,
+                                                              int screenHeight,
+                                                              double minX,
+                                                              double maxX,
+                                                              double minY,
+                                                              double maxY) {
+        final double[] pointValues = {point.getX(), point.getY(), point.getZ(), point.getT()};
+
+        final SimpleMatrix afterRotationMatrix = rotationMatrix.mult(new SimpleMatrix(pointValues));
+        final SimpleMatrix pMatrix = cameraMatrix.mult(afterRotationMatrix);
+        final Double4DPoint p = new Double4DPoint(
+                pMatrix.get(0),
+                pMatrix.get(1),
+                pMatrix.get(2),
+                pMatrix.get(3)
+        );
+
+        final double distance = p.getT();
+
+        final Double2DPoint res = new Double2DPoint(
+                p.getY() / distance,
+                p.getZ() / distance
+        );
+
+        /*
+        Значения подобраны эмпирически, исходя из соображений, что
+        функция y(x) = ax + b должна как-то переводить отрезок [-1; 1] в отрезок [0; 1]
+         */
+
+        final double a = 0.35;
+        final double b = 0.75;
+
+        return new WireframeScreenPoint(
+                CommonUtils.realToScreen(
+                        res,
+                        screenWidth,
+                        screenHeight,
+                        minX,
+                        maxX,
+                        minY,
+                        maxY
+                ),
+                (float) (Math.pow(afterRotationMatrix.get(0, 0) * a + b, 2))
         );
     }
 
