@@ -84,7 +84,7 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
                     normalizedGeneratricesPoints.get(i * bSplinePointsNumber),
                     context
             );
-            drawF(
+            drawWireframeLine(
                     graphics,
                     startWireframePoint,
                     normalizedGeneratricesPoints,
@@ -104,7 +104,7 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
                     context
             );
             final float distance = startWireframePoint.distanceToCamera();
-            final IntPoint lastPoint = drawF(
+            final IntPoint lastPoint = drawWireframeLine(
                     graphics,
                     startWireframePoint,
                     normalizedCirclesPoints,
@@ -165,7 +165,11 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
         graphics2D.setColor(oldColor);
     }
 
-    private IntPoint drawF(Graphics graphics, WireframeScreenPoint startPoint, List<Double4DPoint> points, int offset, int stop) {
+    private IntPoint drawWireframeLine(Graphics graphics,
+                                       WireframeScreenPoint startPoint,
+                                       List<Double4DPoint> points,
+                                       int offset,
+                                       int stop) {
         IntPoint prevPointOnScreen = startPoint.screenPoint();
 
         for (int j = 1; j < stop; j++) {
