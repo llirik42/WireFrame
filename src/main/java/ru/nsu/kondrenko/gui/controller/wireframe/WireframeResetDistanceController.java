@@ -14,6 +14,5 @@ public class WireframeResetDistanceController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         context.setCameraMatrix(WireframeUtils.createDefaultCameraMatrix());
-        context.notifyWireframeListeners();
     }
 }

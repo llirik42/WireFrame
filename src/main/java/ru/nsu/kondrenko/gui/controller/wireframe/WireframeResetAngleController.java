@@ -14,6 +14,5 @@ public class WireframeResetAngleController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         context.setRotationMatrix(WireframeUtils.createDefaultRotationMatrix());
-        context.notifyWireframeListeners();
     }
 }
