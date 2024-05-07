@@ -49,7 +49,6 @@ public class Context implements Serializable {
     private transient final List<BSplineListener> bSplineContextListeners = new ArrayList<>();
     private transient final List<WireframeListener> wireframeListeners = new ArrayList<>();
     private transient final List<FormDataListener> formDataListeners = new ArrayList<>();
-    private transient final List<RotationListener> rotationListeners = new ArrayList<>();
 
     public Context() {
         final double bSplineRatio = 1.0 * START_BSPLINE_EDITOR_WIDTH / START_BSPLINE_EDITOR_HEIGHT;
@@ -122,10 +121,6 @@ public class Context implements Serializable {
         formDataListeners.add(listener);
     }
 
-    public void addRotationListener(RotationListener rotationListener) {
-        rotationListeners.add(rotationListener);
-    }
-
     public double getHeightWidthRatio() {
         return 1.0 * bSplineHeight / bSplineWidth;
     }
@@ -168,12 +163,6 @@ public class Context implements Serializable {
     public void notifyFormDataListeners() {
         for (final var it : formDataListeners) {
             it.onFormDataChange(this);
-        }
-    }
-
-    public void notifyRotationListeners() {
-        for (final var it : rotationListeners) {
-            it.onRotationChange(this);
         }
     }
 

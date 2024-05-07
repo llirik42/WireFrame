@@ -4,6 +4,7 @@ import org.ejml.simple.SimpleMatrix;
 import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
 import ru.nsu.kondrenko.model.dto.Double4DPoint;
+import ru.nsu.kondrenko.model.dto.IntPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,23 @@ public final class WireframeUtils {
             {0, 0, Constants.CAMERA_MATRIX_VALUE, 0},
             {1, 0, 0, Constants.CAMERA_DISTANCE}
     };
+
+    private static final double[][] XYZ_CAMERA_MATRIX_VALUES = {
+            {1, 0, 0, 0},
+            {0, Constants.XYZ_CAMERA_MATRIX_VALUE, 0, 0},
+            {0, 0, Constants.XYZ_CAMERA_MATRIX_VALUE, 0},
+            {1, 0, 0, Constants.CAMERA_DISTANCE}
+    };
+
+    private static final SimpleMatrix XYZ_CAMERA_MATRIX = new SimpleMatrix(XYZ_CAMERA_MATRIX_VALUES);
+
+    private static final SimpleMatrix CENTER_MATRIX = new SimpleMatrix(new double[]{0, 0, 0, 1});
+
+    private static final SimpleMatrix X_MATRIX = new SimpleMatrix(new double[]{1, 0, 0, 1});
+
+    private static final SimpleMatrix Y_MATRIX = new SimpleMatrix(new double[]{0, 1, 0, 1});
+
+    private static final SimpleMatrix Z_MATRIX = new SimpleMatrix(new double[]{0, 0, 1, 1});
 
     private WireframeUtils() {
     }
@@ -98,6 +116,30 @@ public final class WireframeUtils {
         return result;
     }
 
+    public static List<IntPoint> calculateAxesPoints(SimpleMatrix rotationMatrix,
+                                                     int wireframeWidth,
+                                                     int wireframeHeight) {
+        final SimpleMatrix centerPointMatrix = XYZ_CAMERA_MATRIX.mult(rotationMatrix.mult(CENTER_MATRIX));
+        final SimpleMatrix xMatrix = XYZ_CAMERA_MATRIX.mult(rotationMatrix.mult(X_MATRIX));
+        final SimpleMatrix yMatrix = XYZ_CAMERA_MATRIX.mult(rotationMatrix.mult(Y_MATRIX));
+        final SimpleMatrix zMatrix = XYZ_CAMERA_MATRIX.mult(rotationMatrix.mult(Z_MATRIX));
+
+        final int xPos = wireframeWidth - Constants.AXES_OFFSET;
+        final int yPos = wireframeHeight - Constants.AXES_OFFSET;
+
+        final IntPoint centerPointOnScreen = calculatePointOfAxis(centerPointMatrix, xPos, yPos);
+        final IntPoint xPointOnScreen = calculatePointOfAxis(xMatrix, xPos, yPos);
+        final IntPoint yPointOnScreen = calculatePointOfAxis(yMatrix, xPos, yPos);
+        final IntPoint zPointOnScreen = calculatePointOfAxis(zMatrix, xPos, yPos);
+
+        return List.of(
+                centerPointOnScreen,
+                xPointOnScreen,
+                yPointOnScreen,
+                zPointOnScreen
+        );
+    }
+
     public static SimpleMatrix createRotationMatrix(int mouseDeltaX, int mouseDeltaY) {
         SimpleMatrix rotationMatrix = SimpleMatrix.identity(4);
 
@@ -136,5 +178,13 @@ public final class WireframeUtils {
 
     public static SimpleMatrix createDefaultCameraMatrix() {
         return new SimpleMatrix(CAMERA_MATRIX_VALUES);
+    }
+
+    private static IntPoint calculatePointOfAxis(SimpleMatrix axisMatrix, int xPos, int yPos) {
+        final double tmp = axisMatrix.get(3);
+        return new IntPoint(
+                (int) (axisMatrix.get(1) / tmp) + xPos,
+                (int) (-axisMatrix.get(2) / tmp) + yPos
+        );
     }
 }

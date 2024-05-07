@@ -11,6 +11,10 @@ public class Constants {
     public static final double CAMERA_DISTANCE = 10;
     public static final double CAMERA_MATRIX_VALUE = 75;
 
+    public static final double XYZ_CAMERA_MATRIX_VALUE = 500;
+    public static final int AXES_OFFSET = 60;
+    public static final int AXES_STROKE = 3;
+
     public static final int MIN_POLYLINES_NUMBER = 1;
     public static final int START_POLYLINES_NUMBER = 10;
     public static final int MAX_POLYLINES_NUMBER = 25;

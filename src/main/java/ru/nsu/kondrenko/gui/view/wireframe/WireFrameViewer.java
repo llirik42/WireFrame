@@ -2,6 +2,7 @@ package ru.nsu.kondrenko.gui.view.wireframe;
 
 import org.ejml.simple.SimpleMatrix;
 import ru.nsu.kondrenko.gui.view.SwingUtils;
+import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.context.ContextUtils;
 import ru.nsu.kondrenko.model.context.WireframeListener;
@@ -18,6 +19,11 @@ import java.util.List;
 
 public class WireFrameViewer extends JPanel implements WireframeListener {
     private final Context context;
+
+    private static final Stroke AXES_STROKE = new BasicStroke(Constants.AXES_STROKE);
+    private static final Color X_AXIS_COLOR = Color.RED;
+    private static final Color Y_AXIS_COLOR = Color.GREEN;
+    private static final Color Z_AXIS_COLOR = Color.BLUE;
 
     @Override
     public void onWireframeChange(Context context) {
@@ -204,75 +210,40 @@ public class WireFrameViewer extends JPanel implements WireframeListener {
     }
 
     private void drawXYZ(Graphics2D graphics2D) {
-        // Rotation
-
-        final double[][] xyzCameraMatrixData = {
-                {1, 0, 0, 0},
-                {0, 500, 0, 0},
-                {0, 0, 500, 0},
-                {1, 0, 0, 10}
-        };
-
-        final SimpleMatrix xyxCameraMatrix = new SimpleMatrix(xyzCameraMatrixData);
-
-        final SimpleMatrix centerMatrix = new SimpleMatrix(new double[]{0, 0, 0, 1});
-        final SimpleMatrix xMatrix = new SimpleMatrix(new double[]{1, 0, 0, 1});
-        final SimpleMatrix yMatrix = new SimpleMatrix(new double[]{0, 1, 0, 1});
-        final SimpleMatrix zMatrix = new SimpleMatrix(new double[]{0, 0, 1, 1});
-
-        final SimpleMatrix centerPointOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(centerMatrix));
-        final SimpleMatrix xOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(xMatrix));
-        final SimpleMatrix yOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(yMatrix));
-        final SimpleMatrix zOnScreenMatrix = xyxCameraMatrix.mult(context.getRotationMatrix().mult(zMatrix));
-
-        final int t1 = getWidth() - 60;
-        final int t2 = getHeight() - 60;
-
-        IntPoint centerPointOnScreen = new IntPoint(
-                (int) (centerPointOnScreenMatrix.get(1) / centerPointOnScreenMatrix.get(3)) + t1,
-                (int) (-centerPointOnScreenMatrix.get(2) / centerPointOnScreenMatrix.get(3)) + t2
-        );
-
-        IntPoint xPointOnScreen = new IntPoint(
-                (int) (xOnScreenMatrix.get(1) / xOnScreenMatrix.get(3)) + t1,
-                (int) (-xOnScreenMatrix.get(2) / xOnScreenMatrix.get(3)) + t2
-        );
-
-        IntPoint yPointOnScreen = new IntPoint(
-                (int) (yOnScreenMatrix.get(1) / yOnScreenMatrix.get(3)) + t1,
-                (int) (-yOnScreenMatrix.get(2) / yOnScreenMatrix.get(3)) + t2
-        );
-
-        IntPoint zPointOnScreen = new IntPoint(
-                (int) (zOnScreenMatrix.get(1) / zOnScreenMatrix.get(3)) + t1,
-                (int) (-zOnScreenMatrix.get(2) / zOnScreenMatrix.get(3)) + t2
+        final List<IntPoint> axesPoints = WireframeUtils.calculateAxesPoints(
+                context.getRotationMatrix(),
+                context.getWireframeWidth(),
+                context.getWireframeHeight()
         );
 
         final Color oldColor = graphics2D.getColor();
         final Stroke oldStroke = graphics2D.getStroke();
 
-        final Stroke stroke = new BasicStroke(3);
+        final IntPoint centerPoint = axesPoints.get(0);
+        final IntPoint xPoint = axesPoints.get(1);
+        final IntPoint yPoint = axesPoints.get(2);
+        final IntPoint zPoint = axesPoints.get(3);
 
-        graphics2D.setStroke(stroke);
-        graphics2D.setColor(Color.RED);
+        graphics2D.setStroke(AXES_STROKE);
+        graphics2D.setColor(X_AXIS_COLOR);
         SwingUtils.drawLine(
                 graphics2D,
-                centerPointOnScreen,
-                xPointOnScreen
+                centerPoint,
+                xPoint
         );
 
-        graphics2D.setColor(Color.GREEN);
+        graphics2D.setColor(Y_AXIS_COLOR);
         SwingUtils.drawLine(
                 graphics2D,
-                centerPointOnScreen,
-                yPointOnScreen
+                centerPoint,
+                yPoint
         );
 
-        graphics2D.setColor(Color.BLUE);
+        graphics2D.setColor(Z_AXIS_COLOR);
         SwingUtils.drawLine(
                 graphics2D,
-                centerPointOnScreen,
-                zPointOnScreen
+                centerPoint,
+                zPoint
         );
 
         graphics2D.setStroke(oldStroke);
