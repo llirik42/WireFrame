@@ -88,21 +88,37 @@ public class Context implements Serializable {
     }
 
     public void updateValues(Context other) {
-        bSplineWidth = other.getBSplineWidth();
-        bSplineHeight = other.getBSplineHeight();
-        bSplineMinX = other.getBSplineMinX();
-        bSplineMaxX = other.getBSplineMaxX();
-        bSplineMinY = other.getBSplineMinY();
-        bSplineMaxY = other.getBSplineMaxY();
-        polylinesNumber = other.getPolylinesNumber();
-        generatricesNumber = other.getGeneratricesNumber();
-        circleSegmentsNumber = other.getCircleSegmentsNumber();
-        bSplineSensitivity = other.getBSplineSensitivity();
-        wireframeSensitivity = other.getWireframeSensitivity();
-        rotationMatrix = other.getRotationMatrix();
-        cameraMatrix = other.getCameraMatrix();
-        pivotPoints = other.getPivotPoints();
-        bSplinePoints = other.getBSplinePoints();
+        bSplineWidth = other.bSplineWidth;
+        bSplineHeight = other.bSplineHeight;
+        bSplineMinX = other.bSplineMinX;
+        bSplineMaxX = other.bSplineMaxX;
+        bSplineMinY = other.bSplineMinY;
+        bSplineMaxY = other.bSplineMaxY;
+
+        wireframeWidth = other.wireframeWidth;
+        wireframeHeight = other.wireframeHeight;
+        wireframeMinX = other.wireframeMinX;
+        wireframeMaxX = other.wireframeMaxX;
+        wireframeMinY = other.wireframeMinY;
+        wireframeMaxY = other.wireframeMaxY;
+
+        polylinesNumber = other.polylinesNumber;
+        generatricesNumber = other.generatricesNumber;
+        circleSegmentsNumber = other.circleSegmentsNumber;
+
+        bSplineSensitivity = other.bSplineSensitivity;
+        wireframeSensitivity = other.wireframeSensitivity;
+
+        rotationMatrix = other.rotationMatrix;
+        cameraMatrix = other.cameraMatrix;
+
+        pivotPoints = other.pivotPoints;
+        generatricesPoints = other.generatricesPoints;
+        circlesPoints = other.circlesPoints;
+
+        notifyBSplineListeners();
+        notifyWireframeListeners();
+        notifyFormDataListeners();
     }
 
     public double getBSplineXRange() {
