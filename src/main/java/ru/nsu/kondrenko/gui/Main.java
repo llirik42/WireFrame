@@ -1,6 +1,7 @@
 package ru.nsu.kondrenko.gui;
 
 import ru.nsu.kondrenko.gui.controller.bspline.BSplineNormalizationController;
+import ru.nsu.kondrenko.gui.controller.bspline.BSplineResizeController;
 import ru.nsu.kondrenko.gui.controller.common.AboutController;
 import ru.nsu.kondrenko.gui.controller.common.ExitController;
 import ru.nsu.kondrenko.gui.controller.common.OpenController;
@@ -22,6 +23,7 @@ public class Main {
         final ContextIO contextIO = new FileContextIO();
         final Context context = new Context();
 
+        final BSplineResizeController bSplineResizeController = new BSplineResizeController(context);
         final OpenController openController = new OpenController(context, contextIO);
         final SaveController saveController = new SaveController(context, contextIO);
         final ExitController exitController = new ExitController();
@@ -32,6 +34,7 @@ public class Main {
 
         final SwingView view = new SwingView(
                 context,
+                bSplineResizeController,
                 exitController,
                 openController,
                 saveController,

@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowListener;
 import java.io.File;
 
@@ -22,6 +23,7 @@ public class SwingView implements View, BSplineContextListener, WireframeListene
     private final JTextPane aboutTextPane;
 
     public SwingView(Context context,
+                     ComponentListener bSplineEditorListener,
                      WindowListener windowListener,
                      ActionListener openListener,
                      ActionListener saveListener,
@@ -33,6 +35,7 @@ public class SwingView implements View, BSplineContextListener, WireframeListene
         aboutTextPane = createAboutTextArea();
         bSplineEditorWindow = new BSplineWindow(
                 context,
+                bSplineEditorListener,
                 openListener,
                 saveListener,
                 exitListener,

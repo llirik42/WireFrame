@@ -2,6 +2,8 @@ package ru.nsu.kondrenko.gui.view.bspline;
 
 import org.decimal4j.util.DoubleRounder;
 import ru.nsu.kondrenko.gui.controller.bspline.BSplineMouseController;
+import ru.nsu.kondrenko.gui.view.SwingUtils;
+import ru.nsu.kondrenko.model.Constants;
 import ru.nsu.kondrenko.model.context.BSplineContextListener;
 import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.context.ContextUtils;
@@ -10,50 +12,31 @@ import ru.nsu.kondrenko.model.dto.IntPoint;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+
+import java.awt.event.ComponentListener;
+import java.util.List;
 
 public class BSplineEditor extends JPanel implements BSplineContextListener {
-    private static final int CURVE_POINT_RADIUS = 10;
-    private static final int CURVE_POINT_DIAMETER = 2 * CURVE_POINT_RADIUS;
+    private static final int DIAMETER = Constants.PIVOT_POINT_RADIUS * 2;
+    private static final int SPREAD = 5;
+    private static final int AXES_POINTS_COUNT = 20;
+
     private final Context context;
     private final DoubleRounder rounder;
 
-    public BSplineEditor(Context context, BSplineMouseController controller) {
+    public BSplineEditor(Context context, BSplineMouseController controller, ComponentListener componentListener) {
         this.context = context;
         this.rounder = new DoubleRounder(1);
         setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(100, 100));
         addMouseListener(controller);
         addMouseMotionListener(controller);
         addMouseWheelListener(controller);
+        addComponentListener(componentListener);
+        repaint();
+    }
 
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                final int oldWidth = context.getBSplineWidth();
-                final int oldHeight = context.getBSplineHeight();
-
-                final int newWidth = e.getComponent().getWidth();
-                final int newHeight = e.getComponent().getHeight();
-
-                context.setBSplineWidth(newWidth);
-                context.setBSplineHeight(newHeight);
-
-                if (newWidth != oldWidth) {
-                    final double k = 1.0 * oldWidth / newWidth;
-                    context.setBSplineMinY(context.getBSplineMinY() * k);
-                    context.setBSplineMaxY(context.getBSplineMaxY() * k);
-                }
-
-                if (newHeight != oldHeight) {
-                    final double k = 1.0 * newHeight / newWidth;
-                    context.setBSplineMinY(context.getBSplineMinX() * k);
-                    context.setBSplineMaxY(context.getBSplineMaxX() * k);
-                }
-            }
-        });
-
+    @Override
+    public void onBSplineContextChange(Context context) {
         repaint();
     }
 
@@ -62,8 +45,8 @@ public class BSplineEditor extends JPanel implements BSplineContextListener {
         super.paintComponent(g);
         drawCurvePoints(g);
         drawAxes(g);
-        drawBSpline(g);
         drawBSplinePointsConnection(g);
+        drawBSpline(g);
     }
 
     private void drawCurvePoints(Graphics g) {
@@ -73,12 +56,60 @@ public class BSplineEditor extends JPanel implements BSplineContextListener {
                     context
             );
             g.drawOval(
-                    mousePoint.getX() - CURVE_POINT_RADIUS,
-                    mousePoint.getY() - CURVE_POINT_RADIUS,
-                    CURVE_POINT_DIAMETER,
-                    CURVE_POINT_DIAMETER
+                    mousePoint.getX() - Constants.PIVOT_POINT_RADIUS,
+                    mousePoint.getY() - Constants.PIVOT_POINT_RADIUS,
+                    DIAMETER,
+                    DIAMETER
             );
         }
+    }
+
+    private void drawBSpline(Graphics g) {
+        final List<Double2DPoint> bSplinePoints = context.getBSplinePoints();
+        if (bSplinePoints.isEmpty()) {
+            return;
+        }
+
+        IntPoint prevPoint = ContextUtils.realToScreenBSpline(
+                bSplinePoints.get(0),
+                context
+        );
+
+        for (int i = 1; i < bSplinePoints.size() - 1; i++) {
+            final IntPoint currentPoint = ContextUtils.realToScreenBSpline(
+                    bSplinePoints.get(i),
+                    context
+            );
+
+            SwingUtils.drawLine(g, prevPoint, currentPoint);
+            prevPoint = currentPoint;
+        }
+    }
+
+    private void drawBSplinePointsConnection(Graphics g) {
+        final List<Double2DPoint> points = context.getPoints();
+        if (points.isEmpty()) {
+            return;
+        }
+
+        final Color oldColor = g.getColor();
+        g.setColor(Color.GREEN);
+        IntPoint prevPoint = ContextUtils.realToScreenBSpline(
+                points.get(0),
+                context
+        );
+
+        for (int i = 0; i < points.size(); i++) {
+            final IntPoint currentPoint = ContextUtils.realToScreenBSpline(
+                    context.getPoints().get(i),
+                    context
+            );
+
+            SwingUtils.drawLine(g, prevPoint, currentPoint);
+            prevPoint = currentPoint;
+        }
+
+        g.setColor(oldColor);
     }
 
     private void drawAxes(Graphics g) {
@@ -96,95 +127,42 @@ public class BSplineEditor extends JPanel implements BSplineContextListener {
         final Graphics2D g2d = (Graphics2D) g;
         final int yCenter = centerPoint.getY();
         final int xCenter = centerPoint.getX();
-        final int axesPointCount = 20;
-        final int step = width / axesPointCount;
-        final int spread = 5;
-        for (int x = xCenter + step; x < width; x += step) {
-            drawOXAxePoint(g2d, new IntPoint(x, yCenter), spread);
+        final int step = width / AXES_POINTS_COUNT;
+        for (int x = xCenter + step; x <= width - step; x += step) {
+            drawOXAxePoint(g2d, new IntPoint(x, yCenter));
         }
-        for (int x = xCenter - step; x > 0; x -= step) {
-            drawOXAxePoint(g2d, new IntPoint(x, yCenter), spread);
+        for (int x = xCenter - step; x >= step; x -= step) {
+            drawOXAxePoint(g2d, new IntPoint(x, yCenter));
         }
-        for (int y = yCenter + step; y < height; y += step) {
-            drawOYAxePoint(g2d, new IntPoint(xCenter, y), spread);
+        for (int y = yCenter + step; y <= height - step; y += step) {
+            drawOYAxePoint(g2d, new IntPoint(xCenter, y));
         }
-        for (int y = yCenter - step; y > 0; y -= step) {
-            drawOYAxePoint(g2d, new IntPoint(xCenter, y), spread);
+        for (int y = yCenter - step; y >= step; y -= step) {
+            drawOYAxePoint(g2d, new IntPoint(xCenter, y));
         }
     }
 
-    private void drawBSpline(Graphics g) {
-        for (int i = 0; i < context.getBSplinePoints().size() - 1; i++) {
-            final IntPoint p1 = ContextUtils.realToScreenBSpline(
-                    context.getBSplinePoints().get(i),
-                    context
-            );
-            final IntPoint p2 = ContextUtils.realToScreenBSpline(
-                    context.getBSplinePoints().get(i + 1),
-                    context
-            );
-
-            g.drawLine(
-                    p1.getX(),
-                    p1.getY(),
-                    p2.getX(),
-                    p2.getY()
-            );
-        }
-    }
-
-    private void drawBSplinePointsConnection(Graphics g) {
-        final Color oldColor = g.getColor();
-
-        g.setColor(Color.GREEN);
-
-        for (int i = 0; i < context.getPoints().size() - 1; i++) {
-            final IntPoint p1 = ContextUtils.realToScreenBSpline(
-                    context.getPoints().get(i),
-                    context
-            );
-            final IntPoint p2 = ContextUtils.realToScreenBSpline(
-                    context.getPoints().get(i + 1),
-                    context
-            );
-
-            g.drawLine(
-                    p1.getX(),
-                    p1.getY(),
-                    p2.getX(),
-                    p2.getY()
-            );
-        }
-
-        g.setColor(oldColor);
-    }
-
-    private void drawOXAxePoint(Graphics2D graphics2D, IntPoint point, int spread) {
+    private void drawOXAxePoint(Graphics2D graphics2D, IntPoint point) {
         final int x = point.getX();
         final int y = point.getY();
         final Double2DPoint realPoint = ContextUtils.screenToRealBspline(
                 new IntPoint(x, y),
                 context
         );
-        graphics2D.drawLine(x, y - spread, x, y + spread);
+        graphics2D.drawLine(x, y - SPREAD, x, y + SPREAD);
         final String label = String.valueOf(rounder.round(realPoint.getX()));
-        graphics2D.drawString(label, x - label.length() * 3, y - 10);
+        graphics2D.drawString(label, x - label.length() * 3, y - 10); // Значения подобраны эмпирически
     }
 
-    private void drawOYAxePoint(Graphics2D graphics2D, IntPoint point, int spread) {
+    private void drawOYAxePoint(Graphics2D graphics2D, IntPoint point) {
         final int x = point.getX();
         final int y = point.getY();
         final Double2DPoint realPoint = ContextUtils.screenToRealBspline(
                 new IntPoint(x, y),
                 context
         );
-        graphics2D.drawLine(x - spread, y, x + spread, y);
+        graphics2D.drawLine(x - SPREAD, y, x + SPREAD, y);
         final String label = String.valueOf(rounder.round(realPoint.getY()));
-        graphics2D.drawString(label, x + 10, y + 5);
-    }
-
-    @Override
-    public void onBSplineContextChange(Context context) {
-        repaint();
+        graphics2D.drawString(label, x + 10, y + 5); // Значения подобраны эмпирически
     }
 }

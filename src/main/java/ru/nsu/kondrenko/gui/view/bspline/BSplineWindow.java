@@ -8,18 +8,20 @@ import ru.nsu.kondrenko.model.context.Context;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
 
 public class BSplineWindow extends JFrame implements BSplineContextListener {
     private final BSplineEditor editor;
 
     public BSplineWindow(Context context,
+                         ComponentListener bSplineEditorListener,
                          ActionListener openListener,
                          ActionListener saveListener,
                          ActionListener exitListener,
                          ActionListener bSplineNormalizationListener,
                          ActionListener aboutListener) {
         final BSplineMouseController controller = new BSplineMouseController(context);
-        editor = new BSplineEditor(context, controller);
+        editor = new BSplineEditor(context, controller, bSplineEditorListener);
         add(editor, BorderLayout.CENTER);
         add(new BSplineForm(context), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(1280, 720));
