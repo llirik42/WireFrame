@@ -70,6 +70,7 @@ public class BSplineMouseController extends MouseController {
         if (prevPoint != null) {
             context.removePoint(prevPoint);
             context.notifyBSplineListeners();
+            context.notifyWireframeListeners();
             prevPoint = null;
         }
     }
@@ -88,6 +89,7 @@ public class BSplineMouseController extends MouseController {
         final int index = context.removePoint(prevPoint);
         context.insertPoint(currentPoint, index);
         context.notifyBSplineListeners();
+        context.notifyWireframeListeners();
         prevPoint = currentPoint;
     }
 }

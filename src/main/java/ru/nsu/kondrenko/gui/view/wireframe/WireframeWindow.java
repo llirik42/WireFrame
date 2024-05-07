@@ -1,13 +1,13 @@
 package ru.nsu.kondrenko.gui.view.wireframe;
 
+import ru.nsu.kondrenko.gui.view.common.Window;
 import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.context.WireframeListener;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class WireframeWindow extends JFrame implements WireframeListener {
+public class WireframeWindow extends Window implements WireframeListener {
     private final WireFrameViewer viewer;
 
     public WireframeWindow(Context context,
@@ -17,9 +17,9 @@ public class WireframeWindow extends JFrame implements WireframeListener {
                            ActionListener resetAngleListener,
                            ActionListener resetDistanceListener,
                            ActionListener aboutListener) {
+        super();
         setMinimumSize(new Dimension(640, 480));
         setPreferredSize(new Dimension(1280, 720));
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.viewer = new WireFrameViewer(context);
 
         add(new WireframeToolsArea(resetAngleListener, resetDistanceListener), BorderLayout.NORTH);
