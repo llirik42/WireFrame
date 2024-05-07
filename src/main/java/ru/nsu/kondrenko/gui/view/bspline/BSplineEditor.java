@@ -1,10 +1,9 @@
 package ru.nsu.kondrenko.gui.view.bspline;
 
 import org.decimal4j.util.DoubleRounder;
-import ru.nsu.kondrenko.gui.controller.bspline.BSplineMouseController;
 import ru.nsu.kondrenko.gui.view.SwingUtils;
 import ru.nsu.kondrenko.model.Constants;
-import ru.nsu.kondrenko.model.context.BSplineContextListener;
+import ru.nsu.kondrenko.model.context.BSplineListener;
 import ru.nsu.kondrenko.model.context.Context;
 import ru.nsu.kondrenko.model.context.ContextUtils;
 import ru.nsu.kondrenko.model.dto.Double2DPoint;
@@ -13,10 +12,10 @@ import ru.nsu.kondrenko.model.dto.IntPoint;
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.ComponentListener;
+import java.awt.event.*;
 import java.util.List;
 
-public class BSplineEditor extends JPanel implements BSplineContextListener {
+public class BSplineEditor extends JPanel implements BSplineListener {
     private static final int DIAMETER = Constants.PIVOT_POINT_RADIUS * 2;
     private static final int SPREAD = 5;
     private static final int AXES_POINTS_COUNT = 20;
@@ -24,13 +23,17 @@ public class BSplineEditor extends JPanel implements BSplineContextListener {
     private final Context context;
     private final DoubleRounder rounder;
 
-    public BSplineEditor(Context context, BSplineMouseController controller, ComponentListener componentListener) {
+    public BSplineEditor(Context context,
+                         MouseListener mouseListener,
+                         MouseMotionListener mouseMotionListener,
+                         MouseWheelListener mouseWheelListener,
+                         ComponentListener componentListener) {
         this.context = context;
         this.rounder = new DoubleRounder(1);
         setBackground(Color.WHITE);
-        addMouseListener(controller);
-        addMouseMotionListener(controller);
-        addMouseWheelListener(controller);
+        addMouseListener(mouseListener);
+        addMouseMotionListener(mouseMotionListener);
+        addMouseWheelListener(mouseWheelListener);
         addComponentListener(componentListener);
         repaint();
     }

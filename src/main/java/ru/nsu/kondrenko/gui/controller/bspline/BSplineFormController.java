@@ -22,7 +22,6 @@ public class BSplineFormController implements ChangeListener {
 
         if (source == polylinesSpinner) {
             context.setPolylinesNumber(source.getIntValue());
-            context.updateBSplinePoints();
             context.notifyBSplineListeners();
             context.notifyWireframeListeners();
             return;

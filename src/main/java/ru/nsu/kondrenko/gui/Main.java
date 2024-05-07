@@ -1,5 +1,7 @@
 package ru.nsu.kondrenko.gui;
 
+import ru.nsu.kondrenko.gui.controller.bspline.BSplineMouseController;
+import ru.nsu.kondrenko.gui.controller.bspline.BSplineMovingController;
 import ru.nsu.kondrenko.gui.controller.bspline.BSplineNormalizationController;
 import ru.nsu.kondrenko.gui.controller.bspline.BSplineResizeController;
 import ru.nsu.kondrenko.gui.controller.common.AboutController;
@@ -27,10 +29,12 @@ public class Main {
         final OpenController openController = new OpenController(context, contextIO);
         final SaveController saveController = new SaveController(context, contextIO);
         final ExitController exitController = new ExitController();
-        final WireframeResetAngleController resetAngleController = new WireframeResetAngleController(context);
-        final WireframeResetDistanceController resetDistanceController = new WireframeResetDistanceController(context);
-        final BSplineNormalizationController bSplineNormalizationController = new BSplineNormalizationController(context);
+        final WireframeResetAngleController resettingAngleController = new WireframeResetAngleController(context);
+        final WireframeResetDistanceController resettingDistanceController = new WireframeResetDistanceController(context);
+        final BSplineNormalizationController normalizationController = new BSplineNormalizationController(context);
         final AboutController aboutController = new AboutController();
+        final BSplineMovingController bSplineMovingController = new BSplineMovingController(context);
+        final BSplineMouseController bSplineMouseController = new BSplineMouseController(context);
 
         final SwingView view = new SwingView(
                 context,
@@ -39,10 +43,14 @@ public class Main {
                 openController,
                 saveController,
                 exitController,
-                resetAngleController,
-                resetDistanceController,
-                bSplineNormalizationController,
-                aboutController
+                resettingAngleController,
+                resettingDistanceController,
+                normalizationController,
+                aboutController,
+                bSplineMovingController,
+                bSplineMouseController,
+                bSplineMouseController,
+                bSplineMouseController
         );
 
         try {

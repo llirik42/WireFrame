@@ -3,20 +3,19 @@ package ru.nsu.kondrenko.gui.view;
 import ru.nsu.kondrenko.gui.view.bspline.BSplineWindow;
 import ru.nsu.kondrenko.gui.view.wireframe.WireframeWindow;
 import ru.nsu.kondrenko.model.Constants;
-import ru.nsu.kondrenko.model.context.BSplineContextListener;
+import ru.nsu.kondrenko.model.context.BSplineListener;
 import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.FormDataListener;
 import ru.nsu.kondrenko.model.context.WireframeListener;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.io.File;
 
-public class SwingView implements View, BSplineContextListener, WireframeListener {
-    private final BSplineWindow bSplineEditorWindow;
+public class SwingView implements View, BSplineListener, WireframeListener, FormDataListener {
+    private final BSplineWindow bSplineWindow;
     private final WireframeWindow wireframeWindow;
     private final JFileChooser savingChooser;
     private final JFileChooser openChooser;
@@ -31,16 +30,24 @@ public class SwingView implements View, BSplineContextListener, WireframeListene
                      ActionListener resetAngleListener,
                      ActionListener resetDistanceListener,
                      ActionListener bSplineNormalizationListener,
-                     ActionListener aboutListener) {
+                     ActionListener aboutListener,
+                     KeyListener keyListener,
+                     MouseListener mouseListener,
+                     MouseMotionListener mouseMotionListener,
+                     MouseWheelListener mouseWheelListener) {
         aboutTextPane = createAboutTextArea();
-        bSplineEditorWindow = new BSplineWindow(
+        bSplineWindow = new BSplineWindow(
                 context,
                 bSplineEditorListener,
                 openListener,
                 saveListener,
                 exitListener,
                 bSplineNormalizationListener,
-                aboutListener
+                aboutListener,
+                keyListener,
+                mouseListener,
+                mouseMotionListener,
+                mouseWheelListener
         );
         wireframeWindow = new WireframeWindow(
                 context,
@@ -52,7 +59,7 @@ public class SwingView implements View, BSplineContextListener, WireframeListene
                 aboutListener
         );
 
-        bSplineEditorWindow.addWindowListener(windowListener);
+        bSplineWindow.addWindowListener(windowListener);
         wireframeWindow.addWindowListener(windowListener);
 
         final FileFilter fileFilter = new FileNameExtensionFilter(
@@ -68,9 +75,9 @@ public class SwingView implements View, BSplineContextListener, WireframeListene
 
     @Override
     public void destroy() {
-        bSplineEditorWindow.setVisible(false);
+        bSplineWindow.setVisible(false);
         wireframeWindow.setVisible(false);
-        bSplineEditorWindow.dispose();
+        bSplineWindow.dispose();
         wireframeWindow.dispose();
     }
 
@@ -86,7 +93,7 @@ public class SwingView implements View, BSplineContextListener, WireframeListene
 
     @Override
     public void show() {
-        bSplineEditorWindow.setVisible(true);
+        bSplineWindow.setVisible(true);
         wireframeWindow.setVisible(true);
     }
 
@@ -167,11 +174,16 @@ public class SwingView implements View, BSplineContextListener, WireframeListene
 
     @Override
     public void onBSplineContextChange(Context context) {
-        bSplineEditorWindow.onBSplineContextChange(context);
+        bSplineWindow.onBSplineContextChange(context);
     }
 
     @Override
     public void onWireframeChange(Context context) {
         wireframeWindow.onWireframeChange(context);
+    }
+
+    @Override
+    public void onFormDataChange(Context context) {
+
     }
 }

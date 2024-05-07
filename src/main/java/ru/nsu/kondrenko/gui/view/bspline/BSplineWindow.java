@@ -1,17 +1,16 @@
 package ru.nsu.kondrenko.gui.view.bspline;
 
-import ru.nsu.kondrenko.gui.controller.bspline.BSplineMouseController;
-import ru.nsu.kondrenko.gui.controller.bspline.BSplineMovingController;
 import ru.nsu.kondrenko.gui.view.common.Window;
-import ru.nsu.kondrenko.model.context.BSplineContextListener;
+import ru.nsu.kondrenko.model.context.BSplineListener;
 import ru.nsu.kondrenko.model.context.Context;
+import ru.nsu.kondrenko.model.context.FormDataListener;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
+import java.awt.event.*;
 
-public class BSplineWindow extends Window implements BSplineContextListener {
+public class BSplineWindow extends Window implements BSplineListener, FormDataListener {
     private final BSplineEditor editor;
+    private final BSplineForm form;
 
     public BSplineWindow(Context context,
                          ComponentListener bSplineEditorListener,
@@ -19,17 +18,23 @@ public class BSplineWindow extends Window implements BSplineContextListener {
                          ActionListener saveListener,
                          ActionListener exitListener,
                          ActionListener bSplineNormalizationListener,
-                         ActionListener aboutListener) {
+                         ActionListener aboutListener,
+                         KeyListener keyListener,
+                         MouseListener mouseListener,
+                         MouseMotionListener mouseMotionListener,
+                         MouseWheelListener mouseWheelListener) {
         super();
-        final BSplineMouseController controller = new BSplineMouseController(context);
-        editor = new BSplineEditor(context, controller, bSplineEditorListener);
+        editor = new BSplineEditor(
+                context,
+                mouseListener,
+                mouseMotionListener,
+                mouseWheelListener,
+                bSplineEditorListener);
+        form = new BSplineForm(context);
+        final BSplineToolsArea toolsArea = new BSplineToolsArea(bSplineNormalizationListener, keyListener);
+
         add(editor, BorderLayout.CENTER);
-        add(new BSplineForm(context), BorderLayout.SOUTH);
-
-        final BSplineMovingController movingController = new BSplineMovingController(context);
-
-        final BSplineToolsArea toolsArea = new BSplineToolsArea(bSplineNormalizationListener, movingController);
-
+        add(form, BorderLayout.SOUTH);
         add(toolsArea, BorderLayout.NORTH);
 
         final BSplineMenuArea menuArea = new BSplineMenuArea(
@@ -41,12 +46,16 @@ public class BSplineWindow extends Window implements BSplineContextListener {
         );
 
         setJMenuBar(menuArea.getMenuBar());
-
         pack();
     }
 
     @Override
     public void onBSplineContextChange(Context context) {
         editor.onBSplineContextChange(context);
+    }
+
+    @Override
+    public void onFormDataChange(Context context) {
+        form.onFormDataChange(context);
     }
 }

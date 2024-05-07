@@ -43,8 +43,9 @@ public class Context implements Serializable {
     private List<Double2DPoint> points = new LinkedList<>();
     private List<Double2DPoint> bSplinePoints = new LinkedList<>();
 
-    private transient final List<BSplineContextListener> bSplineContextListeners = new ArrayList<>();
+    private transient final List<BSplineListener> bSplineContextListeners = new ArrayList<>();
     private transient final List<WireframeListener> wireframeListeners = new ArrayList<>();
+    private transient final List<FormDataListener> formDataListeners = new ArrayList<>();
 
     public Context() {
         final double bSplineRatio = 1.0 * START_BSPLINE_EDITOR_WIDTH / START_BSPLINE_EDITOR_HEIGHT;
@@ -65,6 +66,11 @@ public class Context implements Serializable {
         wireframeSensitivity = Constants.START_WIREFRAME_SENSITIVITY;
         rotationMatrix = WireframeUtils.createDefaultRotationMatrix();
         cameraMatrix = WireframeUtils.createDefaultCameraMatrix();
+    }
+
+    public void setPolylinesNumber(int polylinesNumber) {
+        this.polylinesNumber = polylinesNumber;
+        updateBSplinePoints();
     }
 
     public void updateValues(Context other) {
@@ -93,12 +99,16 @@ public class Context implements Serializable {
         return bSplineMaxY - bSplineMinY;
     }
 
-    public void addBSplineListener(BSplineContextListener listener) {
+    public void addBSplineListener(BSplineListener listener) {
         bSplineContextListeners.add(listener);
     }
 
     public void addWireframeListener(WireframeListener listener) {
         wireframeListeners.add(listener);
+    }
+
+    public void addFormDataListener(FormDataListener listener) {
+        formDataListeners.add(listener);
     }
 
     public double getHeightWidthRatio() {
@@ -134,7 +144,7 @@ public class Context implements Serializable {
         }
     }
 
-    public void updateBSplinePoints() {
+    private void updateBSplinePoints() {
         bSplinePoints = BSplineUtils.calculateBSplinePoints(
                 getPoints(),
                 getPolylinesNumber()
